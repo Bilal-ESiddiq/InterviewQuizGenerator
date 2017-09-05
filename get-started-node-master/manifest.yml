@@ -1,0 +1,9 @@
+---
+applications:
+- name: RanaIQG
+  random-route: true
+  memory: 256M
+  host: RanaIQG
+  domain: eu-gb.mybluemix.net
+  services:
+  - Cloudant NoSQL DB-ky
