@@ -18,11 +18,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     <script src="javascript/antixss.js" type="text/javascript"></script>
     
 </head>
 
-<body style="background-color:rgb(233,231,218);">
+<body style="background-color:rgb(233,231,218);" ng-app="myApp" ng-controller="myCtrl">
 
 <!-- Nav Bar -->
 <div style="background-color:rgb(118,50,63);" class="w3-bar">
@@ -76,21 +77,59 @@
           
           
           
-         
-           <select id="category"  class="w3-select w3-border w3-round " name="option">
+
+<br>
+<br>
+          
+          
+       
+           <select id="category"   class="w3-select w3-border w3-round " name="option">
 			    <option value="" disabled selected>Choose Category..</option>
-			    
+			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
 			  </select>
          
-         <p>
+         <br>
+         <br>
+         
+          <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniqueCategory()" >Add a non existing Category</button>
+          <br>
+          <br>
+          <br>
+          <div  class="w3-container" id="addCategoryinput">
           <label style="color:rgb(86,86,86);">Add a Category if it does not exist</label>
-          <input id="addcategory" type="text" class="w3-input w3-border w3-round " style="width:135px" placeholder="Category" aria-describedby="sizing-addon1" value=""  />   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="addCategory()" >Add</button>
-          </p>
-          <input id="subcategory" type="text" class="w3-input w3-border w3-round " placeholder="Sub-Category" aria-describedby="sizing-addon1" value=""  /><br>
+          <br> 
+          <br>
+          <input id="addcategory" ng-model="addcategory" ng-change="upper(addcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:60%" placeholder="Add a Category if it does not exist" aria-describedby="sizing-addon1" value=""  /> 
+           <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addCategory()" ng-disabled="incomplete"  >Add</button>
           
           <br>
+          <br> 
+          <br>
+          </div> 
+                   
+           <select id="subcategory"   class="w3-select w3-border w3-round " name="option">
+			    <option value="" disabled selected>Choose a subcategory..</option>
+			    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
+			  </select>
+         
          <br>
-      
+         <br>
+         
+         <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniquesubCategory()" >Add a non existing subcategory</button>
+         <br>
+         <br>
+         <br>
+         <div class="w3-container" id="addsubCategoryinput" >
+          <label style="color:rgb(86,86,86);">Add a subCategory if it does not exist</label>
+          <br>
+          <br>
+          <input id="addsubcategory" ng-model="addsubcategory" ng-change="subupper(addsubcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:60%" placeholder="Add a sub Category if it doesnot exist" aria-describedby="sizing-addon1" value=""  /> 
+           <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addsubCategory()" ng-disabled="subincomplete"  >Add</button>
+          
+          <br>
+          <br> 
+          <br>
+      	  </div>
           
             <select id="qlevel"  class="w3-select w3-border w3-round " name="option">
 			    <option value="" disabled selected>Choose Difficulty..</option>
@@ -123,7 +162,10 @@
 
     <script>
     var modelanswer="";
-    $('#panel').hide();
+    
+    $('#addCategoryinput').hide();
+    $('#addsubCategoryinput').hide();
+    
     var flagerror=0;
 	    function check()
 	    {
@@ -147,10 +189,57 @@
 	   function addCategory()
 	   {
 		   
-		   var name=$()
+		   var name=$('#addcategory').val().toLowerCase();
+		   var type="category";
+		   
+		   
+		  
+		   
+		   $.ajax({
+				  method: "POST",
+				  url: "./api/addCategory",
+				  contentType: "application/json",
+				  data: JSON.stringify({"name" : name,"type":type})
+             })	  
+             
+             .done(function(data)
+            {
+                alert("New Category was added successfully");
+    
+             });
+		 
+		   
 	   }
 	    
+	   
+	   
+	   function addsubCategory()
+	   {
+		   
+		   var name=$('#addsubcategory').val();
+		   var type="subcategory";
+		   
+		   $.ajax({
+				  method: "POST",
+				  url: "./api/addCategory",
+				  contentType: "application/json",
+				  data: JSON.stringify({"name" : name,"type":type})
+             })	  
+             
+             .done(function(data)
+            {
+                alert("New Subcategory was added successfully");
+               
+    
+             });
+		  
+		   
+	   }
 	    
+	   
+	  
+	   
+	   
 	    
 	    
     	//Submit data when submit is pressed
@@ -169,6 +258,7 @@
         	var status="pending";
         	var comment="";
         	var repetition=0;
+        	var type="question";
         	
         	//To see if there are any unfilled fields
         	
@@ -189,9 +279,9 @@
             	//POST request to API to create a new visitor entry in the database
                 $.ajax({
 				  method: "POST",
-				  url: "./api/visitors",
+				  url: "./api/insertQuestion",
 				  contentType: "application/json",
-				  data: JSON.stringify({"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition})
+				  data: JSON.stringify({"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type})
                 })	  
                 
                 .done(function(data) {
@@ -208,7 +298,74 @@
             	}
           
         }
-   
+    	
+	   
+    	function addUniqueCategory()
+    	{
+    		$('#addCategoryinput').show();
+    	    
+    	}
+    	
+    	function addUniquesubCategory()
+    	{
+    		$('#addsubCategoryinput').show();
+    	}
+    	
+    	
+    	
+	       var app = angular.module('myApp', []);
+	
+	 	   app.controller('myCtrl', function($scope, $http) 
+	 	   {
+	 		
+	 		  $scope.incomplete = false;
+	 		 $scope.subincomplete = false; 
+	 		   $http.get("/api/findcategory").then(function (response) { $scope.findcategory = response.data;});
+	 		   $http.get("/api/findsubcategory").then(function (response) { $scope.findsubcategory = response.data;});
+	 		   
+	 		  $scope.upper = function(addcategory){
+	 			 $scope.addcategory = addcategory.toLowerCase();
+	 			 }
+	 		  
+	 		 $scope.subupper = function(addsubcategory){
+	 			 $scope.addsubcategory = addsubcategory.toLowerCase();
+	 			 }
+	 		  
+	 		  $scope.$watch('addcategory', function() {$scope.checkredundancy();});
+	 		 $scope.$watch('addsubcategory', function() {$scope.checkredundancysub();});
+	 		  $scope.checkredundancy=function()
+	 		  {
+	 			 $scope.incomplete = false; 
+	 			 
+	 			 for(var i=0;i<$scope.findcategory.length;i++)
+	 		    {  
+	 				
+	 				if(angular.equals($scope.findcategory[i].name,$scope.addcategory))	
+	 					$scope.incomplete = true;
+	 				
+	 				
+	 		    }
+	 		 };
+	 			 
+	 			 $scope.checkredundancysub=function()
+		 		  {
+		 			 $scope.subincomplete = false; 
+		 			 
+		 			 for(var i=0;i<$scope.findsubcategory.length;i++)
+		 		    {  
+		 				
+		 				if(angular.equals($scope.addsubcategory,$scope.findsubcategory[i].name))
+		 					$scope.subincomplete = true;
+		 					
+		 			
+		 				
+		 		    }
+	 			 
+		 		 };
+	 		  
+	 		   
+	 	   });
+    
          
     </script>
 </body>

@@ -11,14 +11,79 @@ app.use(bodyParser.json())
 
 var mydb;
 
-/* Endpoint to greet and add a new visitor to database.
-* Send a POST request to localhost:3000/api/visitors with body
-* {
-* 	"name": "Bob"
-* }
-*/
-app.post("/api/visitors", function (request, response) {
-	  // Changing here
+
+app.post("/api/addCategory", function (request, response) {
+
+	var name = request.body.name;
+	var type=request.body.type;
+	
+	//Add Category
+	  if(!mydb) {
+		    console.log("No database.");
+		    return;
+		  }
+		  
+		  mydb.insert({"name":name,"type":type}, function(err, body, header) {
+		    if (err) {
+		      return console.log('[mydb.addcategory] ', err.message);
+		    }
+		   response.send("Add Category was successful");
+		  });
+	
+	
+});
+
+
+
+app.get("/api/findcategory", function (request, response) {
+
+	  if(!mydb) {
+	    
+	    return;
+	  }
+
+	  mydb.find({selector:{ type:"category" }},function(err, body) {
+		  
+		  
+	    if (err) {
+		        return console.log('[mydb.find] ', err.message);
+	              }
+	   
+	   
+	    if(!err)
+	    	response.send(body.docs);
+	   
+	  });
+	  
+	});
+
+
+
+app.get("/api/findsubcategory", function (request, response) {
+
+	  if(!mydb) {
+	    
+	    return;
+	  }
+
+	  mydb.find({selector:{ type:"subcategory" }},function(err, body) {
+		  
+		  
+	    if (err) {
+		        return console.log('[mydb.find] ', err.message);
+	              }
+	   
+	   
+	    if(!err)
+	    	response.send(body.docs);
+	   
+	  });
+	  
+	});
+
+
+app.post("/api/insertQuestion", function (request, response) {
+	 
   var questName = request.body.name;
   var op1=request.body.op1;
   var op2=request.body.op2;
@@ -34,12 +99,15 @@ app.post("/api/visitors", function (request, response) {
   var status=request.body.status;
   var comment=request.body.comment;
   var rep=request.body.rep;
+  var type=request.body.type;
+  
+  
   if(!mydb) {
     console.log("No database.");
     return;
   }
   // insert the Question as a document
-  mydb.insert({ "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep}, function(err, body, header) {
+  mydb.insert({ "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type}, function(err, body, header) {
     if (err) {
       return console.log('[mydb.insert] ', err.message);
     }
@@ -69,11 +137,11 @@ app.post("/api/updateQuestion", function (request, response) {
 	  var status=request.body.status;
 	  var comment=request.body.comment;
 	  var rep=request.body.rep;
-	  
+	  var type=request.body.type;
 	  
 	  //mydb.destroy(id,rev, function(err, body, header)
 	 
-	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep} , function(err, body, header)
+	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type} , function(err, body, header)
 	   {
 		  
 		  if (err) {
@@ -154,9 +222,9 @@ app.post("/api/declineQuestion", function (request, response) {
 
 
 app.get("/api/findquestions", function (request, response) {
-  var names = "";
+
   if(!mydb) {
-    response.json(names);
+    
     return;
   }
 

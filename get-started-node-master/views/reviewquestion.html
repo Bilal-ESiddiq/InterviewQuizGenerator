@@ -237,13 +237,13 @@ function updateQuestion()
 	var status="pending";
 	var comment=$('#editcomment').val();
 	var repetition=0;
-	
+	var type="question";
 	
 	 $.ajax({
 		  method: "POST",
 		  url: "./api/updateQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type})
        })	 
        .done(function(data) {
     	   alert("Question is updated successfully");
@@ -337,7 +337,7 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.error = false;
 	$scope.Edithideform = true;	
 	$scope.Viewhideform = true;	
-	$scope.Viewhideform = true;	                     
+	                     
 	$scope.EditrevID=true;
 	$scope.EditID = true;	
 	$scope.EditadderID = true;
