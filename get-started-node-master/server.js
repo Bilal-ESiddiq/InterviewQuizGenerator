@@ -35,6 +35,29 @@ app.post("/api/addCategory", function (request, response) {
 
 
 
+app.post("/api/addsubCategory", function (request, response) {
+
+	var name = request.body.name;
+	var type=request.body.type;
+	var categoryname=request.body.categoryname;
+	
+	//Add Category
+	  if(!mydb) {
+		    console.log("No database.");
+		    return;
+		  }
+		  
+		  mydb.insert({"name":name,"type":type,"categoryname":categoryname}, function(err, body, header) {
+		    if (err) {
+		      return console.log('[mydb.addsubcategory] ', err.message);
+		    }
+		   response.send("Add subCategory was successful");
+		  });
+	
+	
+});
+
+
 app.get("/api/findcategory", function (request, response) {
 
 	  if(!mydb) {
@@ -60,13 +83,16 @@ app.get("/api/findcategory", function (request, response) {
 
 
 app.get("/api/findsubcategory", function (request, response) {
+	
+	var categoryname=request.query.categoryname;
+	console.log("my category name"+ categoryname);
 
 	  if(!mydb) {
 	    
 	    return;
 	  }
 
-	  mydb.find({selector:{ type:"subcategory" }},function(err, body) {
+	  mydb.find({selector:{ type:"subcategory", categoryname:categoryname }},function(err, body) {
 		  
 		  
 	    if (err) {
@@ -138,8 +164,40 @@ app.post("/api/updateQuestion", function (request, response) {
 	  var comment=request.body.comment;
 	  var rep=request.body.rep;
 	  var type=request.body.type;
+	  var adderemail=request.body.adderemail;
+	  var revieweremail=request.body.revieweremail;
 	  
-	  //mydb.destroy(id,rev, function(err, body, header)
+	 
+	  var transporter = nodemailer.createTransport({
+		  
+		   service:'Gmail',
+		   auth: {
+		     user: revieweremail,
+		     pass: 'emilybronte'
+		   }
+		 }); 
+
+
+		 var mailOptions = {
+		   from: revieweremail ,
+		   to: adderemail,
+		   subject: 'IQG Question Status',
+		   text: 'Hello there, your question with detailed description : '+questName+' has been updated by reviewer... Thank you'
+		 };
+
+
+
+
+		 transporter.sendMail(mailOptions, function(error, info){
+		   if (error) {
+		     console.log(error);
+		   } else {
+		     console.log('Email sent: ' + info.response);
+		   }
+		   
+		 }); 
+	 
+	
 	 
 	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type} , function(err, body, header)
 	   {
@@ -175,10 +233,41 @@ app.post("/api/acceptQuestion", function (request, response) {
 	  var status=request.body.status;
 	  var comment=request.body.comment;
 	  var rep=request.body.rep;
+	  var adderemail=request.body.adderemail;
+	  var revieweremail=request.body.revieweremail;
 	  
-	  
-	  //mydb.destroy(id,rev, function(err, body, header)
 	 
+	  var transporter = nodemailer.createTransport({
+		  
+		   service:'Gmail',
+		   auth: {
+		     user: revieweremail,
+		     pass: 'emilybronte'
+		   }
+		 }); 
+
+
+		 var mailOptions = {
+		   from: revieweremail ,
+		   to: adderemail,
+		   subject: 'IQG Question Status',
+		   text: 'Hello there, your question with detailed description : '+questName+' has been accepted by reviewer... Thank you'
+		 };
+
+
+
+
+		 transporter.sendMail(mailOptions, function(error, info){
+		   if (error) {
+		     console.log(error);
+		   } else {
+		     console.log('Email sent: ' + info.response);
+		   }
+		   
+		 }); 
+
+	  
+	  
 	  mydb.insert({ "_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep} , function(err, body, header)
 	   {
 		  
@@ -195,9 +284,42 @@ app.post("/api/acceptQuestion", function (request, response) {
 
 app.post("/api/declineQuestion", function (request, response) {
 	
+	
 	  var id=request.body.id;
 	  var rev=request.body.rev;
+	  var questName = request.body.name;
+	  var adderemail=request.body.adderemail;
+	  var revieweremail=request.body.revieweremail;
 	  
+	 
+	  var transporter = nodemailer.createTransport({
+		  
+		   service:'Gmail',
+		   auth: {
+		     user: revieweremail,
+		     pass: 'emilybronte'
+		   }
+		 }); 
+
+
+		 var mailOptions = {
+		   from: revieweremail ,
+		   to: adderemail,
+		   subject: 'IQG Question Status',
+		   text: 'Hello there, your question with detailed description : '+questName+' has been deleted by reviewer... Thank you'
+		 };
+
+
+
+
+		 transporter.sendMail(mailOptions, function(error, info){
+		   if (error) {
+		     console.log(error);
+		   } else {
+		     console.log('Email sent: ' + info.response);
+		   }
+		   
+		 }); 
 	  
 	  
 	  mydb.destroy(id,rev, function(err, body, header)
@@ -278,7 +400,12 @@ if (appEnv.services['cloudantNoSQLDB']) {
 
 //serve static file (index.html, images, css)
 app.use(express.static(__dirname + '/views'));
-app.get('/', function(req,res) {
+
+
+
+
+app.get('/', function(req,res) 
+{
 	data= fs.readFile('/index.html',   function (err, data) {
 	res.setHeader('Content-Type', 'text/html');
 	res.send(data);
@@ -302,6 +429,106 @@ app.get('/reviewquestion', function(req,res) {
 	});
 });
 
+
+//Receiving Notifications for email
+var nodemailer = require('nodemailer');
+/*
+var transporter = nodemailer.createTransport({
+ 
+  host: 'smtp.gmail.com',
+  port: '587',
+  service:'	Gmail',
+  auth: {
+    user: 'emiliabronte40@gmail.com',
+    pass: 'emilybronte'
+  }/*,
+secureConnection: 'false',
+tls: {
+    ciphers: 'SSLv3',
+    rejectUnauthorized: false
+}
+}); 
+
+
+var mailOptions = {
+  from: 'emiliabronte40@gmail.com' ,
+  to: 'bilalemadeldin@gmail.com',
+  subject: 'Sending Email using Node.js',
+  text: 'Hello there'
+};
+
+
+
+
+transporter.sendMail(mailOptions, function(error, info){
+  if (error) {
+    console.log(error);
+  } else {
+    console.log('Email sent: ' + info.response);
+  }
+  
+}); 
+
+*/
+
+/*
+let transporter = nodemailer.createTransport(
+	    {
+	        service: 'Gmail',
+	        auth: {
+	            type: 'OAuth2',
+	            user: 'mail',
+	            clientId: 'clientid',
+	            clientSecret: 'clientsecret',
+	            refreshToken: 'refreshtoken',
+	            accessToken: 'accesstoken',
+	            expires: 12345
+	        }
+	    },
+	    {
+	        
+	        from: 'Bilal <bilalemadeldin@gmail.com>',
+	        headers: {
+	            'X-Laziness-level': 1000 // just an example header, no need to use this
+	        }
+	    }
+	);
+
+	console.log('SMTP Configured');
+
+	// Message object
+	let message = {
+	    // Comma separated list of recipients
+	    to: 'Rana Mostafa <ranamostafamohsen@gmail.com>',
+
+	    // Subject of the message
+	    subject: 'Nodemailer is unicode friendly ✔ #', //
+
+	    // plaintext body
+	    text: 'Hello to myself!',
+
+	    // HTML body
+	    html:
+	        '<p><b>Hello</b> to myself </p>' 
+	        
+	  
+
+	   
+	};
+
+	console.log('Sending Mail');
+	transporter.sendMail(message, (error, info) => {
+	    if (error) {
+	        console.log('Error occurred');
+	        console.log(error.message);
+	        return;
+	    }
+	    console.log('Message sent successfully!');
+	    console.log('Server responded with "%s"', info.response);
+	    transporter.close();
+	});
+
+*/
 var port = process.env.PORT || 3000
 app.listen(port, function() {
     console.log("To view your app, open this link in your browser: http://localhost:" + port);

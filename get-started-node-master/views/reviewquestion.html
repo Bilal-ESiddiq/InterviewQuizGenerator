@@ -24,6 +24,7 @@
 
 
 
+
 <body style="background-color:rgb(233,231,218);"  ng-app="myApp" ng-controller="myCtrl">
 
 
@@ -49,7 +50,7 @@
     <th class="w3-center" style="color:rgb(118,50,63);">View</th>
     <th class="w3-center" style="color:rgb(118,50,63);">Question Description</th>
     <th class="w3-center" style="color:rgb(118,50,63);">Question Category</th>
-    <th  class="w3-center" style="color:rgb(118,50,63);">Adder ID</th>
+    <th  class="w3-center" style="color:rgb(118,50,63);">Adder Contact</th>
   </tr>
   <tr ng-repeat="x in find">
   <td class="w3-btn w3-ripple w3-center" ng-click="editUser(x._id)" >&#9998; Edit</td>
@@ -87,11 +88,11 @@
   
  <br>
   <label>Option 3:</label>
-    <input id =editop3 class="w3-input w3-border" type="text" ng-model="editop3"  placeholder="Option 3">
+    <input id =editop3 class="w3-input w3-border" type="text" ng-model="editop3" ng-disabled="disableop3"  placeholder="Option 3">
   
  <br>
   <label>Option 4:</label>
-    <input id =editop4 class="w3-input w3-border" type="text" ng-model="editop4"  placeholder="Option 4">
+    <input id =editop4 class="w3-input w3-border" type="text" ng-model="editop4" ng-disabled="disableop4"   placeholder="Option 4">
   
  <br>
  
@@ -147,36 +148,36 @@
   <br>
   
     <label>Question:</label>
-    <input id=name class="w3-input w3-border" type="text" ng-model="name"  placeholder="Question description">
+    <input id=name class="w3-input w3-border" type="text" ng-model="name" ng-disabled="!edit" placeholder="Question description">
   <br>
     <label>Option 1:</label>
-    <input id=op1 class="w3-input w3-border" type="text" ng-model="op1"  placeholder="Option 1">
+    <input id=op1 class="w3-input w3-border" type="text" ng-model="op1" ng-disabled="!edit" placeholder="Option 1">
  
    <br>
    
    <label>Option 2:</label>
-    <input id=op2 class="w3-input w3-border" type="text" ng-model="op2" placeholder="Option 2">
+    <input id=op2 class="w3-input w3-border" type="text" ng-model="op2" ng-disabled="!edit" placeholder="Option 2">
  
    <br>
    
    <label>Option 3:</label>
-    <input id=op3 class="w3-input w3-border" type="text" ng-model="op3"  placeholder="Option 3">
+    <input id=op3 class="w3-input w3-border" type="text" ng-model="op3" ng-disabled="!edit" placeholder="Option 3">
  
    <br>
    
    <label>Option 4:</label>
-    <input id=op4 class="w3-input w3-border" type="text" ng-model="op4"  placeholder="Option 4">
+    <input id=op4 class="w3-input w3-border" type="text" ng-model="op4" ng-disabled="!edit" placeholder="Option 4">
  
    <br>
    
    <label>Model Answer:</label>
-    <input id =modelanswer class="w3-input w3-border" type="text" ng-model="modelanswer"  placeholder="Model Answer">
+    <input id =modelanswer class="w3-input w3-border" type="text" ng-model="modelanswer" ng-disabled="!edit" placeholder="Model Answer">
   
  <br>
  
  
    <label>Category:</label>
-    <input id =category class="w3-input w3-border" type="text" ng-model="category"  placeholder="Category">
+    <input id =category class="w3-input w3-border" type="text" ng-model="category" ng-disabled="!edit" placeholder="Category">
   
  <br>
  
@@ -187,17 +188,17 @@
  <br>
  
  <label>Question Level:</label>
-    <input id =qlevel class="w3-input w3-border" type="text" ng-model="qlevel"  placeholder="Question Level">
+    <input id =qlevel class="w3-input w3-border" type="text" ng-model="qlevel" ng-disabled="!edit" placeholder="Question Level">
   
  <br>
  
   <label>Estimate Time:</label>
-    <input id =estime class="w3-input w3-border" type="text" ng-model="estime"  placeholder="Estimate Time">
+    <input id =estime class="w3-input w3-border" type="text" ng-model="estime" ng-disabled="!edit" placeholder="Estimate Time">
   
  <br>
  
  <label>Comment:</label>
-    <input id =comment class="w3-input w3-border" type="text" ng-model="comment"  placeholder="Comment">
+    <input id =comment class="w3-input w3-border" type="text" ng-model="comment" ng-disabled="!edit" placeholder="Comment">
   
  <br>
     
@@ -238,12 +239,14 @@ function updateQuestion()
 	var comment=$('#editcomment').val();
 	var repetition=0;
 	var type="question";
+	var adderemail='ranamostafamohsen@gmail.com';
+	var revieweremail='emiliabronte40@gmail.com';
 	
 	 $.ajax({
 		  method: "POST",
 		  url: "./api/updateQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail})
        })	 
        .done(function(data) {
     	   alert("Question is updated successfully");
@@ -274,13 +277,15 @@ function acceptQuestion()
 	var status="accepted";
 	var comment=$('#comment').val();
 	var repetition=0;
+	var adderemail='ranamostafamohsen@gmail.com';
+	var revieweremail='emiliabronte40@gmail.com';
 	
-	
+
 	 $.ajax({
 		  method: "POST",
 		  url: "./api/acceptQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"adderemail":adderemail,"revieweremail":revieweremail})
        })	 
        .done(function(data)
        {
@@ -296,14 +301,15 @@ function declineQuestion()
 {
 	var id=$('#id').val();
 	var rev=$('#revid').val();
-	
-	
+	var name = $('#name').val();
+	var adderemail='ranamostafamohsen@gmail.com';
+	var revieweremail='emiliabronte40@gmail.com';
 	
 	 $.ajax({
 		  method: "POST",
 		  url: "./api/declineQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev})
+		  data: JSON.stringify({"id":id,"rev":rev,"name":name,"adderemail":adderemail,"revieweremail":revieweremail})
        })	 
        .done(function(data)
        {
@@ -377,10 +383,19 @@ app.controller('myCtrl', function($scope, $http) {
 		    	    $scope.editsubcategory=$scope.find[i].subcategory;
 		    	    $scope.editqlevel=$scope.find[i].qlevel;
 		    	    $scope.editestime=$scope.find[i].estime;
-		    	    $scope.editcomment=$scope.find[i].editcomment;
+		    	    $scope.editcomment=$scope.find[i].comment;
 		    	    
 	    		}
 	    }	
+	    
+	    //For disabling option 3 or option 4 if they don't exist
+	    
+		    if($scope.editop3=="")
+		    	$scope.disableop3=false;
+		    
+		    if($scope.editop4=="")
+		    	$scope.disableop4=true;
+	    
 	    
 	};
 
@@ -412,7 +427,7 @@ app.controller('myCtrl', function($scope, $http) {
 		    	    $scope.subcategory=$scope.find[i].subcategory;
 		    	    $scope.qlevel=$scope.find[i].qlevel;
 		    	    $scope.estime=$scope.find[i].estime;
-		    	    $scope.comment=$scope.find[i].editcomment;
+		    	    $scope.comment=$scope.find[i].comment;
 		    	    $scope.id=$scope.find[i]._id;
 		    	    $scope.revid=$scope.find[i]._rev;
 		    	    $scope.adderid=$scope.find[i].adderid;
@@ -431,7 +446,25 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.$watch('editsubcategory', function() {$scope.test();});
 	$scope.$watch('editqlevel', function() {$scope.test();});
 	$scope.$watch('editestime', function() {$scope.test();});
-
+	$scope.$watch('editop3', function() {$scope.disableoption();});
+	
+	
+	$scope.disableoption=function()
+	{
+		if(!$scope.editop3.length)
+			{
+				$scope.editop4='';
+				$scope.disableop4=true;
+			}
+		
+		if($scope.editop3.length)
+		{
+			$scope.editop4='';
+			$scope.disableop4=false;
+		}
+	};
+	
+	
 	$scope.test = function() {
 	 
 	  $scope.incomplete = false;

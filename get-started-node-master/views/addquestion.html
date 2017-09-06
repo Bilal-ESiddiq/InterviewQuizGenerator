@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Interview Question Generator</title>
+    <title>IQG</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
@@ -45,7 +45,74 @@
              <br>
              <br>
              
-             <select id="noChoice" onchange="choiceGenerator()"  class="w3-select w3-border w3-round " name="option">
+                  
+          
+       
+           <select id="category" ng-model="category" ng-change="changesubcategory()"  class="w3-select w3-border w3-round " name="option">
+			    <option value="" disabled selected>Choose Category..</option>
+			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
+			  </select>
+         
+         <br>
+         <br>
+         
+          <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniqueCategory()" >Add a non existing Category</button>
+          <br>
+          <br>
+          <br>
+          
+          
+          <div  class="w3-container" id="addCategoryinput">
+          <label style="color:rgb(86,86,86);">Add a Category if it does not exist</label>
+          <br> 
+          <br>
+          <input id="addcategory" ng-model="addcategory" ng-change="upper(addcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:60%" placeholder="Add a Category if it does not exist" aria-describedby="sizing-addon1" value=""  /> 
+           <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addCategory()"   ng-disabled="incomplete"  >Add</button>
+          
+          <br>
+          <br> 
+          <br>
+          </div> 
+                   
+           <select id="subcategory"   class="w3-select w3-border w3-round " name="option">
+			    <option value="" disabled selected>Choose a subcategory..</option>
+			    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
+			  </select>
+         
+         <br>
+         <br>
+         
+         <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniquesubCategory()" >Add a non existing subcategory</button>
+         <br>
+         <br>
+         <br>
+         
+         
+         
+         <div class="w3-container" id="addsubCategoryinput" >
+          <label style="color:rgb(86,86,86);">Add a subCategory if it does not exist</label>
+          <br>
+          <br>
+          <input id="addsubcategory" ng-model="addsubcategory" ng-change="subupper(addsubcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:40%" placeholder="Add a sub Category if it doesnot exist" aria-describedby="sizing-addon1" value=""  /> 
+          
+           <select id="categoryforsub"   class="  w3-left w3-margin-right w3-select w3-border w3-round " style="width:40%" name="option">
+			    <option value="" disabled selected>Choose Category..</option>
+			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
+			    
+			  </select>
+			   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addsubCategory()"  ng-disabled="subincomplete"  >Add</button>
+          	    
+          
+          
+          
+          <br>
+          <br> 
+          <br>
+      	  </div>
+          
+          
+          
+               <select id="noChoice" onchange="choiceGenerator()"  class="w3-select w3-border w3-round " name="option">
              	<option value="" disabled selected>Choose number of answer choices..</option>
 			    <option value="2">2</option>
 			    <option value="3">3</option>
@@ -78,58 +145,13 @@
           
           
 
-<br>
-<br>
+			<br>
+			<br>
           
           
-       
-           <select id="category"   class="w3-select w3-border w3-round " name="option">
-			    <option value="" disabled selected>Choose Category..</option>
-			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
-			  </select>
-         
-         <br>
-         <br>
-         
-          <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniqueCategory()" >Add a non existing Category</button>
-          <br>
-          <br>
-          <br>
-          <div  class="w3-container" id="addCategoryinput">
-          <label style="color:rgb(86,86,86);">Add a Category if it does not exist</label>
-          <br> 
-          <br>
-          <input id="addcategory" ng-model="addcategory" ng-change="upper(addcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:60%" placeholder="Add a Category if it does not exist" aria-describedby="sizing-addon1" value=""  /> 
-           <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addCategory()" ng-disabled="incomplete"  >Add</button>
           
-          <br>
-          <br> 
-          <br>
-          </div> 
-                   
-           <select id="subcategory"   class="w3-select w3-border w3-round " name="option">
-			    <option value="" disabled selected>Choose a subcategory..</option>
-			    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
-			  </select>
-         
-         <br>
-         <br>
-         
-         <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniquesubCategory()" >Add a non existing subcategory</button>
-         <br>
-         <br>
-         <br>
-         <div class="w3-container" id="addsubCategoryinput" >
-          <label style="color:rgb(86,86,86);">Add a subCategory if it does not exist</label>
-          <br>
-          <br>
-          <input id="addsubcategory" ng-model="addsubcategory" ng-change="subupper(addsubcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:60%" placeholder="Add a sub Category if it doesnot exist" aria-describedby="sizing-addon1" value=""  /> 
-           <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addsubCategory()" ng-disabled="subincomplete"  >Add</button>
           
-          <br>
-          <br> 
-          <br>
-      	  </div>
+          
           
             <select id="qlevel"  class="w3-select w3-border w3-round " name="option">
 			    <option value="" disabled selected>Choose Difficulty..</option>
@@ -205,7 +227,7 @@
              .done(function(data)
             {
                 alert("New Category was added successfully");
-    
+                location.reload();
              });
 		 
 		   
@@ -218,18 +240,19 @@
 		   
 		   var name=$('#addsubcategory').val();
 		   var type="subcategory";
+		   var categoryname=$('#categoryforsub').val();
 		   
 		   $.ajax({
 				  method: "POST",
-				  url: "./api/addCategory",
+				  url: "./api/addsubCategory",
 				  contentType: "application/json",
-				  data: JSON.stringify({"name" : name,"type":type})
+				  data: JSON.stringify({"name" : name,"type":type,"categoryname":categoryname})
              })	  
              
              .done(function(data)
             {
                 alert("New Subcategory was added successfully");
-               
+                location.reload();
     
              });
 		  
@@ -243,12 +266,18 @@
 	    
 	    
     	//Submit data when submit is pressed
-        function submitQuestion() {
+        function submitQuestion() 
+    	{
+    		var op1="";
+    		var op2="";
+    		var op3="";
+    		var op4="";
+    		
         	var name = $('#user_name').val();
-        	var op1= $('#option1').val();
-        	var op2= $('#option2').val();
-        	var op3= $('#option3').val();
-        	var op4= $('#option4').val();
+        	 op1= $('#option1').val();
+        	 op2= $('#option2').val();
+        	 op3= $('#option3').val();
+        	 op4= $('#option4').val();
         	var category=$('#category').val();
         	var subcategory=$('#subcategory').val();
         	var qlevel=$('#qlevel').val();
@@ -263,7 +292,7 @@
         	//To see if there are any unfilled fields
         	
         	
-        	if(name=="" || op1=="" || op2=="" ||op3==""||op4==""  || category=="" || subcategory=="" || qlevel==""|| estime=="" )
+        	if(name=="" || op1=="" || op2==""  || category=="" || subcategory=="" || qlevel==""|| estime=="" || op1==null ||op2==null)
         		flagerror=1;
         	
         	if($('#noChoice').val()==2)
@@ -271,11 +300,23 @@
     			op3= "";
     			op4= "";
     		}
-    		else if($('#noChoice').val()==3)
+    		else if($('#noChoice').val()==3)    
+    		{
 				op4= "";
+				if(op3=="")
+					flagerror=1;
+    		}
+        	
+    		else if($('#noChoice').val()==4)    
+    		{
+				
+				if(op3=="" || op4=="")
+					flagerror=1;
+    		}
     		
         	
-            if ( name.length > 0 && flagerror==0) { 
+            if (  flagerror==0) 
+            { 
             	//POST request to API to create a new visitor entry in the database
                 $.ajax({
 				  method: "POST",
@@ -319,47 +360,61 @@
 	 	   {
 	 		
 	 		  $scope.incomplete = false;
-	 		 $scope.subincomplete = false; 
+	 		   $scope.subincomplete = false; 
 	 		   $http.get("/api/findcategory").then(function (response) { $scope.findcategory = response.data;});
-	 		   $http.get("/api/findsubcategory").then(function (response) { $scope.findsubcategory = response.data;});
-	 		   
-	 		  $scope.upper = function(addcategory){
-	 			 $scope.addcategory = addcategory.toLowerCase();
-	 			 }
 	 		  
-	 		 $scope.subupper = function(addsubcategory){
+	 		   
+	 		  $scope.changesubcategory = function()
+	 		  	{
+	 			 $http({ url: "/api/findsubcategory",  method: "GET", params: {"categoryname": $scope.category}}).then(function (response) { $scope.findsubcategory = response.data;});
+	 			}
+	 		   
+	 		
+	 		   
+	 		  $scope.upper = function(addcategory)
+	 		  	{
+	 			 $scope.addcategory = addcategory.toLowerCase();
+	 			}
+	 		  
+	 		  
+	 		  
+	 		 $scope.subupper = function(addsubcategory)
+	 		 	{
 	 			 $scope.addsubcategory = addsubcategory.toLowerCase();
 	 			 }
 	 		  
 	 		  $scope.$watch('addcategory', function() {$scope.checkredundancy();});
-	 		 $scope.$watch('addsubcategory', function() {$scope.checkredundancysub();});
+	 		  $scope.$watch('addsubcategory', function() {$scope.checkredundancysub();});
+	 		  
+	 		  
+	 		  
 	 		  $scope.checkredundancy=function()
 	 		  {
 	 			 $scope.incomplete = false; 
 	 			 
-	 			 for(var i=0;i<$scope.findcategory.length;i++)
-	 		    {  
-	 				
-	 				if(angular.equals($scope.findcategory[i].name,$scope.addcategory))	
-	 					$scope.incomplete = true;
-	 				
-	 				
-	 		    }
+		 			 for(var i=0;i<$scope.findcategory.length;i++)
+		 		    {  
+		 				
+		 				if(angular.equals($scope.findcategory[i].name,$scope.addcategory))	
+		 					$scope.incomplete = true;
+		 				
+		 				
+		 		    }
 	 		 };
 	 			 
 	 			 $scope.checkredundancysub=function()
 		 		  {
 		 			 $scope.subincomplete = false; 
 		 			 
-		 			 for(var i=0;i<$scope.findsubcategory.length;i++)
-		 		    {  
-		 				
-		 				if(angular.equals($scope.addsubcategory,$scope.findsubcategory[i].name))
-		 					$scope.subincomplete = true;
-		 					
-		 			
-		 				
-		 		    }
+			 			 for(var i=0;i<$scope.findsubcategory.length;i++)
+			 		    {  
+			 				
+			 				if(angular.equals($scope.addsubcategory,$scope.findsubcategory[i].name))
+			 					$scope.subincomplete = true;
+			 					
+			 			
+			 				
+			 		    }
 	 			 
 		 		 };
 	 		  
