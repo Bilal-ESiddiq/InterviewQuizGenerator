@@ -201,24 +201,20 @@
    
  <br>
  
- <h5 id=subcategory  ng-model="subcategory" ><b><i>SubCategory:</i> </b>{{subcategory}</h5>
+ <h5 id=subcategory  ng-model="subcategory" ><b><i>SubCategory:</i> </b>{{subcategory}}</h5>
    
    
  <br>
+ <h5 id=qlevel  ng-model="qlevel" ><b><i>Question Level: </i> </b>{{qlevel}}</h5>
+   
  
- <label>Question Level:</label>
-    <input id =qlevel class="w3-input w3-border" type="text" ng-model="qlevel" ng-disabled="!edit" placeholder="Question Level">
-  
  <br>
+ <h5 id=estime  ng-model="estime" ><b><i>Estimate Time: </i> </b>{{estime}}</h5>
  
-  <label>Estimate Time:</label>
-    <input id =estime class="w3-input w3-border" type="text" ng-model="estime" ng-disabled="!edit" placeholder="Estimate Time">
-  
  <br>
+ <h5 id=comment  ng-model="comment" ><b><i>Comment: </i> </b>{{comment}}</h5>
  
- <label>Comment:</label>
-    <input id =comment class="w3-input w3-border" type="text" ng-model="comment" ng-disabled="!edit" placeholder="Comment">
-  
+
  <br>
     
 <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Decline</button>
