@@ -92,7 +92,7 @@ app.get("/api/findcategory", function (request, response) {
 app.get("/api/findsubcategory", function (request, response) {
 	
 	var categoryname=request.query.categoryname;
-	console.log("my category name"+ categoryname);
+	
 
 	  if(!mydb) {
 	    
