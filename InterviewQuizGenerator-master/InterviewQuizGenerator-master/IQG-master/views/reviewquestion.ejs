@@ -217,9 +217,17 @@
 
  <br>
     
-<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Decline</button>
+<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="showDeclinemsg()" > Decline</button>
 </form>
 
+<div id=declinemessage>
+
+<textarea id=message  class="w3-input w3-border" type="text" ng-model="message" style="width:50%" placeholder="Reasons to decline"></textarea>
+  <br>
+<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Submit</button>  <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="returnHomepage()" > Cancel</button>
+
+</div>
+ 
 </div>
 
 
@@ -229,6 +237,14 @@
 
 
 <script>
+
+$('#declinemessage').hide();
+
+function showDeclinemsg()
+{
+	$('#declinemessage').show();
+}
+
 
 
 function updateQuestion()
