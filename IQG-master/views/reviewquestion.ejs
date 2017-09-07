@@ -66,7 +66,7 @@
   </tr>
 </table>
 
-<form ng-hide="Edithideform">
+<form  ng-hide="Edithideform">
 <br>
 <br>
   <h3 style="color:rgb(86,86,86);" ng-hide="edit"><i>Edit your Questions</i></h3>
@@ -82,65 +82,91 @@
  
   
     <label>Question:</label>
-    <input id=editname  class="w3-input w3-border" type="text" ng-model="editname"  placeholder="Question description">
+    <textarea id=editname  class="w3-input w3-border" type="text" ng-model="editname" style="width:50%" placeholder="Question description"></textarea>
   <br>
     <label>Option 1:</label>
-    <input id =editop1 class="w3-input w3-border" type="text" ng-model="editop1"  placeholder="Option 1">
+    <input id =editop1 class="w3-input w3-border" type="text" ng-model="editop1" style="width:50%" placeholder="Option 1">
   
  <br>
   <label>Option 2:</label>
-    <input id =editop2 class="w3-input w3-border" type="text" ng-model="editop2"  placeholder="Option 2">
+    <input id =editop2 class="w3-input w3-border" type="text" ng-model="editop2" style="width:50%" placeholder="Option 2">
   
  <br>
   <label>Option 3:</label>
-    <input id =editop3 class="w3-input w3-border" type="text" ng-model="editop3" ng-disabled="disableop3"  placeholder="Option 3">
+    <input id =editop3 class="w3-input w3-border" type="text" ng-model="editop3" style="width:50%" ng-disabled="disableop3"  placeholder="Option 3">
   
  <br>
   <label>Option 4:</label>
-    <input id =editop4 class="w3-input w3-border" type="text" ng-model="editop4" ng-disabled="disableop4"   placeholder="Option 4">
+    <input id =editop4 class="w3-input w3-border" type="text" ng-model="editop4" style="width:50%" ng-disabled="disableop4"   placeholder="Option 4">
   
  <br>
  
   <label>Model Answer:</label>
-    <input id =editmodelanswer class="w3-input w3-border" type="text" ng-model="editmodelanswer"  placeholder="Model Answer">
+  <br>
+   	<select id=editmodelanswer ng-model="editmodelanswer" class="w3-select w3-border w3-round " style="width:50%" name="option">
+			    <option value="" disabled selected>Choose a model answer..</option>
+			     <option ng-repeat="x in optionmodelanswer" value={{x}}>{{x}}</option>
+    </select>
   
+<br> 
  <br>
- 
- 
+ <br>
    <label>Category:</label>
-    <input id =editcategory class="w3-input w3-border" type="text" ng-model="editcategory"  placeholder="Category">
+   <br>
+  	<select id=editcategory  ng-model="editcategory" ng-change="changesubcategory()"  class="w3-select w3-border w3-round " style="width:50%" name="option">
+			    <option value="" disabled selected>Choose Category..</option>
+			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
+			  </select>
   
- <br>
+<br> 
+<br>
+<br>
  
  
    <label>SubCategory:</label>
-    <input id =editsubcategory class="w3-input w3-border" type="text" ng-model="editsubcategory"  placeholder="Subcategory">
+  	 <br>
+  	  <select id=editsubcategory  ng-model="editsubcategory"  class="w3-select w3-border w3-round " style="width:50%" name="option">
+					    <option value="" disabled selected>Choose a subcategory..</option>
+					    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
+	   </select>
   
+  
+<br> 
  <br>
- 
  <label>Question Level:</label>
-    <input id =editqlevel class="w3-input w3-border" type="text" ng-model="editqlevel"  placeholder="Question Level">
-  
+  	<br>
+  	    <select id =editqlevel ng-model="editqlevel" class="w3-select w3-border w3-round " style="width:50%" name="option">
+			    <option value="" disabled selected>Choose Difficulty..</option>
+			    <option value="Easy">Beginner</option>
+			    <option value="Medium">Intermediate</option>
+			    <option value="Hard">Advanced</option>
+	   </select>
+    
+            
+ <br> 
  <br>
  
   <label>Estimate Time:</label>
-    <input id =editestime class="w3-input w3-border" type="text" ng-model="editestime"  placeholder="Estimate Time">
-  
+  <br>
+    <input id =editestime class="w3-input w3-border" type="text" ng-model="editestime" style="width:50%" placeholder="Estimate Time">
+  <br>
  <br>
  
  <label>Comment:</label>
-    <input id =editcomment class="w3-input w3-border" type="text" ng-model="editcomment"  placeholder="Comment">
+   <textarea id =editcomment class="w3-input w3-border" type="text" ng-model="editcomment" style="width:50%" placeholder="Comment"></textarea>
   
  <br>
  
  
 <button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple"  onclick="updateQuestion()" ng-disabled="incomplete">&#10004; Save Changes </button>
+<br>
+<br>
 </form>
 
 
-<form ng-hide="Viewhideform">
+<form id=Viewhideform ng-hide="Viewhideform">
 <br>
-
+<br>
   <h3 ng-hide="edit"><i>Accept/Decline </i></h3>
   
     <input id=id  class="w3-input w3-border" type="text" ng-model="id"   ng-hide="EditID">
@@ -152,64 +178,57 @@
   <input id=adderid  class="w3-input w3-border" type="text" ng-model="adderid"   ng-hide="EditadderID">
   <br>
   
-    <label>Question:</label>
-    <input id=name class="w3-input w3-border" type="text" ng-model="name" ng-disabled="!edit" placeholder="Question description">
-  <br>
-    <label>Option 1:</label>
-    <input id=op1 class="w3-input w3-border" type="text" ng-model="op1" ng-disabled="!edit" placeholder="Option 1">
- 
+     <h5 id=name  ng-model="name" ><b><i>Question Description:</i> </b>{{name}}</h5>
+ 	 <br>
+  	<label>Options:</label>
+  	<h5 id=op1  ng-model="op1"  >{{op1}}</h5>
+    
+   <br>
+   <h5 id=op2  ng-model="op2"  >{{op2}}</h5>
+   <br>
+   <h5 id=op3  ng-model="op3"  >{{op3}}</h5>
+   
+   <br>
+   <h5 id=op4  ng-model="op4"  >{{op4}}</h5>
+  
    <br>
    
-   <label>Option 2:</label>
-    <input id=op2 class="w3-input w3-border" type="text" ng-model="op2" ng-disabled="!edit" placeholder="Option 2">
- 
-   <br>
+   <h5 id=modelanswer  ng-model="modelanswer" ><b><i>Model Answer:</i> </b>{{modelanswer}}</h5>
    
-   <label>Option 3:</label>
-    <input id=op3 class="w3-input w3-border" type="text" ng-model="op3" ng-disabled="!edit" placeholder="Option 3">
+ <br>
  
-   <br>
+   <h5 id=category  ng-model="category" ><b><i>Category:</i> </b>{{category}}</h5>
    
-   <label>Option 4:</label>
-    <input id=op4 class="w3-input w3-border" type="text" ng-model="op4" ng-disabled="!edit" placeholder="Option 4">
+ <br>
  
-   <br>
+ <h5 id=subcategory  ng-model="subcategory" ><b><i>SubCategory:</i> </b>{{subcategory}}</h5>
    
-   <label>Model Answer:</label>
-    <input id =modelanswer class="w3-input w3-border" type="text" ng-model="modelanswer" ng-disabled="!edit" placeholder="Model Answer">
-  
+   
  <br>
+ <h5 id=qlevel  ng-model="qlevel" ><b><i>Question Level: </i> </b>{{qlevel}}</h5>
+   
  
- 
-   <label>Category:</label>
-    <input id =category class="w3-input w3-border" type="text" ng-model="category" ng-disabled="!edit" placeholder="Category">
-  
  <br>
+ <h5 id=estime  ng-model="estime" ><b><i>Estimate Time: </i> </b>{{estime}}</h5>
  
- 
-   <label>SubCategory:</label>
-    <input id =subcategory class="w3-input w3-border" type="text" ng-model="subcategory" ng-disabled="!edit" placeholder="Subcategory">
-  
  <br>
+ <h5 id=comment  ng-model="comment" ><b><i>Comment: </i> </b>{{comment}}</h5>
  
- <label>Question Level:</label>
-    <input id =qlevel class="w3-input w3-border" type="text" ng-model="qlevel" ng-disabled="!edit" placeholder="Question Level">
-  
- <br>
- 
-  <label>Estimate Time:</label>
-    <input id =estime class="w3-input w3-border" type="text" ng-model="estime" ng-disabled="!edit" placeholder="Estimate Time">
-  
- <br>
- 
- <label>Comment:</label>
-    <input id =comment class="w3-input w3-border" type="text" ng-model="comment" ng-disabled="!edit" placeholder="Comment">
-  
+
  <br>
     
-<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Decline</button>
+<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="showDeclinemsg()" > Decline</button>
 </form>
+<br>
+<br>
+<div id=declinemessage>
 
+<textarea id=message  class="w3-input w3-border" type="text" ng-model="message" style="width:50%" placeholder="Reasons to decline"></textarea>
+  <br>
+<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Submit</button>  <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="returnHomepage()" > Cancel</button>
+
+</div>
+ 
 </div>
 
 
@@ -218,9 +237,16 @@
 
 
 
-
-
 <script>
+
+$('#declinemessage').hide();
+
+function showDeclinemsg()
+{
+	$('#declinemessage').show();
+	$('#Viewhideform').hide();
+}
+
 
 
 function updateQuestion()
@@ -244,8 +270,8 @@ function updateQuestion()
 	var comment=$('#editcomment').val();
 	var repetition=0;
 	var type="question";
-	var adderemail='ranamostafamohsen@gmail.com';
-	var revieweremail='emiliabronte40@gmail.com';
+	var adderemail=$('#editadderid').val();
+	var revieweremail='<%= email %>';
 	
 	 $.ajax({
 		  method: "POST",
@@ -282,8 +308,8 @@ function acceptQuestion()
 	var status="accepted";
 	var comment=$('#comment').val();
 	var repetition=0;
-	var adderemail='ranamostafamohsen@gmail.com';
-	var revieweremail='emiliabronte40@gmail.com';
+	var adderemail=$('#editadderid').val();
+	var revieweremail='<%= email %>';
 	
 
 	 $.ajax({
@@ -307,8 +333,8 @@ function declineQuestion()
 	var id=$('#id').val();
 	var rev=$('#revid').val();
 	var name = $('#name').val();
-	var adderemail='ranamostafamohsen@gmail.com';
-	var revieweremail='emiliabronte40@gmail.com';
+	var adderemail=$('#editadderid').val();
+	var revieweremail='<%= email %>';
 	
 	 $.ajax({
 		  method: "POST",
@@ -354,6 +380,14 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.EditID = true;	
 	$scope.EditadderID = true;
 	
+	$http.get("/api/findcategory").then(function (response) { $scope.findcategory = response.data;});
+	 $scope.changesubcategory = function()
+	  {
+			 $http({ url: "/api/findsubcategory",  method: "GET", params: {"categoryname": $scope.editcategory}}).then(function (response) { $scope.findsubcategory = response.data;});
+			 $scope.subcategorycontainer=false;
+	  }
+	
+	
 	$scope.editUser = function(id) 
 	{
 		
@@ -393,6 +427,16 @@ app.controller('myCtrl', function($scope, $http) {
 		    	    
 	    		}
 	    }	
+	    
+	    
+	    // for option list 
+	    	if ($scope.editop3.length)
+	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	else
+	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
+	    
+	    	if ($scope.editop4.length)
+	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
 	    
 	    //For disabling option 3 or option 4 if they don't exist
 	    
@@ -453,6 +497,7 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.$watch('editqlevel', function() {$scope.test();});
 	$scope.$watch('editestime', function() {$scope.test();});
 	$scope.$watch('editop3', function() {$scope.disableoption();});
+	$scope.$watch('editop4', function() {$scope.watchoption();});
 	
 	
 	$scope.disableoption=function()
@@ -465,9 +510,29 @@ app.controller('myCtrl', function($scope, $http) {
 		
 		if($scope.editop3.length)
 		{
-			$scope.editop4='';
+			
 			$scope.disableop4=false;
 		}
+		
+		if ($scope.editop3.length)
+	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	else
+	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
+	    
+	    	if ($scope.editop4.length)
+	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
+	};
+	
+	
+	$scope.watchoption=function()
+	{
+		if ($scope.editop3.length)
+	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	else
+	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
+	    
+	    	if ($scope.editop4.length)
+	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
 	};
 	
 	

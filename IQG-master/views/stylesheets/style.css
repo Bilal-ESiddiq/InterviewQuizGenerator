@@ -19,6 +19,11 @@ a:hover {
 	text-decoration: underline;
 }
 
+form {
+  text-align: center;
+   margin: auto;
+}
+
 .newappIcon {
 	padding-top: 10%;
 	display: block;

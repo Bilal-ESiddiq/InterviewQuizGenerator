@@ -92,7 +92,7 @@ app.get("/api/findcategory", function (request, response) {
 app.get("/api/findsubcategory", function (request, response) {
 	
 	var categoryname=request.query.categoryname;
-	console.log("my category name"+ categoryname);
+	
 
 	  if(!mydb) {
 	    
@@ -175,18 +175,19 @@ app.post("/api/updateQuestion", function (request, response) {
 	  var revieweremail=request.body.revieweremail;
 	  
 	 
+
 	  var transporter = nodemailer.createTransport({
 		  
 		   service:'Gmail',
 		   auth: {
-		     user: revieweremail,
-		     pass: 'emilybronte'
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
 		   }
 		 }); 
 
 
 		 var mailOptions = {
-		   from: revieweremail ,
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
 		   text: 'Hello there, your question with detailed description : '+questName+' has been updated by reviewer... Thank you'
@@ -243,19 +244,19 @@ app.post("/api/acceptQuestion", function (request, response) {
 	  var adderemail=request.body.adderemail;
 	  var revieweremail=request.body.revieweremail;
 	  
-	 
+
 	  var transporter = nodemailer.createTransport({
 		  
 		   service:'Gmail',
 		   auth: {
-		     user: revieweremail,
-		     pass: 'emilybronte'
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
 		   }
 		 }); 
 
 
 		 var mailOptions = {
-		   from: revieweremail ,
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
 		   text: 'Hello there, your question with detailed description : '+questName+' has been accepted by reviewer... Thank you'
@@ -299,18 +300,19 @@ app.post("/api/declineQuestion", function (request, response) {
 	  var revieweremail=request.body.revieweremail;
 	  
 	 
+
 	  var transporter = nodemailer.createTransport({
 		  
 		   service:'Gmail',
 		   auth: {
-		     user: revieweremail,
-		     pass: 'emilybronte'
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
 		   }
 		 }); 
 
 
 		 var mailOptions = {
-		   from: revieweremail ,
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
 		   text: 'Hello there, your question with detailed description : '+questName+' has been deleted by reviewer... Thank you'
@@ -357,7 +359,7 @@ app.get("/api/findquestions", function (request, response) {
     return;
   }
 
-  mydb.find({selector:{ reviewerid:request.query.userEmail , status:"pending" }},function(err, body) {
+  mydb.find({selector:{ /*reviewerid:request.query.userEmail ,*/ status:"pending" }},function(err, body) {
 	  
 	  
     if (err) {

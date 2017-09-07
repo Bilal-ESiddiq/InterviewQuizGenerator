@@ -53,7 +53,7 @@
                   
           
        
-           <select id="category" ng-model="category" ng-change="changesubcategory()"  class="w3-select w3-border w3-round " name="option">
+           <select id="category" onchange="showinputsubcategory()"  ng-model="category" ng-change="changesubcategory()"  class="w3-select w3-border w3-round " name="option">
 			    <option value="" disabled selected>Choose Category..</option>
 			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
 			  </select>
@@ -78,41 +78,45 @@
           <br> 
           <br>
           </div> 
-                   
-           <select id="subcategory"   class="w3-select w3-border w3-round " name="option">
-			    <option value="" disabled selected>Choose a subcategory..</option>
-			    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
-			  </select>
-         
-         <br>
-         <br>
-         
-         <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniquesubCategory()" >Add a non existing subcategory</button>
-         <br>
-         <br>
-         <br>
-         
-         
-         
-         <div class="w3-container" id="addsubCategoryinput" >
-          <label style="color:rgb(86,86,86);">Add a subCategory if it does not exist</label>
-          <br>
-          <br>
-          <input id="addsubcategory" ng-model="addsubcategory" ng-change="subupper(addsubcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:40%" placeholder="Add a sub Category if it doesnot exist" aria-describedby="sizing-addon1" value=""  /> 
+            
+            
+           <div  id="subcategorycontainer"  >        
+		           <select id="subcategory"   class="w3-select w3-border w3-round " name="option">
+					    <option value="" disabled selected>Choose a subcategory..</option>
+					    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
+					  </select>
+		         
+		         <br>
+		         <br>
+		         
+		         <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-btn w3-round" onclick="addUniquesubCategory()" >Add a non existing subcategory</button>
+		         <br>
+		         <br>
+		         <br>
+		         
+		         
+		         
+		         <div class="w3-container" id="addsubCategoryinput" >
+		          <label style="color:rgb(86,86,86);">Add a subCategory if it does not exist</label>
+		          <br>
+		          <br>
+		          <input id="addsubcategory" ng-model="addsubcategory" ng-change="subupper(addsubcategory)" type="text" class="w3-input w3-left w3-margin-right w3-border w3-round " style="width:40%" placeholder="Add a sub Category if it doesnot exist" aria-describedby="sizing-addon1" value=""  /> 
+		          
+		           <select id="categoryforsub"   class="  w3-left w3-margin-right w3-select w3-border w3-round " style="width:40%" name="option">
+					    <option value="" disabled selected>Choose Category..</option>
+					    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
+					    
+					  </select>
+					   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addsubCategory()"  ng-disabled="subincomplete"  >Add</button>
+		          	    
+		          
+		          </div>
+		          
+		          <br>
+		          <br> 
+		          <br>
           
-           <select id="categoryforsub"   class="  w3-left w3-margin-right w3-select w3-border w3-round " style="width:40%" name="option">
-			    <option value="" disabled selected>Choose Category..</option>
-			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
-			    
-			  </select>
-			   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class=" w3-left w3-margin-right w3-btn w3-round" onclick="addsubCategory()"  ng-disabled="subincomplete"  >Add</button>
-          	    
           
-          
-          
-          <br>
-          <br> 
-          <br>
       	  </div>
           
           
@@ -192,6 +196,7 @@
     
     $('#addCategoryinput').hide();
     $('#addsubCategoryinput').hide();
+    $('#subcategorycontainer').hide();
     
     var incompleteflag=0;
 	    function check()
@@ -213,6 +218,13 @@
 
 	    
     
+	    function showinputsubcategory()
+	    {
+	    	
+	    	$('#subcategorycontainer').show();
+	    }
+	    
+	    
 	   function addCategory()
 	   {
 		   
@@ -376,14 +388,15 @@
 	 	   app.controller('myCtrl', function($scope, $http) 
 	 	   {
 	 		
-	 		  $scope.incomplete = false;
+	 		   $scope.incomplete = false;
 	 		   $scope.subincomplete = false; 
 	 		   $http.get("/api/findcategory").then(function (response) { $scope.findcategory = response.data;});
 	 		  
 	 		   
 	 		  $scope.changesubcategory = function()
 	 		  	{
-	 			 $http({ url: "/api/findsubcategory",  method: "GET", params: {"categoryname": $scope.category}}).then(function (response) { $scope.findsubcategory = response.data;});
+		 			 $http({ url: "/api/findsubcategory",  method: "GET", params: {"categoryname": $scope.category}}).then(function (response) { $scope.findsubcategory = response.data;});
+		 			 $scope.subcategorycontainer=false;
 	 			}
 	 		   
 	 		
