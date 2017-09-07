@@ -172,14 +172,15 @@ app.post("/api/updateQuestion", function (request, response) {
 		  
 		   service:'Gmail',
 		   auth: {
-		     user: revieweremail,
-		     pass: 'emilybronte'
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
 		   }
 		 }); 
 
 
+		
 		 var mailOptions = {
-		   from: revieweremail ,
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
 		   text: 'Hello there, your question with detailed description : '+questName+' has been updated by reviewer... Thank you'
@@ -241,14 +242,15 @@ app.post("/api/acceptQuestion", function (request, response) {
 		  
 		   service:'Gmail',
 		   auth: {
-		     user: revieweremail,
-		     pass: 'emilybronte'
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
 		   }
 		 }); 
 
 
+		
 		 var mailOptions = {
-		   from: revieweremail ,
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
 		   text: 'Hello there, your question with detailed description : '+questName+' has been accepted by reviewer... Thank you'
@@ -296,14 +298,14 @@ app.post("/api/declineQuestion", function (request, response) {
 		  
 		   service:'Gmail',
 		   auth: {
-		     user: revieweremail,
-		     pass: 'emilybronte'
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
 		   }
 		 }); 
 
 
 		 var mailOptions = {
-		   from: revieweremail ,
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
 		   text: 'Hello there, your question with detailed description : '+questName+' has been deleted by reviewer... Thank you'

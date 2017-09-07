@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IQG</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="stylesheets/w3.css" rel="stylesheet">
+      <script type="text/javascript" src="javascript/scripts.js"></script>
+      <script type="text/javascript" src="javascript/routes.js"></script>
+    
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="javascript/antixss.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    
+</head>
+
+
+
+
+<body style="background-color:rgb(233,231,218);"  ng-app="myApp" ng-controller="myCtrl">
+
+
+<!-- Nav Bar -->
+<div style="background-color:rgb(118,50,63);" class="w3-bar">
+  <label style="font-family:Courier; font-size:18px; color:rgb(233,231,218);" class="w3-left w3-bar-item ">Signed in as <span id="userNameSpan"></span></label>
+  <button id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></button>
+  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"><b>My Questions</b></button>   
+</div> 
+<!-- End Nav Bar -->
+
+<script>
+    $('#userNameSpan').html('<%= name %>');
+</script>
+
+
+<div class="w3-container"> 
+
+<br>
+ <header style="color:rgb(86,86,86);" class="w3-margin-top w3-container w3-xxlarge">Review your Questions</header>
+<br>
+<br>
+<table class="w3-table w3-bordered w3-striped">
+<col width="100">
+  <col width="100">
+  <tr>
+    <th class="w3-center" style="color:rgb(118,50,63);">Edit</th>
+    <th class="w3-center" style="color:rgb(118,50,63);">View</th>
+    <th class="w3-center" style="color:rgb(118,50,63);">Question Description</th>
+    <th class="w3-center" style="color:rgb(118,50,63);">Question Category</th>
+    <th  class="w3-center" style="color:rgb(118,50,63);">Adder Contact</th>
+  </tr>
+  <tr ng-repeat="x in find">
+  <td class="w3-btn w3-ripple w3-center" ng-click="editUser(x._id)" >&#9998; Edit</td>
+  <td class="w3-btn w3-ripple w3-center" ng-click="viewUser(x._id)">&#128065; View</td>
+    <td class="w3-center">{{ x.name }}</td>
+    <td class="w3-center">{{ x.category }}</td>
+    <td class="w3-center">{{ x.adderid }}</td>
+  </tr>
+</table>
+
+<form  ng-hide="Edithideform">
+<br>
+<br>
+  <h3 style="color:rgb(86,86,86);" ng-hide="edit"><i>Edit your Questions</i></h3>
+  
+ <br> 
+   
+  <input id=editid  class="w3-input w3-border" type="text" ng-model="editid"   ng-hide="EditID">
+ 
+  <input id=editrevid  class="w3-input w3-border" type="text" ng-model="editrevid"   ng-hide="EditrevID">
+ 
+  
+  <input id=editadderid  class="w3-input w3-border" type="text" ng-model="editadderid"   ng-hide="EditadderID">
+ 
+  
+    <label>Question:</label>
+    <textarea id=editname  class="w3-input w3-border" type="text" ng-model="editname" style="width:50%" placeholder="Question description"></textarea>
+  <br>
+    <label>Option 1:</label>
+    <input id =editop1 class="w3-input w3-border" type="text" ng-model="editop1" style="width:50%" placeholder="Option 1">
+  
+ <br>
+  <label>Option 2:</label>
+    <input id =editop2 class="w3-input w3-border" type="text" ng-model="editop2" style="width:50%" placeholder="Option 2">
+  
+ <br>
+  <label>Option 3:</label>
+    <input id =editop3 class="w3-input w3-border" type="text" ng-model="editop3" style="width:50%" ng-disabled="disableop3"  placeholder="Option 3">
+  
+ <br>
+  <label>Option 4:</label>
+    <input id =editop4 class="w3-input w3-border" type="text" ng-model="editop4" style="width:50%" ng-disabled="disableop4"   placeholder="Option 4">
+  
+ <br>
+ 
+  <label>Model Answer:</label>
+  <br>
+   	<select id=editmodelanswer ng-model="editmodelanswer" class="w3-select w3-border w3-round " style="width:50%" name="option">
+			    <option value="" disabled selected>Choose a model answer..</option>
+			     <option ng-repeat="x in optionmodelanswer" value={{x}}>{{x}}</option>
+    </select>
+  
+<br> 
+ <br>
+ <br>
+   <label>Category:</label>
+   <br>
+  	<select id=editcategory  ng-model="editcategory" ng-change="changesubcategory()"  class="w3-select w3-border w3-round " style="width:50%" name="option">
+			    <option value="" disabled selected>Choose Category..</option>
+			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
+			  </select>
+  
+<br> 
+<br>
+<br>
+ 
+ 
+   <label>SubCategory:</label>
+  	 <br>
+  	  <select id=editsubcategory  ng-model="editsubcategory"  class="w3-select w3-border w3-round " style="width:50%" name="option">
+					    <option value="" disabled selected>Choose a subcategory..</option>
+					    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
+	   </select>
+  
+  
+<br> 
+ <br>
+ <label>Question Level:</label>
+  	<br>
+  	    <select id =editqlevel ng-model="editqlevel" class="w3-select w3-border w3-round " style="width:50%" name="option">
+			    <option value="" disabled selected>Choose Difficulty..</option>
+			    <option value="Easy">Beginner</option>
+			    <option value="Medium">Intermediate</option>
+			    <option value="Hard">Advanced</option>
+	   </select>
+    
+            
+ <br> 
+ <br>
+ 
+  <label>Estimate Time:</label>
+  <br>
+    <input id =editestime class="w3-input w3-border" type="text" ng-model="editestime" style="width:50%" placeholder="Estimate Time">
+  <br>
+ <br>
+ 
+ <label>Comment:</label>
+   <textarea id =editcomment class="w3-input w3-border" type="text" ng-model="editcomment" style="width:50%" placeholder="Comment"></textarea>
+  
+ <br>
+ 
+ 
+<button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple"  onclick="updateQuestion()" ng-disabled="incomplete">&#10004; Save Changes </button>
+<br>
+<br>
+</form>
+
+
+<form ng-hide="Viewhideform">
+<br>
+<br>
+  <h3 ng-hide="edit"><i>Accept/Decline </i></h3>
+  
+    <input id=id  class="w3-input w3-border" type="text" ng-model="id"   ng-hide="EditID">
+
+  
+  <input id=revid  class="w3-input w3-border" type="text" ng-model="revid"   ng-hide="EditrevID">
+ 
+  
+  <input id=adderid  class="w3-input w3-border" type="text" ng-model="adderid"   ng-hide="EditadderID">
+  <br>
+  
+     <h5 id=name  ng-model="name" ><b><i>Question Description:</i> </b>{{name}}</h5>
+ 	 <br>
+  	<label>Options:</label>
+  	<h5 id=op1  ng-model="op1"  >{{op1}}</h5>
+    
+   <br>
+   <h5 id=op2  ng-model="op2"  >{{op2}}</h5>
+   <br>
+   <h5 id=op3  ng-model="op3"  >{{op3}}</h5>
+   
+   <br>
+   
+   <label>Option 4:</label>
+    <input id=op4 class="w3-input w3-border" type="text" ng-model="op4" ng-disabled="!edit" placeholder="Option 4">
+ 
+   <br>
+   
+   <label>Model Answer:</label>
+    <input id =modelanswer class="w3-input w3-border" type="text" ng-model="modelanswer" ng-disabled="!edit" placeholder="Model Answer">
+  
+ <br>
+ 
+ 
+   <label>Category:</label>
+    <input id =category class="w3-input w3-border" type="text" ng-model="category" ng-disabled="!edit" placeholder="Category">
+  
+ <br>
+ 
+ 
+   <label>SubCategory:</label>
+    <input id =subcategory class="w3-input w3-border" type="text" ng-model="subcategory" ng-disabled="!edit" placeholder="Subcategory">
+  
+ <br>
+ 
+ <label>Question Level:</label>
+    <input id =qlevel class="w3-input w3-border" type="text" ng-model="qlevel" ng-disabled="!edit" placeholder="Question Level">
+  
+ <br>
+ 
+  <label>Estimate Time:</label>
+    <input id =estime class="w3-input w3-border" type="text" ng-model="estime" ng-disabled="!edit" placeholder="Estimate Time">
+  
+ <br>
+ 
+ <label>Comment:</label>
+    <input id =comment class="w3-input w3-border" type="text" ng-model="comment" ng-disabled="!edit" placeholder="Comment">
+  
+ <br>
+    
+<button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Decline</button>
+</form>
+
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+
+
+function updateQuestion()
+
+{
+	var id=$('#editid').val();
+	var rev=$('#editrevid').val();
+	var name = $('#editname').val();
+	var op1= $('#editop1').val();
+	var op2= $('#editop2').val();
+	var op3= $('#editop3').val();
+	var op4= $('#editop4').val();
+	var modelanswer=$('#editmodelanswer').val();
+	var category=$('#editcategory').val();
+	var subcategory=$('#editsubcategory').val();
+	var qlevel=$('#editqlevel').val();
+	var estime=$('#editestime').val();
+	var adderid=$('#editadderid').val();
+	var reviewerid=2;
+	var status="pending";
+	var comment=$('#editcomment').val();
+	var repetition=0;
+	var type="question";
+	var adderemail=$('#editadderid').val();
+	var revieweremail='<%= email %>';
+	
+	 $.ajax({
+		  method: "POST",
+		  url: "./api/updateQuestion",
+		  contentType: "application/json",
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail})
+       })	 
+       .done(function(data) {
+    	   alert("Question is updated successfully");
+    	   returnHomepage();
+        });
+		
+}
+
+
+
+function acceptQuestion()
+
+{
+	var id=$('#id').val();
+	var rev=$('#revid').val();
+	var name = $('#name').val();
+	var op1= $('#op1').val();
+	var op2= $('#op2').val();
+	var op3= $('#op3').val();
+	var op4= $('#op4').val();
+	var modelanswer=$('#modelanswer').val();
+	var category=$('#category').val();
+	var subcategory=$('#subcategory').val();
+	var qlevel=$('#qlevel').val();
+	var estime=$('#estime').val();
+	var adderid=$('#adderid').val();
+	var reviewerid=2;
+	var status="accepted";
+	var comment=$('#comment').val();
+	var repetition=0;
+	var adderemail=$('#editadderid').val();
+	var revieweremail='<%= email %>';
+	
+
+	 $.ajax({
+		  method: "POST",
+		  url: "./api/acceptQuestion",
+		  contentType: "application/json",
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"adderemail":adderemail,"revieweremail":revieweremail})
+       })	 
+       .done(function(data)
+       {
+    	   alert("Question is accepted ");
+    	   returnHomepage();
+        });
+		
+}
+
+
+function declineQuestion()
+
+{
+	var id=$('#id').val();
+	var rev=$('#revid').val();
+	var name = $('#name').val();
+	var adderemail=$('#editadderid').val();
+	var revieweremail='<%= email %>';
+	
+	 $.ajax({
+		  method: "POST",
+		  url: "./api/declineQuestion",
+		  contentType: "application/json",
+		  data: JSON.stringify({"id":id,"rev":rev,"name":name,"adderemail":adderemail,"revieweremail":revieweremail})
+       })	 
+       .done(function(data)
+       {
+    	   alert("Question is deleted successfully ");
+    	   returnHomepage();
+        });
+		
+}
+
+
+
+
+var app = angular.module('myApp', []);
+
+app.controller('myCtrl', function($scope, $http) {
+	
+	$scope.name= '';
+	$scope.op1 = '';
+	$scope.op2 = '';
+	$scope.op3 = '';
+	$scope.op4 = '';
+	$scope.modelanswer = '';
+	$scope.category = '';
+	$scope.subcategory = '';
+	$scope.qlevel = '';
+	$scope.estime = '';
+	$scope.comment = '';
+	$scope.userEmail = '<%= email %>';
+	$http({ url: "/api/findquestions",  method: "GET", params: {"userEmail": $scope.userEmail}}).then(function (response) { $scope.find = response.data;});
+  
+  	$scope.edit = false;
+	$scope.error = false;
+	$scope.Edithideform = true;	
+	$scope.Viewhideform = true;	
+	                     
+	$scope.EditrevID=true;
+	$scope.EditID = true;	
+	$scope.EditadderID = true;
+	
+	$http.get("/api/findcategory").then(function (response) { $scope.findcategory = response.data;});
+	 $scope.changesubcategory = function()
+	  {
+			 $http({ url: "/api/findsubcategory",  method: "GET", params: {"categoryname": $scope.editcategory}}).then(function (response) { $scope.findsubcategory = response.data;});
+			 $scope.subcategorycontainer=false;
+	  }
+	
+	
+	$scope.editUser = function(id) 
+	{
+		
+		$scope.editname= '';
+		$scope.editop1 = '';
+		$scope.editop2 = '';
+		$scope.editop3 = '';
+		$scope.editop4 = '';
+		$scope.editmodelanswer = '';
+		$scope.editcategory = '';
+		$scope.editsubcategory = '';
+		$scope.editqlevel = '';
+		$scope.editestime = '';
+		$scope.editcomment = '';
+		
+	    $scope.Edithideform = false;
+	    $scope.Viewhideform = true;	
+	    for(var i=0;i<$scope.find.length;i++)
+	    {
+	    	
+	    	if($scope.find[i]._id == id)
+	    		{
+		    		$scope.editname = $scope.find[i].name;
+		    	    $scope.editop1 = $scope.find[i].op1;
+		    	    $scope.editop2 = $scope.find[i].op2;
+		    	    $scope.editop3 = $scope.find[i].op3;
+		    	    $scope.editop4 = $scope.find[i].op4;
+		    	    $scope.editid=$scope.find[i]._id;
+		    	    $scope.editrevid=$scope.find[i]._rev;
+		    	    $scope.editadderid=$scope.find[i].adderid;
+		    	    $scope.editmodelanswer=$scope.find[i].modelanswer;
+		    	    $scope.editcategory=$scope.find[i].category;
+		    	    $scope.editsubcategory=$scope.find[i].subcategory;
+		    	    $scope.editqlevel=$scope.find[i].qlevel;
+		    	    $scope.editestime=$scope.find[i].estime;
+		    	    $scope.editcomment=$scope.find[i].comment;
+		    	    
+	    		}
+	    }	
+	    
+	    
+	    // for option list 
+	    	if ($scope.editop3.length)
+	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	else
+	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
+	    
+	    	if ($scope.editop4.length)
+	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
+	    
+	    //For disabling option 3 or option 4 if they don't exist
+	    
+		    if($scope.editop3=="")
+		    	$scope.disableop3=false;
+		    
+		    if($scope.editop4=="")
+		    	$scope.disableop4=true;
+	    
+	    
+	};
+
+
+	
+
+	
+	
+	
+	$scope.viewUser=function(id)
+	{
+
+		
+		
+	    $scope.Viewhideform = false;
+	    $scope.Edithideform = true;	
+	    for(var i=0;i<$scope.find.length;i++)
+	    {
+	    	
+	    	if($scope.find[i]._id == id)
+	    		{
+		    		$scope.name = $scope.find[i].name;
+		    	    $scope.op1 = $scope.find[i].op1;
+		    	    $scope.op2 = $scope.find[i].op2;
+		    	    $scope.op3 = $scope.find[i].op3;
+		    	    $scope.op4 = $scope.find[i].op4;
+		    	    $scope.modelanswer=$scope.find[i].modelanswer;
+		    	    $scope.category=$scope.find[i].category;
+		    	    $scope.subcategory=$scope.find[i].subcategory;
+		    	    $scope.qlevel=$scope.find[i].qlevel;
+		    	    $scope.estime=$scope.find[i].estime;
+		    	    $scope.comment=$scope.find[i].comment;
+		    	    $scope.id=$scope.find[i]._id;
+		    	    $scope.revid=$scope.find[i]._rev;
+		    	    $scope.adderid=$scope.find[i].adderid;
+	    		}
+	    }	
+	};
+	
+	
+	
+	
+	$scope.$watch('editname', function() {$scope.test();});
+	$scope.$watch('editop1', function() {$scope.test();});
+	$scope.$watch('editop2', function() {$scope.test();});
+	$scope.$watch('editmodelanswer', function() {$scope.test();});
+	$scope.$watch('editcategory', function() {$scope.test();});
+	$scope.$watch('editsubcategory', function() {$scope.test();});
+	$scope.$watch('editqlevel', function() {$scope.test();});
+	$scope.$watch('editestime', function() {$scope.test();});
+	$scope.$watch('editop3', function() {$scope.disableoption();});
+	$scope.$watch('editop4', function() {$scope.watchoption();});
+	
+	
+	$scope.disableoption=function()
+	{
+		if(!$scope.editop3.length)
+			{
+				$scope.editop4='';
+				$scope.disableop4=true;
+			}
+		
+		if($scope.editop3.length)
+		{
+			
+			$scope.disableop4=false;
+		}
+		
+		if ($scope.editop3.length)
+	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	else
+	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
+	    
+	    	if ($scope.editop4.length)
+	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
+	};
+	
+	
+	$scope.watchoption=function()
+	{
+		if ($scope.editop3.length)
+	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	else
+	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
+	    
+	    	if ($scope.editop4.length)
+	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
+	};
+	
+	
+	$scope.test = function() {
+	 
+	  $scope.incomplete = false;
+	  
+	
+	  if ( !$scope.editname.length || !$scope.editmodelanswer.length || !$scope.editcategory.length || !$scope.editsubcategory.length ||!$scope.editqlevel.length || !$scope.editestime.length)
+	  {$scope.incomplete = true;}
+	  
+	  
+	};
+});
+
+
+
+</script>
+
+</body>
+</html>
+
+
+
