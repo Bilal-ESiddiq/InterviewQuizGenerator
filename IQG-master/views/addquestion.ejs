@@ -305,6 +305,11 @@
         	var comment="";
         	var repetition=0;
         	var type="question";
+        	var currentTime = new Date();
+        	var month = currentTime.getMonth() + 1;
+			var day = currentTime.getDate();
+			var year = currentTime.getFullYear();
+			var date= day+"/"+month+"/"+year;
         	
         	//To see if there are any unfilled fields
         	
@@ -346,7 +351,7 @@
 				  method: "POST",
 				  url: "./api/insertQuestion",
 				  contentType: "application/json",
-				  data: JSON.stringify({"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type})
+				  data: JSON.stringify({"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"date":date})
                 })	  
                 
                 .done(function(data) {

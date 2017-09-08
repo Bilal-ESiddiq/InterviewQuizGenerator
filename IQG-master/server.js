@@ -133,14 +133,14 @@ app.post("/api/insertQuestion", function (request, response) {
   var comment=request.body.comment;
   var rep=request.body.rep;
   var type=request.body.type;
-  
+  var date=request.body.date;
   
   if(!mydb) {
     console.log("No database.");
     return;
   }
   // insert the Question as a document
-  mydb.insert({ "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type}, function(err, body, header) {
+  mydb.insert({ "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date}, function(err, body, header) {
     if (err) {
       return console.log('[mydb.insert] ', err.message);
     }
@@ -173,7 +173,7 @@ app.post("/api/updateQuestion", function (request, response) {
 	  var type=request.body.type;
 	  var adderemail=request.body.adderemail;
 	  var revieweremail=request.body.revieweremail;
-	  
+	  var date=request.body.date;
 	 
 
 	  var transporter = nodemailer.createTransport({
@@ -207,7 +207,7 @@ app.post("/api/updateQuestion", function (request, response) {
 	 
 	
 	 
-	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type} , function(err, body, header)
+	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date} , function(err, body, header)
 	   {
 		  
 		  if (err) {
@@ -359,7 +359,7 @@ app.get("/api/findquestions", function (request, response) {
     return;
   }
 
-  mydb.find({selector:{ /*reviewerid:request.query.userEmail ,*/ status:"pending" }},function(err, body) {
+  mydb.find({selector:{ reviewerid:request.query.userEmail , status:"pending" }},function(err, body) {
 	  
 	  
     if (err) {

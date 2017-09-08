@@ -41,6 +41,10 @@
 </script>
 
 
+
+
+
+
 <div class="w3-container"> 
 
 <br>
@@ -83,22 +87,47 @@
   
     <label>Question:</label>
     <textarea id=editname  class="w3-input w3-border" type="text" ng-model="editname" style="width:50%" placeholder="Question description"></textarea>
+ <br>
+ 
+ <label>Options:</label>
+ <br>
+ <br>
+ 
+ <div class="input-group" style="width:50%" ng-hide="editoption1">
+  <input id =editop1 ng-model="editop1" type="text" class="form-control" placeholder="Option1">
+  <span class="input-group-btn"><button class="btn btn-secondary w3-green w3-ripple" type="button" ng-disabled="editbuttonOne"  >&#10004;</button> </span>
+  <span class="input-group-btn"><button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="btn btn-secondary" type="button" ng-click="hideoption1()">x</button> </span>
+  </div>
+  
   <br>
-    <label>Option 1:</label>
-    <input id =editop1 class="w3-input w3-border" type="text" ng-model="editop1" style="width:50%" placeholder="Option 1">
+  
+  <div class="input-group" style="width:50%" ng-hide="editoption2">
+  <input id =editop2 ng-model="editop2" type="text" class="form-control" placeholder="Option2">
+  <span class="input-group-btn"><button class="btn btn-secondary w3-green w3-ripple" type="button" ng-disabled="editbuttonTwo" >&#10004;</button> </span>
+  <span class="input-group-btn"><button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="btn btn-secondary" type="button" ng-click="hideoption2()">x</button> </span>
+  </div>
+  
+   <br>
+   
+   <div class="input-group" style="width:50%" ng-hide="editoption3">
+  <input id =editop3  ng-model="editop3" type="text" class="form-control" placeholder="Option3">
+  <span class="input-group-btn"><button class="btn btn-secondary w3-green w3-ripple" type="button" ng-disabled="editbuttonThree"  >&#10004;</button> </span>
+  <span class="input-group-btn"><button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="btn btn-secondary" type="button" ng-click="hideoption3()">x</button> </span>
+  </div>
+  
+   <br>
+   
+   <div class="input-group" style="width:50%" ng-hide="editoption4">
+  <input id =editop4  ng-model="editop4" type="text" class="form-control" placeholder="Option4">
+ <span class="input-group-btn"><button class="btn btn-secondary w3-green w3-ripple" type="button" ng-disabled="editbuttonFour"   >&#10004;</button> </span>
+  <span class="input-group-btn"><button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="btn btn-secondary" type="button" ng-click="hideoption4()">x</button> </span>
+  </div>
+  
+   <br>
+  
+  <button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple" ng-hide="Addoption" ng-click="Addoptionbutton()"  >Add  option </button>
   
  <br>
-  <label>Option 2:</label>
-    <input id =editop2 class="w3-input w3-border" type="text" ng-model="editop2" style="width:50%" placeholder="Option 2">
-  
- <br>
-  <label>Option 3:</label>
-    <input id =editop3 class="w3-input w3-border" type="text" ng-model="editop3" style="width:50%" ng-disabled="disableop3"  placeholder="Option 3">
-  
- <br>
-  <label>Option 4:</label>
-    <input id =editop4 class="w3-input w3-border" type="text" ng-model="editop4" style="width:50%" ng-disabled="disableop4"   placeholder="Option 4">
-  
  <br>
  
   <label>Model Answer:</label>
@@ -158,16 +187,20 @@
  <br>
  
  
-<button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple"  onclick="updateQuestion()" ng-disabled="incomplete">&#10004; Save Changes </button>
+<button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple"  onclick="updateQuestion()" ng-disabled="incomplete">&#10004; Save Changes </button>  <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="returnHomepage()" > Cancel</button>
 <br>
 <br>
+
+
+
 </form>
 
 
+<div class="w3-container">
 <form id=Viewhideform ng-hide="Viewhideform">
 <br>
 <br>
-  <h3 ng-hide="edit"><i>Accept/Decline </i></h3>
+  <h3 style="color:rgb(86,86,86);" ng-hide="edit"><i>Accept/Decline </i></h3>
   
     <input id=id  class="w3-input w3-border" type="text" ng-model="id"   ng-hide="EditID">
 
@@ -178,51 +211,49 @@
   <input id=adderid  class="w3-input w3-border" type="text" ng-model="adderid"   ng-hide="EditadderID">
   <br>
   
-     <h5 id=name  ng-model="name" ><b><i>Question Description:</i> </b>{{name}}</h5>
+     <h5 id=name  ng-model="name" ><b style="color:rgb(118,50,63);"><i>Question Description:</i> </b>{{name}}</h5>
  	 <br>
-  	<label>Options:</label>
-  	<h5 id=op1  ng-model="op1"  >{{op1}}</h5>
-    
-   <br>
-   <h5 id=op2  ng-model="op2"  >{{op2}}</h5>
-   <br>
-   <h5 id=op3  ng-model="op3"  >{{op3}}</h5>
-   
-   <br>
-   <h5 id=op4  ng-model="op4"  >{{op4}}</h5>
+  	<h5><b style="color:rgb(118,50,63);" ><i>Options:</i></b></h5>
+  	
+  	 <h5 id=op1  ng-model="op1"  >{{op1}} </h5>
+  	 <h5 id=op2  ng-model="op2"  >{{op2}} </h5>
+  	 <h5 id=op3  ng-model="op3"  >{{op3}} </h5>
+     <h5 id=op4  ng-model="op4"  >{{op4}} </h5>
   
    <br>
    
-   <h5 id=modelanswer  ng-model="modelanswer" ><b><i>Model Answer:</i> </b>{{modelanswer}}</h5>
+   <h5 id=modelanswer  ng-model="modelanswer" ><b style="color:rgb(118,50,63);"><i>Model Answer:</i> </b>{{modelanswer}}</h5>
    
  <br>
  
-   <h5 id=category  ng-model="category" ><b><i>Category:</i> </b>{{category}}</h5>
+   <h5 id=category  ng-model="category" ><b style="color:rgb(118,50,63);" ><i>Category:</i> </b>{{category}}</h5>
    
  <br>
  
- <h5 id=subcategory  ng-model="subcategory" ><b><i>SubCategory:</i> </b>{{subcategory}}</h5>
+ <h5 id=subcategory  ng-model="subcategory" ><b style="color:rgb(118,50,63);" ><i>SubCategory:</i> </b>{{subcategory}}</h5>
    
    
  <br>
- <h5 id=qlevel  ng-model="qlevel" ><b><i>Question Level: </i> </b>{{qlevel}}</h5>
+ <h5 id=qlevel  ng-model="qlevel" ><b  style="color:rgb(118,50,63);" ><i>Question Level: </i> </b>{{qlevel}}</h5>
    
  
  <br>
- <h5 id=estime  ng-model="estime" ><b><i>Estimate Time: </i> </b>{{estime}}</h5>
+ <h5 id=estime  ng-model="estime" ><b style="color:rgb(118,50,63);" ><i>Estimate Time: </i> </b>{{estime}}</h5>
  
  <br>
- <h5 id=comment  ng-model="comment" ><b><i>Comment: </i> </b>{{comment}}</h5>
+ <h5 id=comment  ng-model="comment" ><b style="color:rgb(118,50,63);" ><i>Comment: </i> </b>{{comment}}</h5>
  
 
  <br>
     
 <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="showDeclinemsg()" > Decline</button>
 </form>
+</div>
 <br>
 <br>
 <div id=declinemessage>
 
+<p style="color:rgb(86,86,86);"><b>* Please state your reasons for declining this question</b> </p>
 <textarea id=message  class="w3-input w3-border" type="text" ng-model="message" style="width:50%" placeholder="Reasons to decline"></textarea>
   <br>
 <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="declineQuestion()" > Submit</button>  <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="returnHomepage()" > Cancel</button>
@@ -265,19 +296,25 @@ function updateQuestion()
 	var qlevel=$('#editqlevel').val();
 	var estime=$('#editestime').val();
 	var adderid=$('#editadderid').val();
-	var reviewerid=2;
+	var reviewerid='<%= email %>';
 	var status="pending";
 	var comment=$('#editcomment').val();
 	var repetition=0;
 	var type="question";
 	var adderemail=$('#editadderid').val();
 	var revieweremail='<%= email %>';
+	var currentTime = new Date();
+	var month = currentTime.getMonth() + 1;
+	var day = currentTime.getDate();
+	var year = currentTime.getFullYear();
+	var date= day+"/"+month+"/"+year;
+	
 	
 	 $.ajax({
 		  method: "POST",
 		  url: "./api/updateQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date})
        })	 
        .done(function(data) {
     	   alert("Question is updated successfully");
@@ -304,7 +341,7 @@ function acceptQuestion()
 	var qlevel=$('#qlevel').val();
 	var estime=$('#estime').val();
 	var adderid=$('#adderid').val();
-	var reviewerid=2;
+	var reviewerid='<%= email %>';
 	var status="accepted";
 	var comment=$('#comment').val();
 	var repetition=0;
@@ -335,6 +372,7 @@ function declineQuestion()
 	var name = $('#name').val();
 	var adderemail=$('#editadderid').val();
 	var revieweremail='<%= email %>';
+	var message=$('#message').val();
 	
 	 $.ajax({
 		  method: "POST",
@@ -375,6 +413,7 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.error = false;
 	$scope.Edithideform = true;	
 	$scope.Viewhideform = true;	
+	$scope.Addoption=true;
 	                     
 	$scope.EditrevID=true;
 	$scope.EditID = true;	
@@ -430,21 +469,38 @@ app.controller('myCtrl', function($scope, $http) {
 	    
 	    
 	    // for option list 
-	    	if ($scope.editop3.length)
-	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	if ($scope.editop3.length && !$scope.editop4.length)
+	    	{
+	    	 	$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
+	    	 	$scope.editoption4=true;
+	    	 	$scope.editoption3=false;
+	    	 	$scope.editoption1=false;
+	    	 	$scope.editoption2=false;
+	    	 	$scope.Addoption=false;
+	    	 	
+	    	}
+	    	
+	    
+	    	else if ($scope.editop4.length)
+	    	{
+		    	$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
+		    	$scope.editoption4=false;
+	    	 	$scope.editoption3=false;
+	    	 	$scope.editoption1=false;
+	    	 	$scope.editoption2=false;
+	    	 	$scope.Addoption=true;
+	    	 	
+	    	}
+	    
 	    	else
+	    	{
 	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
-	    
-	    	if ($scope.editop4.length)
-	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
-	    
-	    //For disabling option 3 or option 4 if they don't exist
-	    
-		    if($scope.editop3=="")
-		    	$scope.disableop3=false;
-		    
-		    if($scope.editop4=="")
-		    	$scope.disableop4=true;
+	    		$scope.editoption4=true;
+	    	 	$scope.editoption3=true;
+	    	 	$scope.editoption1=false;
+	    	 	$scope.editoption2=false;
+	    	 	$scope.Addoption=false;
+	    	}
 	    
 	    
 	};
@@ -488,52 +544,184 @@ app.controller('myCtrl', function($scope, $http) {
 	
 	
 	
+	 $scope.hideoption1 = function() 
+	 {
+		 
+		 if ($scope.editoption2)
+			 {
+			 	$scope.editop1='';
+			 	$scope.editoption1=true;
+			 	$scope.Addoption=false;
+			 }
+		 
+		 else if(!$scope.editoption2 && $scope.editoption3 && $scope.editoption4)
+			 {
+			 	$scope.editop1=$scope.editop2;
+			 	$scope.editop2='';
+			 	$scope.editoption2=true;
+			 	$scope.Addoption=false;
+			 }
+		 else if (!$scope.editoption2 && !$scope.editoption3 && $scope.editoption4)
+			 {
+			 	$scope.editop1=$scope.editop2;
+			 	$scope.editop2=$scope.editop3;
+			 	$scope.editop3='';
+			 	$scope.editoption3=true;
+			 	$scope.Addoption=false;
+			 	
+			 }
+		 else if (!$scope.editoption2 && !$scope.editoption3 && !$scope.editoption4)
+			 {
+			 	$scope.editop1=$scope.editop2;
+			 	$scope.editop2=$scope.editop3;
+			 	$scope.editop3=$scope.editop4;
+			 	$scope.editop4='';
+			 	$scope.editoption4=true;
+			 	$scope.Addoption=false;
+			 }
+		 
+		 
+	 };
+	
+	
+	 $scope.hideoption2 = function() 
+	 {
+		
+		if(!$scope.editoption1 && $scope.editoption3 && $scope.editoption4)
+			{
+				$scope.editop2='';
+				$scope.editoption2=true;
+				$scope.Addoption=false;
+			}
+		
+		else if (!$scope.editoption1 && !$scope.editoption3 && $scope.editoption4)
+			{
+				$scope.editop2=$scope.editop3;
+				$scope.editop3='';
+				$scope.editoption3=true;
+				$scope.Addoption=false;
+			}
+		
+		else if (!$scope.editoption1 && !$scope.editoption3 && !$scope.editoption4)
+			{
+				$scope.editop2=$scope.editop3;
+				$scope.editop3=$scope.editop4;
+				$scope.editop4='';
+				$scope.editoption4=true;
+				$scope.Addoption=false;
+			}
+		
+	 };
+	 
+	 $scope.hideoption3 = function() 
+	 {
+		
+		 if(!$scope.editoption1 && !$scope.editoption2 && $scope.editoption4)
+			 {
+			   $scope.editop3='';
+			   $scope.editoption3=true;
+			   $scope.Addoption=false;
+			  
+			 }
+		 
+		 else if(!$scope.editoption1 && !$scope.editoption2 && !$scope.editoption4)
+			 {
+			 	$scope.editop3=$scope.editop4;
+			 	$scope.editop4='';
+			 	$scope.editoption4=true;
+			 	$scope.Addoption=false;
+			 }
+		 
+		 
+	 };
+	 
+	 $scope.hideoption4 = function() 
+	 {
+		 $scope.editop4='';
+		 $scope.editoption4=true;
+		 $scope.Addoption=false;
+	 };
+	 
+	 
+	 $scope.Addoptionbutton=function()
+	 {
+		 if($scope.editoption1)
+			 $scope.editoption1=false;
+		 else if(!$scope.editoption1 && $scope.editoption2)
+			 $scope.editoption2=false;
+		 else if (!$scope.editoption1  && !$scope.editoption2  && $scope.editoption3  )
+			 $scope.editoption3=false;
+		 else if (!$scope.editoption1  && !$scope.editoption2  && !$scope.editoption3   && $scope.editoption4 )
+			 {
+				 $scope.editoption4=false;
+				 $scope.Addoption=true;
+			 }
+		 
+	 };
+	 
+	 
+	 
+	 
 	$scope.$watch('editname', function() {$scope.test();});
-	$scope.$watch('editop1', function() {$scope.test();});
-	$scope.$watch('editop2', function() {$scope.test();});
+	$scope.$watch('editop1', function() {$scope.watchoption();});
+	$scope.$watch('editop2', function() {$scope.watchoption();});
+	$scope.$watch('editop3', function() {$scope.watchoption();});
+	$scope.$watch('editop4', function() {$scope.watchoption();});
 	$scope.$watch('editmodelanswer', function() {$scope.test();});
 	$scope.$watch('editcategory', function() {$scope.test();});
 	$scope.$watch('editsubcategory', function() {$scope.test();});
 	$scope.$watch('editqlevel', function() {$scope.test();});
 	$scope.$watch('editestime', function() {$scope.test();});
-	$scope.$watch('editop3', function() {$scope.disableoption();});
-	$scope.$watch('editop4', function() {$scope.watchoption();});
 	
 	
-	$scope.disableoption=function()
-	{
-		if(!$scope.editop3.length)
-			{
-				$scope.editop4='';
-				$scope.disableop4=true;
-			}
-		
-		if($scope.editop3.length)
-		{
-			
-			$scope.disableop4=false;
-		}
-		
-		if ($scope.editop3.length)
-	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
-	    	else
-	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
-	    
-	    	if ($scope.editop4.length)
-	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
-	};
+	
+	
+	
 	
 	
 	$scope.watchoption=function()
 	{
-		if ($scope.editop3.length)
+		
+		if ( $scope.editop1.length && !$scope.editop2.length &&  !$scope.editop3.length && !$scope.editop4.length)
+			$scope.optionmodelanswer=[$scope.editop1,]
+		else if ( $scope.editop1.length && $scope.editop2.length &&  $scope.editop3.length && !$scope.editop4.length)
 	    	 $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,]
-	    	else
+		
+	    else if($scope.editop1.length && $scope.editop2.length && !$scope.editop3.length && !$scope.editop4.length)
 	    		$scope.optionmodelanswer=[$scope.editop1,$scope.editop2,]
 	    
-	    	if ($scope.editop4.length)
+	    else if ($scope.editop1.length && $scope.editop2.length && $scope.editop3.length && $scope.editop4.length)
 	    	  $scope.optionmodelanswer=[$scope.editop1,$scope.editop2,$scope.editop3,$scope.editop4,]
+		
+	    else 
+	    	$scope.optionmodelanswer=[]
+		
+		if( !$scope.editop1.length ||  !$scope.editop2.length )
+			{$scope.incomplete = true;}
+		
+		if(!$scope.editop1.length )
+			$scope.editbuttonOne=true;
+		else
+			$scope.editbuttonOne=false;
+			
+		if(!$scope.editop2.length )
+			$scope.editbuttonTwo=true;
+		else
+			$scope.editbuttonTwo=false;
+		
+		if(!$scope.editop3.length )
+			$scope.editbuttonThree=true;
+		else
+			$scope.editbuttonThree=false;
+		
+		if(!$scope.editop4.length )
+			$scope.editbuttonFour=true;
+		else
+			$scope.editbuttonFour=false;
+		
 	};
+	
+	
 	
 	
 	$scope.test = function() {
@@ -541,7 +729,7 @@ app.controller('myCtrl', function($scope, $http) {
 	  $scope.incomplete = false;
 	  
 	
-	  if ( !$scope.editname.length || !$scope.editmodelanswer.length || !$scope.editcategory.length || !$scope.editsubcategory.length ||!$scope.editqlevel.length || !$scope.editestime.length)
+	  if ( !$scope.editname.length ||!$scope.editop1.length ||  !$scope.editop2.length|| $scope.editmodelanswer==null || !$scope.editcategory.length || !$scope.editsubcategory.length ||!$scope.editqlevel.length || !$scope.editestime.length)
 	  {$scope.incomplete = true;}
 	  
 	  
