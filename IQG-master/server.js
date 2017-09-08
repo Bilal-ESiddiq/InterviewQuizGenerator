@@ -360,7 +360,7 @@ app.get("/api/findquestions", function (request, response) {
     return;
   }
 
-  mydb.find({selector:{ /*reviewerid:request.query.userEmail ,*/ status:"pending" }},function(err, body) {
+  mydb.find({selector:{ reviewerid:request.query.userEmail , status:"pending" }},function(err, body) {
 	  
 	  
     if (err) {

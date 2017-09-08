@@ -211,7 +211,7 @@
   <input id=adderid  class="w3-input w3-border" type="text" ng-model="adderid"   ng-hide="EditadderID">
   <br>
   
-     <h5 ><b style="color:rgb(118,50,63);"><i>Question Description:</i> </b></h5  ><h5 id=name  ng-model="name"  >{{name}}</h5>
+  <h5 style="display:inline;" ><b style="color:rgb(118,50,63);"><i>Question Description:</i> </b></h5  ><span><h5 style="display:inline;" id=name  ng-model="name"  >{{name}}</h5></span> 
  	 <br>
   	<h5><b style="color:rgb(118,50,63);" ><i>Options:</i></b></h5>
   	
@@ -219,31 +219,33 @@
   	 <h5 id=op2  ng-model="op2"  >{{op2}} </h5>
   	 <h5 id=op3  ng-model="op3"  >{{op3}} </h5>
      <h5 id=op4  ng-model="op4"  >{{op4}} </h5>
+  <br>
   
-   <br>
    
-   <h5 ><b style="color:rgb(118,50,63);"><i>Model Answer:</i> </b></h5><h5 id=modelanswer  ng-model="modelanswer"  >{{modelanswer}}</h5>
+   <h5 style="display:inline;" ><b style="color:rgb(118,50,63);"><i>Model Answer:</i> </b></h5><h5 style="display:inline;" id=modelanswer  ng-model="modelanswer"  >{{modelanswer}}</h5>
    
+ <br><br>
+ 
+   <h5  style="display:inline;" ><b style="color:rgb(118,50,63);" ><i>Category:</i> </b></h5><h5  style="display:inline;" id=category  ng-model="category" >{{category}}</h5>
+  <br> 
  <br>
  
-   <h5  ><b style="color:rgb(118,50,63);" ><i>Category:</i> </b></h5><h5 id=category  ng-model="category" >{{category}}</h5>
+ <h5  style="display:inline;" ><b style="color:rgb(118,50,63);" ><i>SubCategory:</i> </b></h5><h5  style="display:inline;"  id=subcategory  ng-model="subcategory">{{subcategory}}</h5>
+   
+  <br> 
+ <br>
+ <h5  style="display:inline;"  ><b  style="color:rgb(118,50,63);" ><i>Question Level: </i> </b></h5><h5  style="display:inline;" id=qlevel  ng-model="qlevel">{{qlevel}}</h5>
    
  <br>
- 
- <h5  ><b style="color:rgb(118,50,63);" ><i>SubCategory:</i> </b></h5><h5 id=subcategory  ng-model="subcategory">{{subcategory}}</h5>
-   
-   
  <br>
- <h5  ><b  style="color:rgb(118,50,63);" ><i>Question Level: </i> </b></h5><h5 id=qlevel  ng-model="qlevel">{{qlevel}}</h5>
-   
+ <h5  style="display:inline;" ><b style="color:rgb(118,50,63);" ><i>Estimate Time: </i> </b></h5><h5  style="display:inline;"  id=estime  ng-model="estime" >{{estime}}</h5>
  
  <br>
- <h5 ><b style="color:rgb(118,50,63);" ><i>Estimate Time: </i> </b></h5><h5 id=estime  ng-model="estime" >{{estime}}</h5>
- 
  <br>
- <h5 ><b style="color:rgb(118,50,63);" ><i>Comment: </i> </b></h5><h5 id=comment  ng-model="comment"  >{{comment}}</h5>
+ <h5  style="display:inline;" ><b style="color:rgb(118,50,63);" ><i>Comment: </i> </b></h5><h5  style="display:inline;" id=comment  ng-model="comment"  >{{comment}}</h5>
  
-
+<br>
+ <br>
  <br>
     
 <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="acceptQuestion()"> Accept</button>   <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="showDeclinemsg()" > Decline</button>
