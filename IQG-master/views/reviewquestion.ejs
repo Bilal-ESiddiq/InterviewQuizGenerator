@@ -211,7 +211,7 @@
   <input id=adderid  class="w3-input w3-border" type="text" ng-model="adderid"   ng-hide="EditadderID">
   <br>
   
-     <h5 id=name  ng-model="name" ><b style="color:rgb(118,50,63);"><i>Question Description:</i> </b>{{name}}</h5>
+     <h5 ><b style="color:rgb(118,50,63);"><i>Question Description:</i> </b></h5  ><h5 id=name  ng-model="name"  >{{name}}</h5>
  	 <br>
   	<h5><b style="color:rgb(118,50,63);" ><i>Options:</i></b></h5>
   	
@@ -222,26 +222,26 @@
   
    <br>
    
-   <h5 id=modelanswer  ng-model="modelanswer" ><b style="color:rgb(118,50,63);"><i>Model Answer:</i> </b>{{modelanswer}}</h5>
+   <h5 ><b style="color:rgb(118,50,63);"><i>Model Answer:</i> </b></h5><h5 id=modelanswer  ng-model="modelanswer"  >{{modelanswer}}</h5>
    
  <br>
  
-   <h5 id=category  ng-model="category" ><b style="color:rgb(118,50,63);" ><i>Category:</i> </b>{{category}}</h5>
+   <h5  ><b style="color:rgb(118,50,63);" ><i>Category:</i> </b></h5><h5 id=category  ng-model="category" >{{category}}</h5>
    
  <br>
  
- <h5 id=subcategory  ng-model="subcategory" ><b style="color:rgb(118,50,63);" ><i>SubCategory:</i> </b>{{subcategory}}</h5>
+ <h5  ><b style="color:rgb(118,50,63);" ><i>SubCategory:</i> </b></h5><h5 id=subcategory  ng-model="subcategory">{{subcategory}}</h5>
    
    
  <br>
- <h5 id=qlevel  ng-model="qlevel" ><b  style="color:rgb(118,50,63);" ><i>Question Level: </i> </b>{{qlevel}}</h5>
+ <h5  ><b  style="color:rgb(118,50,63);" ><i>Question Level: </i> </b></h5><h5 id=qlevel  ng-model="qlevel">{{qlevel}}</h5>
    
  
  <br>
- <h5 id=estime  ng-model="estime" ><b style="color:rgb(118,50,63);" ><i>Estimate Time: </i> </b>{{estime}}</h5>
+ <h5 ><b style="color:rgb(118,50,63);" ><i>Estimate Time: </i> </b></h5><h5 id=estime  ng-model="estime" >{{estime}}</h5>
  
  <br>
- <h5 id=comment  ng-model="comment" ><b style="color:rgb(118,50,63);" ><i>Comment: </i> </b>{{comment}}</h5>
+ <h5 ><b style="color:rgb(118,50,63);" ><i>Comment: </i> </b></h5><h5 id=comment  ng-model="comment"  >{{comment}}</h5>
  
 
  <br>
@@ -330,22 +330,22 @@ function acceptQuestion()
 {
 	var id=$('#id').val();
 	var rev=$('#revid').val();
-	var name = $('#name').val();
-	var op1= $('#op1').val();
-	var op2= $('#op2').val();
-	var op3= $('#op3').val();
-	var op4= $('#op4').val();
-	var modelanswer=$('#modelanswer').val();
-	var category=$('#category').val();
-	var subcategory=$('#subcategory').val();
-	var qlevel=$('#qlevel').val();
-	var estime=$('#estime').val();
+	var name =document.getElementById("name").innerHTML;
+	var op1= document.getElementById("op1").innerHTML;
+	var op2= document.getElementById("op2").innerHTML;
+	var op3= document.getElementById("op3").innerHTML;
+	var op4= document.getElementById("op4").innerHTML;
+	var modelanswer=document.getElementById("modelanswer").innerHTML;
+	var category= document.getElementById("category").innerHTML;
+	var subcategory=document.getElementById("subctegory").innerHTML;
+	var qlevel= document.getElementById("qlevel").innerHTML;
+	var estime= document.getElementById("estime").innerHTML;
 	var adderid=$('#adderid').val();
 	var reviewerid='<%= email %>';
 	var status="accepted";
-	var comment=$('#comment').val();
+	var comment=document.getElementById("comment").innerHTML; 
 	var repetition=0;
-	var adderemail=$('#editadderid').val();
+	var adderemail=$('#adderid').val();
 	var revieweremail='<%= email %>';
 	
 
@@ -369,8 +369,8 @@ function declineQuestion()
 {
 	var id=$('#id').val();
 	var rev=$('#revid').val();
-	var name = $('#name').val();
-	var adderemail=$('#editadderid').val();
+	var name =document.getElementById("name").innerHTML;
+	var adderemail=$('#adderid').val();
 	var revieweremail='<%= email %>';
 	var message=$('#message').val();
 	

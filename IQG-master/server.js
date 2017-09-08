@@ -299,6 +299,7 @@ app.post("/api/declineQuestion", function (request, response) {
 	  var adderemail=request.body.adderemail;
 	  var revieweremail=request.body.revieweremail;
 	  
+	  console.log("question is"+questName);
 	 
 
 	  var transporter = nodemailer.createTransport({
@@ -359,7 +360,7 @@ app.get("/api/findquestions", function (request, response) {
     return;
   }
 
-  mydb.find({selector:{ reviewerid:request.query.userEmail , status:"pending" }},function(err, body) {
+  mydb.find({selector:{ /*reviewerid:request.query.userEmail ,*/ status:"pending" }},function(err, body) {
 	  
 	  
     if (err) {
