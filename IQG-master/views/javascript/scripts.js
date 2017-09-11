@@ -127,3 +127,40 @@ function choiceGenerator(){
         });
 		
 }*/
+
+function FilterInput(event) {
+    var keyCode = ('which' in event) ? event.which : event.keyCode;
+
+    isNotWanted = (keyCode == 69 || keyCode == 101 || keyCode == 106 || keyCode == 107 || keyCode == 109 || keyCode == 110 || keyCode == 111);
+    return !isNotWanted;
+};
+function handlePaste (e) {
+    var clipboardData, pastedData;
+
+    // Get pasted data via clipboard API
+    clipboardData = e.clipboardData || window.clipboardData;
+    pastedData = clipboardData.getData('Text').toUpperCase();
+
+    if(pastedData.indexOf('E')>-1) {
+        //alert('found an E');
+        e.stopPropagation();
+        e.preventDefault();
+    }
+};
+
+function goBack() {
+    window.history.back();
+}
+
+function generate() {
+	var doc = new jsPDF();          
+	var source = window.document.getElementsByTagName("body")[0];
+	doc.fromHTML(
+	    source,
+	    15,
+	    15,
+	    {
+	      'width': 180
+	    });
+	doc.output("dataurlnewwindow");
+}
