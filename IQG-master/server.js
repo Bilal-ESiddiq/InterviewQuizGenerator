@@ -243,7 +243,8 @@ app.post("/api/acceptQuestion", function (request, response) {
 	  var rep=request.body.rep;
 	  var adderemail=request.body.adderemail;
 	  var revieweremail=request.body.revieweremail;
-	  
+	  var type=request.body.type;
+	  var date=request.body.date;
 
 	  var transporter = nodemailer.createTransport({
 		  
@@ -276,7 +277,7 @@ app.post("/api/acceptQuestion", function (request, response) {
 
 	  
 	  
-	  mydb.insert({ "_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep} , function(err, body, header)
+	  mydb.insert({ "_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date} , function(err, body, header)
 	   {
 		  
 		  if (err) {
@@ -359,12 +360,15 @@ app.get("/api/findquestions", function (request, response) {
     
     return;
   }
+  
+  console.log(request.query.userEmail);
 
   mydb.find({selector:{ reviewerid:request.query.userEmail , status:"pending" }},function(err, body) {
 	  
 	  
     if (err) {
 	        return console.log('[mydb.find] ', err.message);
+	        
               }
    
    
@@ -375,6 +379,73 @@ app.get("/api/findquestions", function (request, response) {
   });
   
 });
+
+
+
+
+
+app.get("/api/findallquestions", function (request, response) {
+
+	  if(!mydb) {
+	    
+	    return;
+	  }
+	  
+	  console.log(request.query.userEmail);
+
+	  mydb.find({selector:{ reviewerid:request.query.userEmail  }},function(err, body) {
+		  
+		  
+	    if (err) {
+		        return console.log('[mydb.find] ', err.message);
+		        
+	              }
+	   
+	   
+	    if(!err)
+	    	response.send(body.docs);
+	   
+
+	  });
+	  
+	});
+
+
+
+
+
+
+
+
+app.get("/api/findmyquestions", function (request, response) {
+
+  if(!mydb) {
+    
+    return;
+  }
+  
+  console.log(request.query.userEmail);
+
+  mydb.find({selector:{ adderid:request.query.userEmail }},function(err, body) {
+	  
+	  
+    if (err) {
+	        return console.log('[mydb.find] ', err.message);
+	        
+              }
+   
+   
+    if(!err)
+    	response.send(body.docs);
+   
+
+  });
+  
+});
+
+
+
+
 
 
 app.get("/api/myquestions", function (request, response) {
@@ -586,6 +657,182 @@ function RenderAddPage(req, res, firstLogin) {
         res.render('addquestion', renderOptions);
     }
 }
+
+var id;
+
+app.get("/api/findviewid", function (request, response) {
+	
+	
+	id=request.query.id;
+	
+	
+	
+});
+
+
+
+app.get("/viewquestion", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+    
+	
+	
+	
+	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
+
+
+	
+    // get the attributes for the current user:
+    userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
+    	var firstLogin = !attributes.known;
+    	
+        RenderViewPage(req, res, firstLogin);
+	});
+});
+
+function RenderViewPage(req, res, firstLogin) {
+    var email = req.user.email;
+    if(req.user.email !== undefined && req.user.email.indexOf('@') != -1)
+           email = req.user.email.substr(0,req.user.email.indexOf('@'));
+    var renderOptions = {
+        name: req.user.name || email,
+        email: req.user.email,
+        id:id
+    };
+    if (firstLogin) {
+        userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+            res.render('viewquestion', renderOptions);
+         });
+    } else {
+             res.render('viewquestion', renderOptions);
+    }
+}
+
+
+
+
+
+app.get("/editquestion", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+    
+	
+	
+	
+	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
+
+
+	
+    // get the attributes for the current user:
+    userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
+    	var firstLogin = !attributes.known;
+    	
+        RenderEditPage(req, res, firstLogin);
+	});
+});
+
+function RenderEditPage(req, res, firstLogin) {
+    var email = req.user.email;
+    if(req.user.email !== undefined && req.user.email.indexOf('@') != -1)
+           email = req.user.email.substr(0,req.user.email.indexOf('@'));
+    var renderOptions = {
+        name: req.user.name || email,
+        email: req.user.email,
+        id:id
+    };
+    if (firstLogin) {
+        userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+            res.render('editquestion', renderOptions);
+         });
+    } else {
+             res.render('editquestion', renderOptions);
+    }
+}
+
+
+
+
+
+app.get("/myquestions", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+    
+	
+	
+	
+	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
+
+
+	
+    // get the attributes for the current user:
+    userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
+    	var firstLogin = !attributes.known;
+    	
+        RenderMyQuestionsPage(req, res, firstLogin);
+	});
+});
+
+function RenderMyQuestionsPage(req, res, firstLogin) {
+    var email = req.user.email;
+    if(req.user.email !== undefined && req.user.email.indexOf('@') != -1)
+           email = req.user.email.substr(0,req.user.email.indexOf('@'));
+    var renderOptions = {
+        name: req.user.name || email,
+        email: req.user.email,
+        id:id
+    };
+    if (firstLogin) {
+        userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+            res.render('myquestions', renderOptions);
+         });
+    } else {
+             res.render('myquestions', renderOptions);
+    }
+}
+
+
+
+
+
+
+app.get("/viewmyquestions", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+    
+	
+	
+	
+	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
+
+
+	
+    // get the attributes for the current user:
+    userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
+    	var firstLogin = !attributes.known;
+    	
+        RenderViewMyQuestionsPage(req, res, firstLogin);
+	});
+});
+
+function RenderViewMyQuestionsPage(req, res, firstLogin) {
+    var email = req.user.email;
+    if(req.user.email !== undefined && req.user.email.indexOf('@') != -1)
+           email = req.user.email.substr(0,req.user.email.indexOf('@'));
+    var renderOptions = {
+        name: req.user.name || email,
+        email: req.user.email,
+        id:id
+    };
+    if (firstLogin) {
+        userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+            res.render('viewmyquestions', renderOptions);
+         });
+    } else {
+             res.render('viewmyquestions', renderOptions);
+    }
+}
+
+
+
+
+
+
+
+
+
+
 
 app.get("/reviewquestion", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
     

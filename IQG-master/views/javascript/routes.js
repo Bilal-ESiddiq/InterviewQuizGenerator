@@ -12,3 +12,9 @@ function reviewQuest()
 {
 	document.location="reviewquestion";
 }
+
+function myQuestions()
+{
+	document.location="myquestions";
+}
+
