@@ -1,10 +1,10 @@
 ---
 applications:
-- name: IQGRana
+- name: interviewquizgenerator
   random-route: true
   memory: 256M
-  host: IQGRana
+  host: interviewquizgenerator
   domain: eu-gb.mybluemix.net
   services:
+  - App ID-ua
   - Cloudant NoSQL DB-ky
-  - App ID-ii

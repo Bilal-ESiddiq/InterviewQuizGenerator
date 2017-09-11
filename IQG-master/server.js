@@ -400,7 +400,64 @@ app.get("/api/myquestions", function (request, response) {
 	  
 	});
 
+app.get("/api/getCount", function (request, response) {
 
+	  if(!mydb) {
+	    
+	    return;
+	  }
+
+		  mydb.find({selector:{ status:"accepted" }},function(err, body) {
+			  
+			  
+		    if (err) {
+			        return console.log('[mydb.find] ', err.message);
+		              }
+		   
+		   
+		    if(!err)
+		    	response.send(body.docs);
+		   
+
+		  });
+		  
+	  
+	});
+
+
+
+app.get("/api/generate", function (request, response) {
+
+	  if(!mydb) {
+	    
+	    return;
+	  }
+	  var docCount;
+	  var required = request.query.number;
+	  var extra = required%3;
+	  var actual =  (required-extra)/3;
+	  
+	  //var cloud = require("cloudant");
+	  Cloudant.db.get("mydb", function(err, data) {
+		    docCount = data.doc_count;
+		});
+	  
+	  if(required>=docCount)	//Get all questions
+	  mydb.find({selector:{ reviewerid:request.query.number }},function(err, body) {
+		  
+		  
+	    if (err) {
+		        return console.log('[mydb.find] ', err.message);
+	              }
+	   
+	   
+	    if(!err)
+	    	response.send(body.docs);
+	   
+
+	  });
+	  
+	});
 
 // load local VCAP configuration  and service credentials
 var vcapLocal;
@@ -612,6 +669,36 @@ function RenderRevPage(req, res, firstLogin) {
          });
     } else {
         res.render('reviewquestion', renderOptions);
+    }
+}
+
+
+app.get("/generate", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+    
+	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
+
+    // get the attributes for the current user:
+    userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
+        var firstLogin = !attributes.known;
+        RenderGenPage(req, res, firstLogin);
+	});
+});
+
+function RenderGenPage(req, res, firstLogin) {
+    //return the protected page with user info
+    var email = req.user.email;
+    if(req.user.email !== undefined && req.user.email.indexOf('@') != -1)
+           email = req.user.email.substr(0,req.user.email.indexOf('@'));
+    var renderOptions = {
+        name: req.user.name || email
+    };
+
+    if (firstLogin) {
+        userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+            res.render('generate', renderOptions);
+         });
+    } else {
+        res.render('generate', renderOptions);
     }
 }
 
