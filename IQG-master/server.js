@@ -428,36 +428,32 @@ app.get("/api/getCount", function (request, response) {
 
 app.get("/api/generate", function (request, response) {
 
+	
+	var number=request.query.number;
+	
 	  if(!mydb) {
 	    
 	    return;
 	  }
-	  var docCount;
-	  var required = request.query.number;
-	  var extra = required%3;
-	  var actual =  (required-extra)/3;
-	  
-	  //var cloud = require("cloudant");
-	  Cloudant.db.get("mydb", function(err, data) {
-		    docCount = data.doc_count;
-		});
-	  
-	  if(required>=docCount)	//Get all questions
-	  mydb.find({selector:{ reviewerid:request.query.number }},function(err, body) {
-		  
-		  
-	    if (err) {
-		        return console.log('[mydb.find] ', err.message);
-	              }
-	   
-	   
-	    if(!err)
-	    	response.send(body.docs);
-	   
 
-	  });
+		  mydb.find({selector:{ status:"accepted" , rep: { $lt: 3} } },function(err, body) {
+			  
+			  
+		    if (err) {
+			        return console.log('[mydb.generate] ', err.message);
+		              }
+		   
+		   
+		    if(!err)
+		    	response.send(body.docs);
+		   
+
+		  });
+		  
 	  
 	});
+
+
 
 // load local VCAP configuration  and service credentials
 var vcapLocal;
