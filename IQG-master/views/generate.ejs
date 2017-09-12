@@ -49,24 +49,33 @@
 </script>
 <br>
 <br>
-<div class="w3-container">
-<h2>Start generating an exam by specifying the number of question you want:</h2>  <p>Question bank population: <span ng-model="docCount"> {{docCount}}</span></p>
-   <br>
-   <br>
-  	<input type="number" min="0" step="1" pattern="\d*" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)" ng-model=noQuestions class="w3-input w3-border w3-round " style="width:50%" name="questionNo"></input>
-  	<br>
-  	<br>
-  	<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class=" w3-btn w3-round" ng-mousedown="generateExam()" onclick="demoFromHTML()">Generate</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="returnHomepage()">Cancel</button></p>
 
+<div class="w3-container">
+<h2>Start generating an exam by specifying the number of question you want:</h2>  <p>Question bank population: <span id=docCount ng-model="docCount"> {{docCount}}</span></p>
+   <br>
+   <br>
+   <p id="incorrectInput" ng-model="incorrectInput"  ng-hide=true ></p>
+   <p class="w3-text-red"id="demo"><b></b></p>
+   <br>
+   <br>
+  	<input type="number" max="{{docCount}}" min="0" step="1" pattern="\d*" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)" id=noQuestions ng-model=noQuestions class="w3-input w3-border w3-round " style="width:50%" name="questionNo"></input>
+  	<br>
+  	<br>
+  	<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class=" w3-btn w3-round" onClick="validate()"  ng-click="generateExam()" >Generate</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="returnHomepage()">Cancel</button></p>
+<!--onclick="demoFromHTML()"-->
+</div>
+<br>
+<div class="w3-container">
+<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="demoFromHTML()">Save as PDF</button></p>
 </div>
 <div id="pdf">
-	<div ng-repeat="x in find">
-    <p class="w3-center">Q: {{ x.name }} ({{ x.estime }})</p>
+	<div name="question" ng-repeat="x in find">
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
+    <p>A. {{ x.op1 }}</p>
+    <p>B. {{ x.op2 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
     <br>
-    <p class="w3-center">A. {{ x.op1 }}</p>         			<p class="w3-center">{{ x.category }} - {{ x.subcategory }}</p>
-    <p class="w3-center">B. {{ x.op2 }}</p>						<p class="w3-center">Difficulty: {{ x.qlevel }}</p>
-    <p class="w3-center" ng-hide="op3hide" ng-model="op3" >C. {{ x.op3 }}</p>
-    <p class="w3-center" ng-hide="op4hide" ng-model="op4" >D. {{ x.op4 }}</p>
   </div>
 </div>
 
@@ -74,7 +83,15 @@
 
 <script>
     function demoFromHTML() {
-        var pdf = new jsPDF('p', 'pt', 'letter');
+    	
+    	for(var index=0;index<document.getElementsByName("question").length;index++)
+    	{
+	    	if(document.getElementsByName("op3")[index].innerText == "C." || document.getElementsByName("op3")[index].innerText == "C. " || document.getElementsByName("op3")[index].innerText == "C.  ")
+	    		document.getElementsByName("cBlock")[index].id = "bypassme";
+	    	if(document.getElementsByName("op4")[index].innerText == "D." || document.getElementsByName("op4")[index].innerText == "D. " || document.getElementsByName("op4")[index].innerText == "D.  ")
+	    		document.getElementsByName("dBlock")[index].id = "bypassme";
+    	}
+    	var pdf = new jsPDF('p', 'pt', 'letter');
         // source can be HTML-formatted string, or a reference
         // to an actual DOM element from which the text will be scraped.
         source = $('#pdf')[0];
@@ -110,10 +127,25 @@
         );
     }
     
-    
+    function validate() {
+    	var inp = document.getElementById("noQuestions").value;
+    	var count = document.getElementById("docCount").innerText;
+    	if(count < inp) {
+    		document.getElementById("demo").innerHTML = "Amount not existing in question bank";
+    		document.getElementById("incorrectInput").innerHTML="true"; 
+    	}
+    	else {
+    		document.getElementById("demo").innerHTML = "";
+    		document.getElementById("incorrectInput").innerHTML="false"; 
+    	}
+    }
+    	
     var app = angular.module('myApp', []);
 
     app.controller('myCtrl', function($scope, $http) {
+    	$scope.incorrectInput="true";
+    	
+    	//$scope.wrongNumber = false;
     	$http.get("/api/getCount").then(function (response) { $scope.counter = response.data; $scope.getCount();  });
     	
     	
@@ -121,30 +153,43 @@
     {
     	$scope.docCount = $scope.counter.length;
     };
+    
+    
+    /*$scope.$watch('noQuestions', function() {$scope.Validate();});
+    $scope.Validate=function()
+    {
+    	if(angular.equals($scope.docCount , $scope.noQuestions))
+    		$scope.wrongNumber = true;
+    	else
+    		$scope.wrongNumber = false;
+    };*/
+    
     $scope.generateExam = function ()
     {
-    	$scope.name= '';
+    	
+    	$scope.name= "rana";
     	$scope.op1 = '';
     	$scope.op2 = '';
     	$scope.op3 = '';
     	$scope.op4 = '';
-    	$scope.modelanswer = '';
-    	$scope.category = '';
-    	$scope.subcategory = '';
-    	$scope.qlevel = '';
-    	$scope.estime = '';
+    	$scope.estime = "2";
+    	
     	
     	$scope.number = $scope.noQuestions;
-    	$http({ url: "/api/generate",  method: "GET", params: {"number": $scope.number}}).then(function (response) { $scope.find = response.data;  $scope.check;});
+    	$http({ url: "/api/generate",  method: "GET", params: {"number": $scope.number}}).then(function (response) { $scope.find = response.data;  $scope.check();});
     
     };
     
     $scope.check=function()
     {
-    	if($scope.op3 == "")
+    	if($scope.op3 == " " || $scope.op3 == "")
     		$scope.op3hide=true;
-    	if($scope.op4 == "")
+    	else
+    		$scope.op3hide=false;
+    	if($scope.op4 == " "  || $scope.op4 == "")
     		$scope.op4hide=true;
+    	else
+    		$scope.op4hide=false;
     };
     
     

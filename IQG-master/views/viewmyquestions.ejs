@@ -31,7 +31,7 @@
 <!-- Nav Bar -->
 <div style="background-color:rgb(118,50,63);" class="w3-bar">
   <label style="font-family:Courier; font-size:18px; color:rgb(233,231,218);" class="w3-left w3-bar-item ">Signed in as <span id="userNameSpan"></span></label>
-  <button id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></button>
+  <button href="/"  id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></button>
   <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"><b>My Questions</b></button>   
 </div> 
 <!-- End Nav Bar -->
@@ -173,7 +173,7 @@
  
   <label>Estimate Time in Minutes:</label>
   <br>
-    <input id =editestime class="w3-input w3-border" type="number" ng-model="editestime" style="width:50%" placeholder="Estimate Time">
+    <input id =editestime class="w3-input w3-border" type="number" type="number" min="1" step="1" pattern="\d*" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)" ng-model="editestime" style="width:50%" placeholder="Estimate Time">
   <br>
  <br>
  

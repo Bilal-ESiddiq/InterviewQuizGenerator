@@ -170,7 +170,7 @@
  
   <label>Estimate Time in Minutes:</label>
   <br>
-    <input id =editestime class="w3-input w3-border" type="number" ng-model="editestime" style="width:50%" placeholder="Estimate Time">
+    <input id =editestime class="w3-input w3-border" type="number" min="1" step="1" pattern="\d*" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)" ng-model="editestime" style="width:50%" placeholder="Estimate Time">
   <br>
  <br>
  
