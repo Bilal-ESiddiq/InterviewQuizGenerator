@@ -54,7 +54,7 @@
 <h2>Start generating an exam by specifying the number of question you want:</h2>  <p>Question bank population: <span id=docCount ng-model="docCount"> {{docCount}}</span></p>
    <br>
    <br>
-   <p id="incorrectInput" ng-model="incorrectInput"  ng-hide=true >true</p>
+   <p id="incorrectInput" ng-model="incorrectInput"  ng-hide=true ></p>
    <p class="w3-text-red"id="demo"><b></b></p>
    <br>
    <br>
@@ -65,24 +65,33 @@
 <!--onclick="demoFromHTML()"-->
 </div>
 <br>
-<button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="demoFromHTML()">Save as PDF</button>
+<div class="w3-container">
+<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="demoFromHTML()">Save as PDF</button></p>
+</div>
 <div id="pdf">
-	<div ng-repeat="x in find">
-    <p>Q: {{ x.name }} ({{ x.estime }})</p>
-    <br>
+	<div name="question" ng-repeat="x in find">
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
     <p>A. {{ x.op1 }}</p>
     <p>B. {{ x.op2 }}</p>
-    <p ng-hide="op3hide" ng-model="op3" >C. {{ x.op3 }}</p>
-    <p ng-hide="op4hide" ng-model="op4" >D. {{ x.op4 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
+    <br>
   </div>
 </div>
 
 </body>
 
 <script>
-	var incorrectInput = true;
     function demoFromHTML() {
-        var pdf = new jsPDF('p', 'pt', 'letter');
+    	
+    	for(var index=0;index<document.getElementsByName("question").length;index++)
+    	{
+	    	if(document.getElementsByName("op3")[index].innerText == "C." || document.getElementsByName("op3")[index].innerText == "C. " || document.getElementsByName("op3")[index].innerText == "C.  ")
+	    		document.getElementsByName("cBlock")[index].id = "bypassme";
+	    	if(document.getElementsByName("op4")[index].innerText == "D." || document.getElementsByName("op4")[index].innerText == "D. " || document.getElementsByName("op4")[index].innerText == "D.  ")
+	    		document.getElementsByName("dBlock")[index].id = "bypassme";
+    	}
+    	var pdf = new jsPDF('p', 'pt', 'letter');
         // source can be HTML-formatted string, or a reference
         // to an actual DOM element from which the text will be scraped.
         source = $('#pdf')[0];
@@ -134,6 +143,7 @@
     var app = angular.module('myApp', []);
 
     app.controller('myCtrl', function($scope, $http) {
+    	$scope.incorrectInput="true";
     	
     	//$scope.wrongNumber = false;
     	$http.get("/api/getCount").then(function (response) { $scope.counter = response.data; $scope.getCount();  });
@@ -162,28 +172,21 @@
     	$scope.op2 = '';
     	$scope.op3 = '';
     	$scope.op4 = '';
-    	$scope.modelanswer = '';
-    	$scope.category = '';
-    	$scope.subcategory = '';
-    	$scope.qlevel = '';
     	$scope.estime = "2";
-    
-    	if($scope.incorrectInput == "false")
-    	{
- 
+    	$scope.
+    	
     	$scope.number = $scope.noQuestions;
     	$http({ url: "/api/generate",  method: "GET", params: {"number": $scope.number}}).then(function (response) { $scope.find = response.data;  $scope.check();});
     
-    	}
     };
     
     $scope.check=function()
     {
-    	if($scope.op3 == "")
+    	if($scope.op3 == " " || $scope.op3 == "")
     		$scope.op3hide=true;
     	else
     		$scope.op3hide=false;
-    	if($scope.op4 == "")
+    	if($scope.op4 == " "  || $scope.op4 == "")
     		$scope.op4hide=true;
     	else
     		$scope.op4hide=false;
