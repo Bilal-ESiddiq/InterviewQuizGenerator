@@ -172,7 +172,7 @@
           <br>
          <br>
           
-           <input id="estTime" type="text" class="w3-input w3-border w3-round " placeholder="Time Estmate in Minutes" aria-describedby="sizing-addon1" value=""  /><br>
+           <input id="estTime" type="number" class="w3-input w3-border w3-round " placeholder="Time Estmate in Minutes" aria-describedby="sizing-addon1"   /><br>
 		 <br>
          <br>
          
@@ -298,7 +298,7 @@
         	var category=$('#category').val();
         	var subcategory=$('#subcategory').val();
         	var qlevel=$('#qlevel').val();
-        	var estime=$('#estTime').val();
+        	var estime=Number($('#estTime').val());
         	var adderid='<%= email %>';
         	var reviewerid=$('#receiverID').val();;
         	var status="pending";

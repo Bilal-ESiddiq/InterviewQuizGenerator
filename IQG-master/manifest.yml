@@ -1,9 +1,9 @@
 ---
 applications:
-- name: interviewquizgenerator
+- name: interviewquestionsgenerator
   random-route: true
   memory: 256M
-  host: interviewquizgenerator
+  host: interviewquestionsgenerator
   domain: eu-gb.mybluemix.net
   services:
   - App ID-qw
