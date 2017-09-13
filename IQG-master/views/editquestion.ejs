@@ -4,20 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"   content="width=device-width, initial-scale=1">
     <title>IQG</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-      <link href="stylesheets/w3.css" rel="stylesheet">
-      <script type="text/javascript" src="javascript/scripts.js"></script>
-      <script type="text/javascript" src="javascript/routes.js"></script>
+    <link href="/stylesheets/w3.css" rel="stylesheet">
+      
+      <script type="text/javascript" src="/javascript/scripts.js"></script>
+      <script type="text/javascript" src="/javascript/routes.js"></script>
     
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="javascript/antixss.js" type="text/javascript"></script>
+   
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     
 </head>
@@ -31,8 +32,8 @@
 <!-- Nav Bar -->
 <div style="background-color:rgb(118,50,63);" class="w3-bar">
   <label style="font-family:Courier; font-size:18px; color:rgb(233,231,218);" class="w3-left w3-bar-item ">Signed in as <span id="userNameSpan"></span></label>
-  <button id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></button>
-  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"><b>My Questions</b></button>   
+  <button href="/" id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='/images/logout-icon.png'></button>
+  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"  onclick="myQuestionsSpecialRoute()" ><b>My Questions</b></button>   
 </div> 
 <!-- End Nav Bar -->
 
@@ -63,6 +64,7 @@
 
 
 
+<h2 class=w3-red id=NotFound ng-model="NotFound" ng-hide="NotFoundFlag"  ></h2>
 <form  ng-hide="Edithideform">
 <br>
 <br>
@@ -180,7 +182,7 @@
  <br>
  
  
-<button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple"  onclick="updateQuestion()" ng-disabled="incomplete">&#10004; Save Changes </button>  <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="returnHomepage()" > Cancel</button>
+<button  style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round w3-ripple"  onclick="updateQuestion()" ng-disabled="incomplete">&#10004; Save Changes </button>  <button style="background-color:rgb(118,50,63); color:rgb(205,216,199);" class="w3-btn w3-round" onclick="goBack()" > Cancel</button>
 <br>
 <br>
 
@@ -206,7 +208,10 @@
 
 
 
-
+function goBack()
+{
+	window.history.back();
+}
 
 
 
@@ -240,17 +245,19 @@ function updateQuestion()
 	var day = currentTime.getDate();
 	var year = currentTime.getFullYear();
 	var date= day+"/"+month+"/"+year;
+	var url='<%= url %>';
+	
 	
 	
 	 $.ajax({
 		  method: "POST",
-		  url: "./api/updateQuestion",
+		  url: "../api/updateQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date,"url":url})
        })	 
        .done(function(data) {
     	   alert("Question is updated successfully");
-    	   returnHomepage();
+    	   goBack();
         });
 		
 }
@@ -258,10 +265,7 @@ function updateQuestion()
 
 
 
-function goBack()
-{
-	window.history.back();
-}
+
 
 
 
@@ -270,17 +274,18 @@ var app = angular.module('myApp', []);
 
 app.controller('myCtrl', function($scope, $http) {
 	
-	$scope.name= '';
-	$scope.op1 = '';
-	$scope.op2 = '';
-	$scope.op3 = '';
-	$scope.op4 = '';
-	$scope.modelanswer = '';
-	$scope.category = '';
-	$scope.subcategory = '';
-	$scope.qlevel = '';
-	$scope.estime = '';
-	$scope.comment = '';
+    
+	$scope.name= "";
+	$scope.op1 = "";
+	$scope.op2 = "";
+	$scope.op3 = "";
+	$scope.op4 = "";
+	$scope.modelanswer = "";
+	$scope.category = "";
+	$scope.subcategory = "";
+	$scope.qlevel = "";
+	$scope.estime = "";
+	$scope.comment = "";
 	$scope.userEmail = '<%= email %>';
     $scope.userID= '<%= id %>';
 	$http({ url: "/api/findquestions",  method: "GET", params: {"userEmail": $scope.userEmail}}).then(function (response) { $scope.find = response.data;  $scope.editUser(); });
@@ -306,17 +311,18 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.editUser = function() 
 	{
 		
-		$scope.editname= '';
-		$scope.editop1 = '';
-		$scope.editop2 = '';
-		$scope.editop3 = '';
-		$scope.editop4 = '';
-		$scope.editmodelanswer = '';
-		$scope.editcategory = '';
-		$scope.editsubcategory = '';
-		$scope.editqlevel = '';
-		$scope.editestime = '';
-		$scope.editcomment = '';
+		
+		$scope.editname= "";
+		$scope.editop1 = "";
+		$scope.editop2 = "";
+		$scope.editop3 = "";
+		$scope.editop4 = "";
+		$scope.editmodelanswer = "";
+		$scope.editcategory = "";
+		$scope.editsubcategory = "";
+		$scope.editqlevel = "";
+		$scope.editestime = "";
+		$scope.editcomment = "";
 		
 	    $scope.Edithideform = false;
 	   
@@ -340,10 +346,15 @@ app.controller('myCtrl', function($scope, $http) {
 		    	    $scope.editestime=$scope.find[i].estime;
 		    	    $scope.editcomment=$scope.find[i].comment;
 		    	    
+		    	    
 	    		}
 	    }	
 	    
 	    
+	 
+	    
+	    
+	   
 	    $http({ url: "/api/findsubcategory",  method: "GET", params: {"categoryname": $scope.editcategory}}).then(function (response) { $scope.findsubcategory = response.data;});
 		
 	    // for option list 
@@ -381,7 +392,7 @@ app.controller('myCtrl', function($scope, $http) {
 	    	 	$scope.editoption2=false;
 	    	 	$scope.Addoption=false;
 	    	}
-	    
+	  
 	    
 	};
 

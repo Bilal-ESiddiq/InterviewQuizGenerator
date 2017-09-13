@@ -4,20 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"   content="width=device-width, initial-scale=1">
     <title>IQG</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-      <link href="stylesheets/w3.css" rel="stylesheet">
-      <script type="text/javascript" src="javascript/scripts.js"></script>
-      <script type="text/javascript" src="javascript/routes.js"></script>
+    <link href="/stylesheets/w3.css" rel="stylesheet">
+      
+      <script type="text/javascript" src="/javascript/scripts.js"></script>
+      <script type="text/javascript" src="/javascript/routes.js"></script>
     
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="javascript/antixss.js" type="text/javascript"></script>
+   
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     
 </head>
@@ -31,8 +32,8 @@
 <!-- Nav Bar -->
 <div style="background-color:rgb(118,50,63);" class="w3-bar">
   <label style="font-family:Courier; font-size:18px; color:rgb(233,231,218);" class="w3-left w3-bar-item ">Signed in as <span id="userNameSpan"></span></label>
-  <button href="/"  id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></button>
-  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"><b>My Questions</b></button>   
+  <button href="/"  id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='/images/logout-icon.png'></button>
+  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item" onclick="myQuestionsSpecialRoute()" ><b>My Questions</b></button>   
 </div> 
 <!-- End Nav Bar -->
 
@@ -60,6 +61,7 @@
 <br>
 <br>
 
+ <h2 class=w3-text-red id=NotFoundError ng-model="NotFoundError" ng-hide="NotFoundFlag"  >{{NotFoundError}}</h2>  
 
 <div class="w3-container">
 
@@ -78,7 +80,7 @@
   <input id=editrevid  class="w3-input w3-border" type="text" ng-model="editrevid"   ng-hide="EditrevID">
  
   
-  <input id=editadderid  class="w3-input w3-border" type="text" ng-model="editadderid"   ng-hide="EditadderID">
+  <input id=editreviewerid  class="w3-input w3-border" type="text" ng-model="editreviewerid"   ng-hide="EditreviewerID">
  
   
     <label>Question:</label>
@@ -283,6 +285,12 @@
 <script>
 
 
+
+function goBack()
+{
+	window.history.back();
+}
+
 function updateQuestion()
 
 {
@@ -298,40 +306,36 @@ function updateQuestion()
 	var subcategory=$('#editsubcategory').val();
 	var qlevel=$('#editqlevel').val();
 	var estime=Number($('#editestime').val());
-	var adderid=$('#editadderid').val();
-	var reviewerid='<%= email %>';
+	var adderid= '<%= email %>';
+	var reviewerid=$('#editreviewerid').val();
 	var status="pending";
 	var comment=$('#editcomment').val();
 	var repetition=0;
 	var type="question";
-	var adderemail=$('#editadderid').val();
-	var revieweremail='<%= email %>';
+	var adderemail='<%= email %>'; 
+	var revieweremail=$('#editreviewerid').val();
 	var currentTime = new Date();
 	var month = currentTime.getMonth() + 1;
 	var day = currentTime.getDate();
 	var year = currentTime.getFullYear();
 	var date= day+"/"+month+"/"+year;
-	
+	var url='<%= url %>';
 	
 	 $.ajax({
 		  method: "POST",
-		  url: "./api/updateQuestion",
+		  url: "../api/updatemyQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date,"url":url})
        })	 
        .done(function(data) {
     	   alert("Question is updated successfully");
-    	   returnHomepage();
+    	   goBack();
         });
 		
 }
 
 
 
-function goBack()
-{
-	window.history.back();
-}
 
 
 
@@ -340,6 +344,7 @@ var app = angular.module('myApp', []);
 
 app.controller('myCtrl', function($scope, $http) {
 	
+	$scope.NotFoundFlag=true;
 	$scope.name= '';
 	$scope.op1 = '';
 	$scope.op2 = '';
@@ -356,7 +361,8 @@ app.controller('myCtrl', function($scope, $http) {
 	
 	$scope.EditrevID=true;
 	$scope.EditID = true;	
-	$scope.EditadderID = true;
+	$scope.EditreviewerID = true;
+	$scope.EditadderID=true;
 	
 	$scope.edit = false;
 	$scope.error = false;
@@ -376,11 +382,15 @@ app.controller('myCtrl', function($scope, $http) {
 	
 	$scope.view=function()
 	{
+		$scope.NotFound=0;
 		 for(var i=0;i<$scope.find.length;i++)
 		    {
 		    	
 		    	if($scope.find[i]._id == $scope.userID)
 		    		{
+		    		
+		    		if($scope.find[i].status =="pending")
+		    	    	$scope.editQuestion=false;
 			    		$scope.name = $scope.find[i].name;
 			    	    $scope.op1 = $scope.find[i].op1;
 			    	    $scope.op2 = $scope.find[i].op2;
@@ -394,17 +404,24 @@ app.controller('myCtrl', function($scope, $http) {
 			    	    $scope.comment=$scope.find[i].comment;
 			    	    $scope.id=$scope.find[i]._id;
 			    	    $scope.revid=$scope.find[i]._rev;
-			    	    $scope.adderid=$scope.find[i].adderid;
+
 			    	    $scope.status=$scope.find[i].status;
+			    	    $scope.adderid=$scope.find[i].adderid;
 			    	    
+			    	   $scope.NotFound=1;
 			    	    
-			    	    if($scope.find[i].status =="pending")
-			    	    	$scope.editQuestion=false;
 			    	    
 		    		}
 		    }	
 		
 		
+		 if($scope.NotFound==0) 
+		 {  
+		   $scope.NotFoundFlag=false;
+		   $scope.NotFoundError="You are not elligible to see this page";
+		   $scope.Viewhideform=true;
+		 }
+		 
 		 
 		 if($scope.op3 == " " || $scope.op3=="" )
 			   $scope.op3hide=true;
@@ -458,7 +475,7 @@ app.controller('myCtrl', function($scope, $http) {
 		    	    $scope.editop4 = $scope.find[i].op4;
 		    	    $scope.editid=$scope.find[i]._id;
 		    	    $scope.editrevid=$scope.find[i]._rev;
-		    	    $scope.editadderid=$scope.find[i].adderid;
+		    	    $scope.editreviewerid=$scope.find[i].reviewerid;
 		    	    $scope.editmodelanswer=$scope.find[i].modelanswer;
 		    	    $scope.editcategory=$scope.find[i].category;
 		    	    $scope.editsubcategory=$scope.find[i].subcategory;

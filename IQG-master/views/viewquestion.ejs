@@ -4,20 +4,21 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport"   content="width=device-width, initial-scale=1">
     <title>IQG</title>
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-      <link href="stylesheets/w3.css" rel="stylesheet">
-      <script type="text/javascript" src="javascript/scripts.js"></script>
-      <script type="text/javascript" src="javascript/routes.js"></script>
+    <link href="/stylesheets/w3.css" rel="stylesheet">
+      
+      <script type="text/javascript" src="/javascript/scripts.js"></script>
+      <script type="text/javascript" src="/javascript/routes.js"></script>
     
         <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="javascript/antixss.js" type="text/javascript"></script>
+   
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
     
 </head>
@@ -31,8 +32,8 @@
 <!-- Nav Bar -->
 <div style="background-color:rgb(118,50,63);" class="w3-bar">
   <label style="font-family:Courier; font-size:18px; color:rgb(233,231,218);" class="w3-left w3-bar-item ">Signed in as <span id="userNameSpan"></span></label>
-  <button id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></button>
-  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"><b>My Questions</b></button>   
+  <button href="/" id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='/images/logout-icon.png'></button>
+  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item" onclick="myQuestionsSpecialRoute()" ><b>My Questions</b></button>   
 </div> 
 <!-- End Nav Bar -->
 
@@ -61,7 +62,8 @@
 <br>
 
   
-   
+<h2 class=w3-text-red id=NotFoundError ng-model="NotFoundError" ng-hide="NotFoundFlag"  >{{NotFoundError}}</h2>  
+ 
   
   
 
@@ -183,16 +185,17 @@ function declineQuestion()
 	var revieweremail='<%= email %>';
 	var message=$('#message').val();
 	
+	
 	 $.ajax({
 		  method: "POST",
-		  url: "./api/declineQuestion",
+		  url: "../api/declineQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name":name,"adderemail":adderemail,"revieweremail":revieweremail})
+		  data: JSON.stringify({"id":id,"rev":rev,"name":name,"adderemail":adderemail,"revieweremail":revieweremail,"message":message})
        })	 
        .done(function(data)
        {
     	   alert("Question is deleted successfully ");
-    	   returnHomepage();
+    	   goBack();
         });
 		
 }
@@ -228,18 +231,18 @@ function acceptQuestion()
 	var year = currentTime.getFullYear();
 	var date= day+"/"+month+"/"+year;
 	var type="question";
-	
+	var url='<%= url %>';
 
 	 $.ajax({
 		  method: "POST",
-		  url: "./api/acceptQuestion",
+		  url: "../api/acceptQuestion",
 		  contentType: "application/json",
-		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date})
+		  data: JSON.stringify({"id":id,"rev":rev,"name" : name,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":repetition,"type":type,"adderemail":adderemail,"revieweremail":revieweremail,"date":date,"url":url})
        })	 
        .done(function(data)
        {
     	   alert("Question is accepted ");
-    	   returnHomepage();
+    	   goBack();
         });
 		
 }
@@ -250,6 +253,7 @@ var app = angular.module('myApp', []);
 
 app.controller('myCtrl', function($scope, $http) {
 	
+	$scope.NotFoundFlag=true;
 	$scope.name= '';
 	$scope.op1 = '';
 	$scope.op2 = '';
@@ -280,6 +284,7 @@ app.controller('myCtrl', function($scope, $http) {
 	
 	$scope.view=function()
 	{
+		var flagNotFound=0;
 		 for(var i=0;i<$scope.find.length;i++)
 		    {
 		    	
@@ -299,6 +304,7 @@ app.controller('myCtrl', function($scope, $http) {
 			    	    $scope.id=$scope.find[i]._id;
 			    	    $scope.revid=$scope.find[i]._rev;
 			    	    $scope.adderid=$scope.find[i].adderid;
+			    	    flagNotFound=1;
 			    	    
 		    		}
 		    }	
@@ -310,6 +316,14 @@ app.controller('myCtrl', function($scope, $http) {
 			
 		if($scope.op4 =="")
 				   $scope.op4hide=true;
+		
+		  if(flagNotFound==0) 
+			 {  
+			   
+			  $scope.NotFoundFlag=false;
+			   $scope.NotFoundError="You are not elligible to see this page";
+			   $scope.Viewhideform=true;
+			 }
 		 
 		
 		

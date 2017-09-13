@@ -18,3 +18,7 @@ function myQuestions()
 	document.location="myquestions";
 }
 
+function myQuestionsSpecialRoute()
+{
+	document.location="../myquestions";
+}
