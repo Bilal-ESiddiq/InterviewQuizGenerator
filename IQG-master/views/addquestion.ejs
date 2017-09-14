@@ -43,6 +43,8 @@
  
         <div id="nameInput" class="w3-container ">
         
+        
+        <form>
         	 <p class="w3-text-red"id="demo"><b></b></p>
              <br>
              <br>
@@ -53,7 +55,7 @@
                   
           
        
-           <select id="category" onchange="showinputsubcategory()"  ng-model="category" ng-change="changesubcategory()"  class="w3-select w3-border w3-round " name="option">
+           <select id="category" onchange="showinputsubcategory()"  ng-model="category" ng-change="changesubcategory()" style="width:50%" class="w3-select w3-border w3-round " name="option">
 			    <option value="" disabled selected>Choose Category..</option>
 			    <option ng-repeat="x in findcategory" value={{x.name}}>{{x.name}}</option>
 			  </select>
@@ -81,7 +83,7 @@
             
             
            <div  id="subcategorycontainer"  >        
-		           <select id="subcategory"   class="w3-select w3-border w3-round " name="option">
+		           <select id="subcategory"   class="w3-select w3-border w3-round " style="width:50%"  name="option">
 					    <option value="" disabled selected>Choose a subcategory..</option>
 					    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
 					  </select>
@@ -172,7 +174,7 @@
           <br>
          <br>
           
-           <input id="estTime" type="number" class="w3-input w3-border w3-round " placeholder="Time Estmate in Minutes" aria-describedby="sizing-addon1"   /><br>
+           <input id="estTime" style="width:50%" type="number" class="w3-input w3-border w3-round " placeholder="Time Estmate in Minutes" aria-describedby="sizing-addon1"   /><br>
 		 <br>
          <br>
          
@@ -185,6 +187,8 @@
          <br>
          <br>
         	<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="submitQuestion()" >Submit</button>    <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="returnHomepage()" >Cancel</button></p>
+        
+        </form>
         </div>
         <p id="response" class="lead text-center"></p>
 
