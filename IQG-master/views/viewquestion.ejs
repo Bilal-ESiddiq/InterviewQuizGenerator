@@ -217,7 +217,7 @@ function acceptQuestion()
 	var category= document.getElementById("category").innerHTML;
 	var subcategory=document.getElementById("subcategory").innerHTML;
 	var qlevel= document.getElementById("qlevel").innerHTML;
-	var estime= document.getElementById("estime").innerHTML;
+	var estime= Number(document.getElementById("estime").innerHTML);
 	var adderid=$('#adderid').val();
 	var reviewerid='<%= email %>';
 	var status="accepted";
