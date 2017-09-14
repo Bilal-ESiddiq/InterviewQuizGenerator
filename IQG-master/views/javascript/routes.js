@@ -22,3 +22,7 @@ function myQuestionsSpecialRoute()
 {
 	document.location="../myquestions";
 }
+function reviewQuestSpecialRoute()
+{
+	document.location="../reviewquestion";
+}
