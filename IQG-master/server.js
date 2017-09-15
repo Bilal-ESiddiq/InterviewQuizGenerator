@@ -271,7 +271,7 @@ app.post("/api/expireQuestion", function (request, response) {
 	  mydb.destroy(id,rev, function(err, body, header)
 	 
 	   {
-		  
+		 
 		  if (err) {
 		      return console.log('[mydb.decline] ', err.message);
 		    }
