@@ -9,8 +9,7 @@
 
     <!-- Bootstrap -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="stylesheets/styles.css" rel="stylesheet">
-      <link href="stylesheets/w3.css" rel="stylesheet">
+      <link href="/stylesheets/w3.css" rel="stylesheet">
       <script type="text/javascript" src="javascript/scripts.js"></script>
       <script type="text/javascript" src="javascript/routes.js"></script>
       
@@ -61,22 +60,61 @@
   	<input type="number" max="{{docCount}}" min="0" step="1" pattern="\d*" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)" id=noQuestions ng-model=noQuestions class="w3-input w3-border w3-round " style="width:50%" name="questionNo"></input>
   	<br>
   	<br>
-  	<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class=" w3-btn w3-round" onClick="validate()"  ng-click="generateExam()" >Generate</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="returnHomepage()">Cancel</button></p>
-<!--onclick="demoFromHTML()"-->
+  	<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class=" w3-btn w3-round" onClick="validate()" id="generateButton"  ng-click="generateExam()" >Generate</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="cancelButton" onclick="returnHomepage()">Cancel</button></p>
+
 </div>
 <br>
 <div class="w3-container">
-<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" onclick="demoFromHTML()">Save as PDF</button></p>
+<p id="successMsg" ng-model="successMsg">{{successMsg}}</p>
+<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="saveButton" ng-click="saveChanges()" onclick="demoFromHTML()">Save as PDF</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="backButton" onclick="returnHomepage()">&#8592; Cancel and Go Back</button></p></p>
+<p id="saveMsg" ng-model="saveMsg">{{saveMsg}}</p>
+<br>
+<p><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="doneButton" onclick="returnHomepage()">Return to Homepage</button></p>
+<!--ng-hide={{notCreated}}-->
 </div>
-<div id="pdf">
-	<div name="question" ng-repeat="x in find">
+<div class="w3-hide" id="pdf">
+<h1>IBM Interview Exam</h1>
+	<p class="w3-center">Break</p>
+	<p class="w3-center">Break</p>
+	<h3>Please answer all questions</h3>
+	<p class="w3-center">Break</p>
+	<h5>Estimate Time: {{estimateTime}} mins</h5>
+	<p class="w3-center">Break</p>
+	<p class="w3-center">Break</p>
+
+<h2 id="begTitle">Beginner Questions:</h2>
+	<p class="w3-center">Break</p>
+	<p class="w3-center">Break</p>
+	<div name="question" ng-repeat="x in begQuests">
     <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
     <p>A. {{ x.op1 }}</p>
     <p>B. {{ x.op2 }}</p>
     <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
     <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
-    <br>
-    <br>
+    <p class="w3-center">Break</p>
+    <p class="w3-center">Break</p>
+  </div>
+<h2 id="intTitle">Intermediate Questions:</h2>
+  <p class="w3-center">Break</p>
+  <div name="question" ng-repeat="x in intQuests">
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
+    <p>A. {{ x.op1 }}</p>
+    <p>B. {{ x.op2 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
+    <p class="w3-center">Break</p>
+    <p class="w3-center">Break</p>
+  </div>
+<h2 id="advTitle">Advanced Questions:</h2>
+  <p class="w3-center">Break</p>
+  <div name="question" ng-repeat="x in advQuests">
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
+    <p>A. {{ x.op1 }}</p>
+    <p>B. {{ x.op2 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
+    <p class="w3-center">Break</p>
+    <p class="w3-center">Break</p>
   </div>
 </div>
 
@@ -92,7 +130,7 @@
 	    	if(document.getElementsByName("op4")[index].innerText == "D." || document.getElementsByName("op4")[index].innerText == "D. " || document.getElementsByName("op4")[index].innerText == "D.  ")
 	    		document.getElementsByName("dBlock")[index].id = "bypassme";
     	}
-    	var pdf = new jsPDF('p', 'pt', 'letter');
+    	var pdf = new jsPDF('p', 'pt', 'a4');
         // source can be HTML-formatted string, or a reference
         // to an actual DOM element from which the text will be scraped.
         source = $('#pdf')[0];
@@ -130,7 +168,7 @@
     
     function validate() {
     	var inp = document.getElementById("noQuestions").value;
-    	var count = document.getElementById("docCount").innerText;
+    	var count = parseInt(document.getElementById("docCount").innerText);
     	if(count < inp) {
     		document.getElementById("demo").innerHTML = "Amount not existing in question bank";
     		document.getElementById("incorrectInput").innerHTML="true"; 
@@ -145,8 +183,10 @@
 
     app.controller('myCtrl', function($scope, $http) {
     	$scope.incorrectInput="true";
-    	
-    	//$scope.wrongNumber = false;
+    	document.getElementById('saveButton').style.visibility = "hidden";
+    	document.getElementById('backButton').style.visibility = "hidden";
+    	document.getElementById('doneButton').style.visibility = "hidden";
+    	$scope.successMsg = "";
     	$http.get("/api/getCount").then(function (response) { $scope.counter = response.data; $scope.getCount();  });
     	
     	
@@ -167,19 +207,264 @@
     
     $scope.generateExam = function ()
     {
-    	
-    	$scope.name= "rana";
-    	$scope.op1 = '';
-    	$scope.op2 = '';
-    	$scope.op3 = '';
-    	$scope.op4 = '';
-    	$scope.estime = "2";
-
-    	
     	$scope.number = $scope.noQuestions;
-    	$http({ url: "/api/generate",  method: "GET", params: {"number": $scope.number}}).then(function (response) { $scope.find = response.data;  $scope.check();});
-    
+    	$http({ url: "/api/generate",  method: "GET"}).then(function (response) { $scope.find = response.data; $scope.populate();  $scope.check();});
+    	
     };
+    
+    $scope.saveChanges = function ()
+    {
+    	var deleteFlag;
+    	for(var i=0; i<$scope.begQuests.length; i++) {
+    		var rep=$scope.begQuests[i].rep+1;
+    		if(rep==3)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.begQuests[i]._id;
+        	var rev=$scope.begQuests[i]._rev;
+        	var name =$scope.begQuests[i].name;
+        	var op1= $scope.begQuests[i].op1;
+        	var op2= $scope.begQuests[i].op2;
+        	var op3= $scope.begQuests[i].op3;
+        	var op4= $scope.begQuests[i].op4;
+        	var modelanswer=$scope.begQuests[i].modelanswer;
+        	var category= $scope.begQuests[i].category;
+        	var subcategory=$scope.begQuests[i].subcategory;
+        	var qlevel= $scope.begQuests[i].qlevel;
+        	var estime= $scope.begQuests[i].estime;
+        	var adderid=$scope.begQuests[i].adderid;
+        	var reviewerid=$scope.begQuests[i].reviewerid;
+        	var status=$scope.begQuests[i].status;
+        	var comment=$scope.begQuests[i].comment;
+        	var date = $scope.begQuests[i].date;
+        	var type=$scope.begQuests[i].type;
+        	if(deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+    	}
+    	
+    	for(var i=0; i<$scope.intQuests.length; i++) {
+    		var rep=$scope.intQuests[i].rep+1;
+    		if(rep==3)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.intQuests[i]._id;
+        	var rev=$scope.intQuests[i]._rev;
+        	var name =$scope.intQuests[i].name;
+        	var op1= $scope.intQuests[i].op1;
+        	var op2= $scope.intQuests[i].op2;
+        	var op3= $scope.intQuests[i].op3;
+        	var op4= $scope.intQuests[i].op4;
+        	var modelanswer=$scope.intQuests[i].modelanswer;
+        	var category= $scope.intQuests[i].category;
+        	var subcategory=$scope.intQuests[i].subcategory;
+        	var qlevel= $scope.intQuests[i].qlevel;
+        	var estime= $scope.intQuests[i].estime;
+        	var adderid=$scope.intQuests[i].adderid;
+        	var reviewerid=$scope.intQuests[i].reviewerid;
+        	var status=$scope.intQuests[i].status;
+        	var comment=$scope.intQuests[i].comment;
+        	var date = $scope.intQuests[i].date;
+        	var type=$scope.intQuests[i].type;
+        	if(deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+    	}
+    	
+    	
+    	for(var i=0; i<$scope.advQuests.length; i++) {
+    		var rep=$scope.advQuests[i].rep+1;
+    		console.log("repetition = " + rep);
+    		if(rep==3)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.advQuests[i]._id;
+    		console.log("id = " + id);
+    		var rev=$scope.advQuests[i]._rev;
+    		console.log("rev = " + rev);
+        	var name =$scope.advQuests[i].name;
+        	console.log("name = " + name);
+        	var op1= $scope.advQuests[i].op1;
+        	var op2= $scope.advQuests[i].op2;
+        	var op3= $scope.advQuests[i].op3;
+        	var op4= $scope.advQuests[i].op4;
+        	var modelanswer=$scope.advQuests[i].modelanswer;
+        	var category= $scope.advQuests[i].category;
+        	var subcategory=$scope.advQuests[i].subcategory;
+        	var qlevel= $scope.advQuests[i].qlevel;
+        	var estime= $scope.advQuests[i].estime;
+        	var adderid=$scope.advQuests[i].adderid;
+        	var reviewerid=$scope.advQuests[i].reviewerid;
+        	var status=$scope.advQuests[i].status;
+        	var comment=$scope.advQuests[i].comment;
+        	var date = $scope.advQuests[i].date;
+        	var type=$scope.advQuests[i].type;
+        	if(deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+    	}
+    	$scope.saveMsg="All records updated successfully!";
+    	document.getElementById('saveButton').style.visibility = "hidden";
+    	document.getElementById('backButton').style.visibility = "hidden";
+    	document.getElementById('doneButton').style.visibility = "visible";
+    };
+    
+    $scope.populate=function() {
+    	$scope.Begin = [];
+    	$scope.Inter = [];
+    	$scope.Advan = [];
+    	for(var i=0;i<$scope.find.length;i++) {
+    		if($scope.find[i].qlevel == "Easy")
+    			$scope.Begin.push($scope.find[i]);
+    		else if ($scope.find[i].qlevel == "Medium")
+    			$scope.Inter.push($scope.find[i]);
+    		else
+    			$scope.Advan.push($scope.find[i]);
+    	}
+    	
+    	var amount = Math.floor($scope.noQuestions/3);
+    	console.log("Amount = "+amount);
+    	var extra = Math.floor($scope.noQuestions%3);
+    	console.log("Extra = "+extra);
+    	var begCount = $scope.Begin.length;
+    	var intCount = $scope.Inter.length;
+    	var advCount = $scope.Advan.length;
+    	console.log("begCount = "+begCount);
+    	console.log("intCount = "+intCount);
+    	console.log("advCount = "+advCount);
+    	var begActual = amount;
+    	var intActual = amount;
+    	var advActual = amount+extra;
+    	
+    	
+    	//Cases for amount of questions in each level
+    	if(begCount < amount) { //0##
+    		if(intCount < amount) {	//00#
+    			if(advCount < amount+extra) { //000
+    				begActual = begCount;
+    				intActual = intCount;
+    				advActual = advCount;
+    			}
+    			else {	//001
+    				begActual = begCount;
+    				intActual = intCount;
+    				var leftover = 2*amount - begCount - intCount;
+    				advActual = amount+extra+leftover;
+    			}
+    		}
+    		else {	//01#
+    			if(advCount < amount+extra) { //010
+    				begActual = begCount;
+    				advActual = advCount;
+    				var leftover = 2*amount + extra - begCount - advCount;
+    				intActual = amount+leftover;
+    			}
+    			else {	//011
+    				begActual = begCount;
+    				var leftover = amount - begCount;
+    				if(advCount < Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2)) {
+    					advActual = advCount;
+        				intActual = (3*amount)+extra-advCount-begCount;
+    				}
+    				else if(intCount < Math.floor((leftover+(2*amount)+extra)/2)) {
+    					intActual = intCount;
+    					advActual = (3*amount)+extra-intCount-begCount;
+    				}
+    				else {
+    					intActual = Math.floor((leftover+(2*amount)+extra)/2);
+        				advActual = Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2);
+    				}
+    			}
+    		}
+    	}
+    	else {	//1##
+    		if(intCount < amount) {	//10#
+    			if(advCount < amount+extra) { //100
+    				advActual = advCount;
+    				intActual = intCount;
+    				var leftover = (2*amount) + extra - advCount - intCount;
+    				begActual = amount+leftover;
+    			}
+    			else {	//101
+    				intActual = intCount;
+    				var leftover = amount - intCount;
+    				if(advCount < Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2)) {
+    					advActual = advCount;
+        				begActual = (3*amount)+extra-advCount-intCount;
+    				}
+    				else if(begCount < Math.floor((leftover+(2*amount)+extra)/2)) {
+    					begActual = begCount;
+    					advActual = (3*amount)+extra-begCount-intCount;
+    				}
+    				else {
+    					begActual = Math.floor((leftover+(2*amount)+extra)/2);
+        				advActual = Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2);
+    				}
+    			}
+    		}
+    		else {	//11#
+    			if(advCount < amount+extra) { //110
+    				advActual = advCount;
+    				var leftover = amount + extra - advCount;
+    				if(intCount < Math.floor((leftover+(2*amount))/2) + ((leftover+(2*amount))%2)) {
+    					intActual = intCount;
+    					begActual = (3*amount)+extra-intCount-advCount;
+    				}
+    				else if(begCount < Math.floor(((leftover+(2*amount))/2))) {
+    					begActual = begCount;
+    					intActual = (3*amount)+extra-begCount-advCount;
+    				}
+    				else {
+    					intActual = Math.floor((leftover+(2*amount))/2) + ((leftover+(2*amount))%2);
+        				begActual = Math.floor(((leftover+(2*amount))/2));
+    				}
+    			}
+    			
+    		}
+    	}
+    	//End of cases
+    	
+    	console.log("begActual = "+begActual);
+    	console.log("intActual = "+intActual);
+    	console.log("advActual = "+advActual);
+    	
+    	var begIndexes = generateRandomNumber(begActual,begCount);
+    	var intIndexes = generateRandomNumber(intActual,intCount);
+    	var advIndexes = generateRandomNumber(advActual,advCount);
+    	
+    	
+    	
+    	$scope.begQuests = [];
+    	$scope.intQuests = [];
+    	$scope.advQuests = [];
+    	$scope.estimateTime = 0;
+    	for(var i=0;i<begActual;i++) {
+    		$scope.begQuests.push($scope.Begin[begIndexes[i]]);
+    		$scope.estimateTime += $scope.Begin[begIndexes[i]].estime;
+    	}
+    	
+    	for(var i=0;i<intActual;i++) {
+    		$scope.intQuests.push($scope.Inter[intIndexes[i]]);
+    		$scope.estimateTime += $scope.Inter[intIndexes[i]].estime;
+    	}
+    	
+    	for(var i=0;i<advActual;i++) {
+    		$scope.advQuests.push($scope.Advan[advIndexes[i]]);
+    		$scope.estimateTime += $scope.Advan[advIndexes[i]].estime;
+    	}
+    	
+    	document.getElementById('saveButton').style.visibility = "visible";
+    	document.getElementById('backButton').style.visibility = "visible";
+    	document.getElementById('generateButton').style.visibility = "hidden";
+    	document.getElementById('cancelButton').style.visibility = "hidden";
+    	$scope.successMsg="Exam has been generated successfully!";
+    }
     
     $scope.check=function()
     {
@@ -191,6 +476,7 @@
     		$scope.op4hide=true;
     	else
     		$scope.op4hide=false;
+    	
     };
     
     

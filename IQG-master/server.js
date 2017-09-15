@@ -221,6 +221,69 @@ app.post("/api/updateQuestion", function (request, response) {
 });
 
 
+app.post("/api/incrementQuestion", function (request, response) {
+	
+	  var id=request.body.id;
+	  var rev=request.body.rev;
+	  var questName = request.body.name;
+	  var op1=request.body.op1;
+	  var op2=request.body.op2;
+	  var op3=request.body.op3;
+	  var op4=request.body.op4;
+	  var modelanswer=request.body.modelanswer;
+	  var category=request.body.category;
+	  var subcategory=request.body.subcategory;
+	  var qlevel=request.body.qlevel;
+	  var estime=request.body.estime;
+	  var adderid=request.body.adderid;
+	  var reviewerid=request.body.reviewerid;
+	  var status=request.body.status;
+	  var comment=request.body.comment;
+	  var rep=request.body.rep;
+	  var type=request.body.type;
+	  var date=request.body.date;
+	
+	 
+	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date} , function(err, body, header)
+	   {
+		  
+		  if (err) {
+		      return console.log('[mydb.update] ', err.message);
+		    }
+		  
+		 response.send("Message to ensure that the code is  transferred successfully" );
+	   });
+	   
+	 
+});
+
+
+app.post("/api/expireQuestion", function (request, response) {
+	
+	
+	  var id=request.body.id;
+	  var rev=request.body.rev;
+	  var questName = request.body.name;
+	  
+	  console.log("question is"+questName);
+	  
+	  
+	  mydb.destroy(id,rev, function(err, body, header)
+	 
+	   {
+		  
+		  if (err) {
+		      return console.log('[mydb.decline] ', err.message);
+		    }
+		  
+		 response.send("Message to ensure that the code is  transferred successfully" );
+	   });
+	   
+	 
+});
+
+
+
 
 app.post("/api/acceptQuestion", function (request, response) {
 	
@@ -447,30 +510,6 @@ app.get("/api/findmyquestions", function (request, response) {
 
 
 
-
-app.get("/api/myquestions", function (request, response) {
-
-	  if(!mydb) {
-	    
-	    return;
-	  }
-
-	  mydb.find({selector:{ reviewerid:request.query.userEmail }},function(err, body) {
-		  
-		  
-	    if (err) {
-		        return console.log('[mydb.find] ', err.message);
-	              }
-	   
-	   
-	    if(!err)
-	    	response.send(body.docs);
-	   
-
-	  });
-	  
-	});
-
 app.get("/api/getCount", function (request, response) {
 
 	  if(!mydb) {
@@ -499,9 +538,6 @@ app.get("/api/getCount", function (request, response) {
 
 app.get("/api/generate", function (request, response) {
 
-	
-	var number=request.query.number;
-	
 	  if(!mydb) {
 	    
 	    return;
@@ -509,19 +545,13 @@ app.get("/api/generate", function (request, response) {
 
 		  mydb.find({selector:{ status:"accepted" , rep: { $lt: 3} } },function(err, body) {
 			  
-			  
 		    if (err) {
 			        return console.log('[mydb.generate] ', err.message);
 		              }
 		   
-		   
 		    if(!err)
 		    	response.send(body.docs);
-		   
-
 		  });
-		  
-	  
 	});
 
 
