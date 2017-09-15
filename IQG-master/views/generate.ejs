@@ -207,6 +207,8 @@
     
     $scope.generateExam = function ()
     {
+    	if($scope.incorrectInput=="false")
+    		return;
     	$scope.number = $scope.noQuestions;
     	$http({ url: "/api/generate",  method: "GET"}).then(function (response) { $scope.find = response.data; $scope.populate();  $scope.check();});
     	

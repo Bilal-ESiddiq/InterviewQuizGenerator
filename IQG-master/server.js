@@ -223,25 +223,25 @@ app.post("/api/updateQuestion", function (request, response) {
 
 app.post("/api/incrementQuestion", function (request, response) {
 	
-	  var id=request.body.id;
-	  var rev=request.body.rev;
-	  var questName = request.body.name;
-	  var op1=request.body.op1;
-	  var op2=request.body.op2;
-	  var op3=request.body.op3;
-	  var op4=request.body.op4;
-	  var modelanswer=request.body.modelanswer;
-	  var category=request.body.category;
-	  var subcategory=request.body.subcategory;
-	  var qlevel=request.body.qlevel;
-	  var estime=request.body.estime;
-	  var adderid=request.body.adderid;
-	  var reviewerid=request.body.reviewerid;
-	  var status=request.body.status;
-	  var comment=request.body.comment;
-	  var rep=request.body.rep;
-	  var type=request.body.type;
-	  var date=request.body.date;
+	  var id=request.query.id;
+	  var rev=request.query.rev;
+	  var questName = request.query.name;
+	  var op1=request.query.op1;
+	  var op2=request.query.op2;
+	  var op3=request.query.op3;
+	  var op4=request.query.op4;
+	  var modelanswer=request.query.modelanswer;
+	  var category=request.query.category;
+	  var subcategory=request.query.subcategory;
+	  var qlevel=request.query.qlevel;
+	  var estime=request.query.estime;
+	  var adderid=request.query.adderid;
+	  var reviewerid=request.query.reviewerid;
+	  var status=request.query.status;
+	  var comment=request.query.comment;
+	  var rep=request.query.rep;
+	  var type=request.query.type;
+	  var date=request.query.date;
 	
 	 
 	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date} , function(err, body, header)
@@ -261,9 +261,9 @@ app.post("/api/incrementQuestion", function (request, response) {
 app.post("/api/expireQuestion", function (request, response) {
 	
 	
-	  var id=request.body.id;
-	  var rev=request.body.rev;
-	  var questName = request.body.name;
+	  var id=request.query.id;
+	  var rev=request.query.rev;
+	  var questName = request.query.name;
 	  
 	  console.log("question is"+questName);
 	  
