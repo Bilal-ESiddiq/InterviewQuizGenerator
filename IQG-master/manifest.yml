@@ -1,9 +1,9 @@
 ---
 applications:
-- name: interviewquestionsgenerator
+- name: IQGRana
   random-route: true
   memory: 256M
-  host: interviewquestionsgenerator
+  host: IQGRana
   domain: eu-gb.mybluemix.net
   services:
   - App ID-qw

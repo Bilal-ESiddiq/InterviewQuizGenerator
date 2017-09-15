@@ -18,3 +18,11 @@ function myQuestions()
 	document.location="myquestions";
 }
 
+function myQuestionsSpecialRoute()
+{
+	document.location="../myquestions";
+}
+function reviewQuestSpecialRoute()
+{
+	document.location="../reviewquestion";
+}

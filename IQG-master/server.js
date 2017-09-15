@@ -151,6 +151,87 @@ app.post("/api/insertQuestion", function (request, response) {
 
 
 
+app.post("/api/updatemyQuestion", function (request, response) {
+	
+	  var id=request.body.id;
+	  var rev=request.body.rev;
+	  var questName = request.body.name;
+	  var op1=request.body.op1;
+	  var op2=request.body.op2;
+	  var op3=request.body.op3;
+	  var op4=request.body.op4;
+	  var modelanswer=request.body.modelanswer;
+	  var category=request.body.category;
+	  var subcategory=request.body.subcategory;
+	  var qlevel=request.body.qlevel;
+	  var estime=request.body.estime;
+	  var adderid=request.body.adderid;
+	  var reviewerid=request.body.reviewerid;
+	  var status=request.body.status;
+	  var comment=request.body.comment;
+	  var rep=request.body.rep;
+	  var type=request.body.type;
+	  var adderemail=request.body.adderemail;
+	  var revieweremail=request.body.revieweremail;
+	  var date=request.body.date;
+	  var url=request.body.url;
+
+	  
+	  console.log("Email IS "+ revieweremail)
+	  
+	  var transporter = nodemailer.createTransport({
+		  
+		   service:'Gmail',
+		   auth: {
+		     user: 'interviewquestiongeneratorapp@gmail.com',
+		     pass: 'interviewquestiongenerator'
+		   }
+		 }); 
+
+
+		 var mailOptions = {
+		   from: 'interviewquestiongeneratorapp@gmail.com' ,
+		   to: revieweremail,
+		   subject: 'IQG Question Status',
+		   text: 'Hello there,  question you review with detailed description : '+questName+' has been updated by adder...     '+
+		   'Kindly find attached link to view your question:    '  +url +'       ' +'Thank you'
+		 };
+
+
+
+
+		 transporter.sendMail(mailOptions, function(error, info){
+		   if (error) {
+		     console.log(error);
+		   } else {
+		     console.log('Email sent: ' + info.response);
+		   }
+		   
+		 }); 
+	 
+	
+	 
+	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date} , function(err, body, header)
+	   {
+		  
+		  if (err) {
+		      return console.log('[mydb.update] ', err.message);
+		    }
+		  
+		 response.send("Message to ensure that the code is  transferred successfully" );
+	   });
+	   
+	 
+});
+
+
+
+
+
+
+
+
+
 app.post("/api/updateQuestion", function (request, response) {
 	
 	  var id=request.body.id;
@@ -174,7 +255,7 @@ app.post("/api/updateQuestion", function (request, response) {
 	  var adderemail=request.body.adderemail;
 	  var revieweremail=request.body.revieweremail;
 	  var date=request.body.date;
-	 
+	  var url=request.body.url;
 
 	  var transporter = nodemailer.createTransport({
 		  
@@ -190,7 +271,8 @@ app.post("/api/updateQuestion", function (request, response) {
 		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
-		   text: 'Hello there, your question with detailed description : '+questName+' has been updated by reviewer... Thank you'
+		   text: 'Hello there, your question with detailed description : '+questName+' has been updated by reviewer...     '+
+		   'Kindly find attached link to view your question:    '  +url +'       ' +'Thank you'
 		 };
 
 
@@ -308,6 +390,7 @@ app.post("/api/acceptQuestion", function (request, response) {
 	  var revieweremail=request.body.revieweremail;
 	  var type=request.body.type;
 	  var date=request.body.date;
+	  var url=request.body.url;
 
 	  var transporter = nodemailer.createTransport({
 		  
@@ -323,7 +406,8 @@ app.post("/api/acceptQuestion", function (request, response) {
 		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
-		   text: 'Hello there, your question with detailed description : '+questName+' has been accepted by reviewer... Thank you'
+		   text: 'Hello there, your question with detailed description : '+questName+' has been accepted by reviewer...     '+
+		   'Kindly find attached link to view your question:    '  +url +'       ' +'Thank you'
 		 };
 
 
@@ -362,9 +446,7 @@ app.post("/api/declineQuestion", function (request, response) {
 	  var questName = request.body.name;
 	  var adderemail=request.body.adderemail;
 	  var revieweremail=request.body.revieweremail;
-	  
-	  console.log("question is"+questName);
-	 
+	  var message=request.body.message;
 
 	  var transporter = nodemailer.createTransport({
 		  
@@ -380,7 +462,8 @@ app.post("/api/declineQuestion", function (request, response) {
 		   from: 'interviewquestiongeneratorapp@gmail.com' ,
 		   to: adderemail,
 		   subject: 'IQG Question Status',
-		   text: 'Hello there, your question with detailed description : '+questName+' has been deleted by reviewer... Thank you'
+		   text: 'Hello there, your question with detailed description : '+questName+' has been declined by reviewer...     '+
+		    +'with message :    '+ message   +'Thank you'
 		 };
 
 
@@ -456,7 +539,7 @@ app.get("/api/findallquestions", function (request, response) {
 	  
 	  console.log(request.query.userEmail);
 
-	  mydb.find({selector:{ reviewerid:request.query.userEmail  }},function(err, body) {
+	  mydb.find({selector:{ adderid:request.query.userEmail  }},function(err, body) {
 		  
 		  
 	    if (err) {
@@ -754,11 +837,11 @@ app.get("/api/findviewid", function (request, response) {
 
 
 
-app.get("/viewquestion", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+app.get("/viewquestion/:id", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
     
 	
 	
-	
+	id=req.params.id;
 	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
 
 
@@ -778,7 +861,8 @@ function RenderViewPage(req, res, firstLogin) {
     var renderOptions = {
         name: req.user.name || email,
         email: req.user.email,
-        id:id
+        id:id,
+        url: req.protocol + '://' + req.get('host') + '/viewmyquestions/' + id
     };
     if (firstLogin) {
         userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
@@ -793,10 +877,10 @@ function RenderViewPage(req, res, firstLogin) {
 
 
 
-app.get("/editquestion", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+app.get("/editquestion/:id", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
     
 	
-	
+	id=req.params.id;
 	
 	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
 
@@ -817,7 +901,8 @@ function RenderEditPage(req, res, firstLogin) {
     var renderOptions = {
         name: req.user.name || email,
         email: req.user.email,
-        id:id
+        id:id,
+        url: req.protocol + '://' + req.get('host') + '/viewmyquestions/' + id
     };
     if (firstLogin) {
         userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
@@ -872,14 +957,15 @@ function RenderMyQuestionsPage(req, res, firstLogin) {
 
 
 
-app.get("/viewmyquestions", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+app.get("/viewmyquestions/:id", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
     
 	
-	
+	id=req.params.id;
 	
 	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
 
-
+	
+    
 	
     // get the attributes for the current user:
     userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
@@ -896,15 +982,21 @@ function RenderViewMyQuestionsPage(req, res, firstLogin) {
     var renderOptions = {
         name: req.user.name || email,
         email: req.user.email,
-        id:id
+        id:id,
+        url: req.protocol + '://' + req.get('host') + '/viewquestion/' + id
+        
     };
     if (firstLogin) {
         userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+        	
             res.render('viewmyquestions', renderOptions);
+            
          });
     } else {
-             res.render('viewmyquestions', renderOptions);
+    	
+         res.render('viewmyquestions', renderOptions);
     }
+    
 }
 
 
