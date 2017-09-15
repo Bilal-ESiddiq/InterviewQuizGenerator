@@ -267,7 +267,7 @@ app.post("/api/expireQuestion", function (request, response) {
 	  
 	  console.log("question is"+questName);
 	  
-	  
+	   
 	  mydb.destroy(id,rev, function(err, body, header)
 	 
 	   {
