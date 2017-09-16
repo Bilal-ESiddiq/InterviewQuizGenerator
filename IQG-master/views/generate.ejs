@@ -253,6 +253,73 @@
         	var comment=$scope.begQuests[i].comment;
         	var date = $scope.begQuests[i].date;
         	var type=$scope.begQuests[i].type;
+
+        	if(!deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+    	}
+    	
+    	for(var i=0; i<$scope.intQuests.length; i++) {
+    		var rep=$scope.intQuests[i].rep+1;
+    		if(rep==3)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.intQuests[i]._id;
+        	var rev=$scope.intQuests[i]._rev;
+        	var name =$scope.intQuests[i].name;
+        	var op1= $scope.intQuests[i].op1;
+        	var op2= $scope.intQuests[i].op2;
+        	var op3= $scope.intQuests[i].op3;
+        	var op4= $scope.intQuests[i].op4;
+        	var modelanswer=$scope.intQuests[i].modelanswer;
+        	var category= $scope.intQuests[i].category;
+        	var subcategory=$scope.intQuests[i].subcategory;
+        	var qlevel= $scope.intQuests[i].qlevel;
+        	var estime= $scope.intQuests[i].estime;
+        	var adderid=$scope.intQuests[i].adderid;
+        	var reviewerid=$scope.intQuests[i].reviewerid;
+        	var status=$scope.intQuests[i].status;
+        	var comment=$scope.intQuests[i].comment;
+        	var date = $scope.intQuests[i].date;
+        	var type=$scope.intQuests[i].type;
+        	if(!deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+    	}
+    	
+    	
+    	for(var i=0; i<$scope.advQuests.length; i++) {
+    		var rep=$scope.advQuests[i].rep+1;
+    		console.log("repetition = " + rep);
+    		if(rep==3)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.advQuests[i]._id;
+    		console.log("id = " + id);
+    		var rev=$scope.advQuests[i]._rev;
+    		console.log("rev = " + rev);
+        	var name =$scope.advQuests[i].name;
+        	console.log("name = " + name);
+        	var op1= $scope.advQuests[i].op1;
+        	var op2= $scope.advQuests[i].op2;
+        	var op3= $scope.advQuests[i].op3;
+        	var op4= $scope.advQuests[i].op4;
+        	var modelanswer=$scope.advQuests[i].modelanswer;
+        	var category= $scope.advQuests[i].category;
+        	var subcategory=$scope.advQuests[i].subcategory;
+        	var qlevel= $scope.advQuests[i].qlevel;
+        	var estime= $scope.advQuests[i].estime;
+        	var adderid=$scope.advQuests[i].adderid;
+        	var reviewerid=$scope.advQuests[i].reviewerid;
+        	var status=$scope.advQuests[i].status;
+        	var comment=$scope.advQuests[i].comment;
+        	var date = $scope.advQuests[i].date;
+        	var type=$scope.advQuests[i].type;
+
         	if(!deleteFlag)
         		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
         	else
@@ -319,6 +386,7 @@
         	var date = $scope.advQuests[i].date;
         	var type=$scope.advQuests[i].type;
         	if(!deleteFlag)
+
         		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
         	else
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
