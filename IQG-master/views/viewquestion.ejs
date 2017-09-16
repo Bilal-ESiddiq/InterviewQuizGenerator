@@ -90,14 +90,14 @@
   <h5 style="display:inline;" ><b style="color:rgb(118,50,63);"><i>Q:</i> </b></h5><span><h5 style="display:inline;" id=name  ng-model="name"  >{{name}}</h5></span>  
   	<br>
   	<br>
-  	<h5 style="display:inline; color:rgb(118,50,63);" >A.</h5> <h5 style="display:inline;" id=op1  ng-model="op1"  >{{op1}} </h5> 
+  	<h5 style="display:inline; color:rgb(118,50,63);" >A.</h5> <h5 style="display:inline;" id=op1  ng-model="op1"  >{{op1}}</h5> 
   	<br>            
-  	<h5 style="display:inline; color:rgb(118,50,63);" >B.</h5> <h5 style="display:inline;" id=op2  ng-model="op2"  >{{op2}} </h5> 
+  	<h5 style="display:inline; color:rgb(118,50,63);" >B.</h5> <h5 style="display:inline;" id=op2  ng-model="op2"  >{{op2}}</h5> 
   	<br>
   	      
-  	<h5 style="display:inline; color:rgb(118,50,63);" ng-hide="op3hide" >C.</h5> <h5 style="display:inline;" id=op3  ng-model="op3" ng-hide="op3hide"  >{{op3}} </h5>
+  	<h5 style="display:inline; color:rgb(118,50,63);" ng-hide="op3hide" >C.</h5> <h5 style="display:inline;" id=op3  ng-model="op3" ng-hide="op3hide"  >{{op3}}</h5>
   	<br>
-    <h5 style="display:inline; color:rgb(118,50,63);" ng-hide="op4hide"   >D.</h5> <h5 style="display:inline;" id=op4  ng-model="op4" ng-hide="op4hide"  >{{op4}} </h5>
+    <h5 style="display:inline; color:rgb(118,50,63);" ng-hide="op4hide"   >D.</h5> <h5 style="display:inline;" id=op4  ng-model="op4" ng-hide="op4hide"  >{{op4}}</h5>
     <br>
   <br>
   
@@ -255,17 +255,17 @@ var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http) {
 	
 	$scope.NotFoundFlag=true;
-	$scope.name= '';
-	$scope.op1 = '';
-	$scope.op2 = '';
-	$scope.op3 = '';
-	$scope.op4 = '';
-	$scope.modelanswer = '';
-	$scope.category = '';
-	$scope.subcategory = '';
-	$scope.qlevel = '';
-	$scope.estime = '';
-	$scope.comment = '';
+	$scope.name= "";
+	$scope.op1 = "";
+	$scope.op2 = "";
+	$scope.op3 = "";
+	$scope.op4 = "";
+	$scope.modelanswer = "";
+	$scope.category = "";
+	$scope.subcategory = "";
+	$scope.qlevel = "";
+	$scope.estime = "";
+	$scope.comment = "";
 	$scope.userEmail = '<%= email %>';
 	$scope.userID= '<%= id %>';
 	

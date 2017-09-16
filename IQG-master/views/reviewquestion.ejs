@@ -129,13 +129,13 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.estime = '';
 	$scope.comment = '';
 	$scope.userEmail = '<%= email %>';
-	$http({ url: "/api/findquestions",  method: "GET", params: {"userEmail": $scope.userEmail}}).then(function (response) { $scope.find = response.data;});
+	$http({ url: "./api/findquestions",  method: "GET", params: {"userEmail": $scope.userEmail}}).then(function (response) { $scope.find = response.data;});
 	
 
 
 	 $scope.editQuestionpage=function(id)
 	   {
-		   $http({ url: "/api/findviewid",  method: "GET", params:{"id":id}});
+		   $http({ url: "./api/findviewid",  method: "GET", params:{"id":id}});
 		   document.location="editquestion/"+id;
 			
 	   }
@@ -145,7 +145,7 @@ app.controller('myCtrl', function($scope, $http) {
 	
    $scope.viewQuestionpage=function(id)
    {
-	   $http({ url: "/api/findviewid",  method: "GET", params:{"id":id}});
+	   $http({ url: "./api/findviewid",  method: "GET", params:{"id":id}});
 	   document.location="viewquestion/"+id;
 		
    }

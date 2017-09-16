@@ -75,6 +75,7 @@
 <br>
 <br>
 
+<span style=" width:150px; color:rgb(118,50,63); " ><b>Status: </b></span> <input  ng-model="search.status">
 <br>
 <br>
 
@@ -135,12 +136,11 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.estime = '';
 	$scope.comment = '';
 	$scope.userEmail = '<%= email %>';
-	$http({ url: "/api/findmyquestions",  method: "GET", params: {"userEmail": $scope.userEmail}}).then(function (response) { $scope.find = response.data;});
+	$http({ url: "./api/findmyquestions",  method: "GET", params: {"userEmail": $scope.userEmail}}).then(function (response) { $scope.find = response.data;});
 
 		
    $scope.viewQuestionpage=function(id)
    {
-	   $http({ url: "/api/findviewid",  method: "GET", params:{"id":id}});
 	   document.location="viewmyquestions/"+id;
 		
    }

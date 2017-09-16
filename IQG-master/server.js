@@ -151,6 +151,74 @@ app.post("/api/insertQuestion", function (request, response) {
 
 
 
+
+app.post("/api/incrementQuestion", function (request, response) {
+	
+	  var id=request.query.id;
+	  var rev=request.query.rev;
+	  var questName = request.query.name;
+	  var op1=request.query.op1;
+	  var op2=request.query.op2;
+	  var op3=request.query.op3;
+	  var op4=request.query.op4;
+	  var modelanswer=request.query.modelanswer;
+	  var category=request.query.category;
+	  var subcategory=request.query.subcategory;
+	  var qlevel=request.query.qlevel;
+	  var estime=Number(request.query.estime);
+	  var adderid=request.query.adderid;
+	  var reviewerid=request.query.reviewerid;
+	  var status=request.query.status;
+	  var comment=request.query.comment;
+	  var rep=Number(request.query.rep);
+	  var type=request.query.type;
+	  var date=request.query.date;
+	
+	 
+	  mydb.insert({"_id":id,"_rev":rev, "name" : questName,"op1": op1,"op2":op2,"op3":op3,"op4":op4,"modelanswer":modelanswer,"category":category,"subcategory":subcategory,"qlevel":qlevel,"estime":estime,"adderid":adderid,"reviewerid":reviewerid,"status":status,"comment":comment,"rep":rep,"type":type,"date":date} , function(err, body, header)
+	   {
+		  
+		  if (err) {
+		      return console.log('[mydb.update] ', err.message);
+		    }
+		  
+		 response.send("Message to ensure that the code is  transferred successfully" );
+	   });
+	   
+	 
+});
+
+
+app.post("/api/expireQuestion", function (request, response) {
+	
+	
+	  var id=request.query.id;
+	  var rev=request.query.rev;
+	  var questName = request.query.name;
+	  
+	  console.log("question is"+questName);
+	  
+	   
+	  mydb.destroy(id,rev, function(err, body, header)
+	 
+	   {
+		 
+		  if (err) {
+		      return console.log('[mydb.decline] ', err.message);
+		    }
+		  
+		 response.send("Message to ensure that the code is  transferred successfully" );
+	   });
+	   
+	 
+});
+
+
+
+
+
+
+
 app.post("/api/updatemyQuestion", function (request, response) {
 	
 	  var id=request.body.id;
@@ -583,7 +651,6 @@ app.get("/api/getCount", function (request, response) {
 app.get("/api/generate", function (request, response) {
 
 	
-	var number=request.query.number;
 	
 	  if(!mydb) {
 	    
