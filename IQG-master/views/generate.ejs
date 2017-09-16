@@ -20,7 +20,7 @@
       <script type="text/javascript" src="javascript/from_html.js"></script>
       <script type="text/javascript" src="javascript/split_text_to_size.js"></script>
       <script type="text/javascript" src="javascript/standard_fonts_metrics.js"></script>
-      <script type="text/javascript" src="javascript/addhtml.js"></script>
+      
       <script type="text/javascript" src="javascript/autoprint.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
       
@@ -169,9 +169,16 @@
                 // dispose: object with X, Y of the last line add to the PDF 
                 //          this allow the insertion of new lines after html
                 
-                pdf.autoPrint();
-           	    pdf.output("dataurlnewwindow");
-                pdf.save('Exam.pdf');
+                var is_chrome = window.chrome;
+                if(is_chrome)
+                	pdf.save('Exam.pdf');
+                else
+                	{
+	                	pdf.autoPrint();
+	               	    pdf.output("dataurlnewwindow");
+                	}
+                
+                
             }, margins
         );
         
