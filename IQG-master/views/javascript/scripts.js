@@ -164,13 +164,3 @@ function generate() {
 	    });
 	doc.output("dataurlnewwindow");
 }
-
-function generateRandomNumber(amount,limit) {
-	var arr = []
-	while(arr.length < amount){
-	    var randomnumber = Math.floor(Math.random()*limit)
-	    if(arr.indexOf(randomnumber) > -1) continue;
-	    arr[arr.length] = randomnumber;
-	}
-	return arr;
-}
