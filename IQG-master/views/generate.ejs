@@ -54,7 +54,7 @@
 <h2>Start generating an exam by specifying the number of question you want:</h2>  <p>Question bank population: <span id=docCount ng-model="docCount"> {{docCount}}</span></p>
    <br>
    <br>
-   <p id="incorrectInput" ng-model="incorrectInput"  ng-hide=true ></p>
+   <input id="incorrectInput" ng-model="incorrectInput"  ng-hide=true ></input>
    <p class="w3-text-red"id="demo"><b></b></p>
    <br>
    <br>
@@ -70,7 +70,7 @@
 <p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="saveButton" ng-click="saveChanges()" onclick="demoFromHTML()">Save as PDF</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="backButton" onclick="returnHomepage()">&#8592; Cancel and Go Back</button></p></p>
 <p id="saveMsg" ng-model="saveMsg">{{saveMsg}}</p>
 <br>
-<p><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="doneButton" onclick="returnHomepage()">Return to Homepage</button></p>
+<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="doneButton" onclick="returnHomepage()">Return to Homepage</button></p>
 <!--ng-hide={{notCreated}}-->
 </div>
 <div class="w3-hide" id="pdf">
@@ -150,7 +150,7 @@
         };
         margins = {
             top: 0,
-            bottom: 5,
+            bottom: 0,
             left: 40,
             width: 522
         };
@@ -193,18 +193,16 @@
     	var count = parseInt(document.getElementById("docCount").innerText);
     	if(count < inp) {
     		document.getElementById("demo").innerHTML = "Amount not existing in question bank";
-    		document.getElementById("incorrectInput").innerHTML="true"; 
+    		document.getElementById("incorrectInput").value="true"; 
     	}
     	else {
     		document.getElementById("demo").innerHTML = "";
-    		document.getElementById("incorrectInput").innerHTML="false"; 
+    		document.getElementById("incorrectInput").value="false"; 
     	}
     }
-    	
     var app = angular.module('myApp', []);
 
     app.controller('myCtrl', function($scope, $http) {
-    	$scope.incorrectInput="true";
     	document.getElementById('saveButton').style.visibility = "hidden";
     	document.getElementById('backButton').style.visibility = "hidden";
     	document.getElementById('doneButton').style.visibility = "hidden";
@@ -229,16 +227,17 @@
     
     $scope.generateExam = function ()
     {
-    	if($scope.incorrectInput=="false")
+    	if(document.getElementById("incorrectInput").value=="true")
     		return;
     	$scope.number = $scope.noQuestions;
     	$http({ url: "/api/generate",  method: "GET"}).then(function (response) { $scope.find = response.data; $scope.populate();  $scope.check();});
     	
     };
     
-    $scope.saveChanges = function ()
+    $scope.saveChanges = async function ()
     {
     	var deleteFlag;
+    	var timeoutCounter = 0;
     	for(var i=0; i<$scope.begQuests.length; i++) {
     		var rep=$scope.begQuests[i].rep+1;
     		if(rep==3)
@@ -268,9 +267,12 @@
         		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
         	else
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+        	timeoutCounter+=1;
+        	if(timeoutCounter==10)
+        		await sleep(1000);
     	}
     	
-    	
+    	timeoutCounter = 0;
     	for(var i=0; i<$scope.intQuests.length; i++) {
     		var rep=$scope.intQuests[i].rep+1;
     		if(rep==3)
@@ -299,9 +301,12 @@
         		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
         	else
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+        	timeoutCounter+=1;
+        	if(timeoutCounter==10)
+        		await sleep(1000);
     	}
     	
-    	
+    	timeoutCounter = 0;
     	for(var i=0; i<$scope.advQuests.length; i++) {
     		var rep=$scope.advQuests[i].rep+1;
     		console.log("repetition = " + rep);
@@ -335,6 +340,9 @@
         		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
         	else
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+        	timeoutCounter+=1;
+        	if(timeoutCounter==10)
+        		await sleep(1000);
     	}
     	$scope.saveMsg="All records updated successfully!";
     	document.getElementById('saveButton').style.visibility = "hidden";
@@ -464,7 +472,12 @@
     	var begIndexes = generateRandomNumber(begActual,begCount);
     	var intIndexes = generateRandomNumber(intActual,intCount);
     	var advIndexes = generateRandomNumber(advActual,advCount);
-    	
+    	if(begActual==0)
+    		document.getElementById('begTitle').innerText="";
+    	if(intActual==0)
+    		document.getElementById('intTitle').innerText="";
+    	if(advActual==0)
+    		document.getElementById('advTitle').innerText="";
     	
     	
     	$scope.begQuests = [];
