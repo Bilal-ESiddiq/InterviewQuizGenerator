@@ -106,7 +106,6 @@ function choiceGenerator(){
 }
 
 /*function myQuestions()
-
 {
 	var id=$('#id').val();
 	var rev=$('#revid').val();
@@ -173,4 +172,8 @@ function generateRandomNumber(amount,limit) {
 	    arr[arr.length] = randomnumber;
 	}
 	return arr;
+}
+
+function sleep(ms) {
+	  return new Promise(resolve => setTimeout(resolve, ms));
 }

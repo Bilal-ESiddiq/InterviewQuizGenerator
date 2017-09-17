@@ -367,7 +367,7 @@
 				if (cn.nodeType === 1 && cn.nodeName === 'HEADER') {
 					var header = cn;
 					//store old top margin
-					var oldMarginTop = renderer.pdf.margins_doc.top;
+					var oldMarginTop =renderer.pdf.margins_doc.top;
 					//subscribe for new page event and render header first on every page
 					renderer.pdf.internal.events.subscribe('addPage', function (pageInfo) {
 						//set current y position to old margin
@@ -376,15 +376,15 @@
 						DrillForContent(header, renderer, elementHandlers);
 						//set margin to old margin + rendered header + 10 space to prevent overlapping
 						//important for other plugins (e.g. table) to start rendering at correct position after header
-						renderer.pdf.margins_doc.top = renderer.y + 10;
-						renderer.y += 10;
+						renderer.pdf.margins_doc.top = renderer.y + 5;//10
+						renderer.y += 0;//10
 					}, false);
 				}
 
 				if (cn.nodeType === 8 && cn.nodeName === "#comment") {
 					if (~cn.textContent.indexOf("ADD_PAGE")) {
 						renderer.pdf.addPage();
-						renderer.y = renderer.pdf.margins_doc.top;
+						renderer.y = renderer.pdf.margins_doc.top+0;//5;
 					}
 
 				} else if (cn.nodeType === 1 && !SkipNode[cn.nodeName]) {

@@ -87,36 +87,36 @@
 	<p class="w3-center">Break</p>
 	<p class="w3-center">Break</p>
 	<div name="question" ng-repeat="x in begQuests">
-    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
-    <p class="w3-center">Break</p>
-    <p>A. {{ x.op1 }}</p>
-    <p>B. {{ x.op2 }}</p>
-    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
-    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
+    <h5>Q: {{ x.name }} ({{ x.estime }} mins)</h5>
+    <h5 class="w3-center">Break</h5>
+    <h5>A. {{ x.op1 }}</h5>
+    <h5>B. {{ x.op2 }}</h5>
+    <div name="cBlock"><h5 ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</h5></div>
+    <div name="dBlock"><h5 ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</h5></div>
     <p class="w3-center">Break</p>
     <p class="w3-center">Break</p>
   </div>
 <h2 id="intTitle">Intermediate Questions:</h2>
   <p class="w3-center">Break</p>
   <div name="question" ng-repeat="x in intQuests">
-    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
-    <p class="w3-center">Break</p>
-    <p>A. {{ x.op1 }}</p>
-    <p>B. {{ x.op2 }}</p>
-    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
-    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
+    <h5>Q: {{ x.name }} ({{ x.estime }} mins)</h5>
+    <h5 class="w3-center">Break</h5>
+    <h5>A. {{ x.op1 }}</h5>
+    <h5>B. {{ x.op2 }}</h5>
+    <div name="cBlock"><h5 ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</h5></div>
+    <div name="dBlock"><h5 ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</h5></div>
     <p class="w3-center">Break</p>
     <p class="w3-center">Break</p>
   </div>
 <h2 id="advTitle">Advanced Questions:</h2>
-  <p class="w3-center">Break</p>
+  <h5 class="w3-center">Break</h5>
   <div name="question" ng-repeat="x in advQuests">
-    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
-    <p class="w3-center">Break</p>
-    <p>A. {{ x.op1 }}</p>
-    <p>B. {{ x.op2 }}</p>
-    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</p></div>
-    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</p></div>
+    <h5>Q: {{ x.name }} ({{ x.estime }} mins)</h5>
+    <h5 class="w3-center">Break</h5>
+    <h5>A. {{ x.op1 }}</h5>
+    <h5>B. {{ x.op2 }}</h5>
+    <div name="cBlock"><h5 ng-hide="op3hide" ng-model="op3" name="op3">C. {{x.op3}}</h5></div>
+    <div name="dBlock"><h5 ng-hide="op4hide" ng-model="op4" name="op4">D. {{x.op4}}</h5></div>
     <p class="w3-center">Break</p>
     <p class="w3-center">Break</p>
   </div>
@@ -269,10 +269,13 @@
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
         	timeoutCounter+=1;
         	if(timeoutCounter==10)
+    		{
         		await sleep(1000);
+        		timeoutCounter = 0;
+    		}
     	}
     	
-    	timeoutCounter = 0;
+    	
     	for(var i=0; i<$scope.intQuests.length; i++) {
     		var rep=$scope.intQuests[i].rep+1;
     		if(rep==3)
@@ -303,10 +306,13 @@
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
         	timeoutCounter+=1;
         	if(timeoutCounter==10)
-        		await sleep(1000);
+        		{
+	        		await sleep(1000);
+	        		timeoutCounter = 0;
+        		}
     	}
     	
-    	timeoutCounter = 0;
+    	
     	for(var i=0; i<$scope.advQuests.length; i++) {
     		var rep=$scope.advQuests[i].rep+1;
     		console.log("repetition = " + rep);
@@ -342,7 +348,10 @@
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
         	timeoutCounter+=1;
         	if(timeoutCounter==10)
+    		{
         		await sleep(1000);
+        		timeoutCounter = 0;
+    		}
     	}
     	$scope.saveMsg="All records updated successfully!";
     	document.getElementById('saveButton').style.visibility = "hidden";
