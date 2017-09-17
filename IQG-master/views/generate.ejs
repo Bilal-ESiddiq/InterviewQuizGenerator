@@ -269,13 +269,15 @@
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
         	timeoutCounter+=1;
         	if(timeoutCounter==10)
+
     		{
         		await sleep(1000);
         		timeoutCounter = 0;
     		}
+
     	}
     	
-    	
+    	timeoutCounter = 0;
     	for(var i=0; i<$scope.intQuests.length; i++) {
     		var rep=$scope.intQuests[i].rep+1;
     		if(rep==3)
@@ -306,13 +308,16 @@
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
         	timeoutCounter+=1;
         	if(timeoutCounter==10)
+
         		{
 	        		await sleep(1000);
 	        		timeoutCounter = 0;
         		}
+
+
     	}
     	
-    	
+    	timeoutCounter = 0;
     	for(var i=0; i<$scope.advQuests.length; i++) {
     		var rep=$scope.advQuests[i].rep+1;
     		console.log("repetition = " + rep);
@@ -348,10 +353,12 @@
         		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
         	timeoutCounter+=1;
         	if(timeoutCounter==10)
+
     		{
         		await sleep(1000);
         		timeoutCounter = 0;
     		}
+
     	}
     	$scope.saveMsg="All records updated successfully!";
     	document.getElementById('saveButton').style.visibility = "hidden";
