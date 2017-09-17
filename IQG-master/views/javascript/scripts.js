@@ -174,3 +174,7 @@ function generateRandomNumber(amount,limit) {
 	}
 	return arr;
 }
+
+function sleep(ms) {
+	  return new Promise(resolve => setTimeout(resolve, ms));
+}

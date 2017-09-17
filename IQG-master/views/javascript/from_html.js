@@ -384,7 +384,7 @@
 				if (cn.nodeType === 8 && cn.nodeName === "#comment") {
 					if (~cn.textContent.indexOf("ADD_PAGE")) {
 						renderer.pdf.addPage();
-						renderer.y = renderer.pdf.margins_doc.top;
+						renderer.y = renderer.pdf.margins_doc.top+5;
 					}
 
 				} else if (cn.nodeType === 1 && !SkipNode[cn.nodeName]) {
