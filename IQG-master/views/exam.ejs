@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>IQG</title>
+
+    <!-- Bootstrap -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+      <link href="/stylesheets/w3.css" rel="stylesheet">
+      <script type="text/javascript" src="javascript/scripts.js"></script>
+      <script type="text/javascript" src="javascript/routes.js"></script>
+      
+      
+      
+      
+    <script type="text/javascript" src="javascript/jspdf.js"></script>
+      <script type="text/javascript" src="javascript/from_html.js"></script>
+      <script type="text/javascript" src="javascript/split_text_to_size.js"></script>
+      <script type="text/javascript" src="javascript/standard_fonts_metrics.js"></script>
+      
+      <script type="text/javascript" src="javascript/autoprint.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+      
+      
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+    <script src="javascript/antixss.js" type="text/javascript"></script>
+    
+</head>
+<style>
+@media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+</style>
+<body id="body"  style="background-color:rgb(233,231,218);" ng-app="myApp" ng-controller="myCtrl">
+<div id="coverPage" class="w3-container">
+<p class="no-print" style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="printButton" ng-click="check();" >Print</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="homeButton" onclick="returnHomepage()">Return to Homepage</button></p>
+<br>
+<h1 class="w3-center">IBM Interview Exam</h1>
+	<br><br><br><br><br><br>
+	<h3>Please answer all questions</h3>
+	<br>
+	<h5>Estimate Time: {{estimateTime}} mins</h5>
+	<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+	<p>Name:______________________________</p>
+	<br>
+	<p>Email:______________________________</p>
+	<br>
+	<p>Phone/Mobile No:______________________________</p>
+	<br>
+</div>
+<div class="w3-container">
+<h2 id="begTitle">Beginner Questions:</h2>
+	<div name="question" ng-repeat="x in begQuests">
+    <br>
+    <br>
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
+    <br>
+    <p>A. {{ x.op1 }}</p>
+    <p>B. {{ x.op2 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" class="op3"><span>C. {{x.op3}}</span></p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" class="op4"><span>D. {{x.op4}}</span></p></div>
+  </div>
+<h2 id="intTitle">Intermediate Questions:</h2>
+  <div name="question" ng-repeat="x in intQuests">
+    <br>
+    <br>
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
+    <br>
+    <p>A. {{ x.op1 }}</p>
+    <p>B. {{ x.op2 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" class="op3"><span>C. {{x.op3}}</span></p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" class="op4"><span>D. {{x.op4}}</span></p></div>
+    
+  </div>
+<h2 id="advTitle">Advanced Questions:</h2>
+  <div name="question" ng-repeat="x in advQuests">
+    <br>
+    <br>
+    <p>Q: {{ x.name }} ({{ x.estime }} mins)</p>
+    <br>
+    <p>A. {{ x.op1 }}</p>
+    <p>B. {{ x.op2 }}</p>
+    <div name="cBlock"><p ng-hide="op3hide" ng-model="op3" class="op3"><span>C. {{x.op3}}</span></p></div>
+    <div name="dBlock"><p ng-hide="op4hide" ng-model="op4" class="op4"><span>D. {{x.op4}}</span></p></div>
+    
+  </div>
+</div>
+
+
+</body>
+
+<script>
+	var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $http) {
+    $scope.noQuestions = <%= amount %>;
+   	$http({ url: "/api/generate",  method: "GET"}).then(function (response) { $scope.find = response.data; $scope.populate();  $scope.saveChanges();});
+    $scope.saveChanges = async function ()
+    {
+    	var deleteFlag;
+    	var timeoutCounter = 0;
+    	for(var i=0; i<$scope.begQuests.length; i++) {
+    		var rep=$scope.begQuests[i].rep+1;
+    		if(rep==100)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.begQuests[i]._id;
+        	var rev=$scope.begQuests[i]._rev;
+        	var name =$scope.begQuests[i].name;
+        	var op1= $scope.begQuests[i].op1;
+        	var op2= $scope.begQuests[i].op2;
+        	var op3= $scope.begQuests[i].op3;
+        	var op4= $scope.begQuests[i].op4;
+        	var modelanswer=$scope.begQuests[i].modelanswer;
+        	var category= $scope.begQuests[i].category;
+        	var subcategory=$scope.begQuests[i].subcategory;
+        	var qlevel= $scope.begQuests[i].qlevel;
+        	var estime= $scope.begQuests[i].estime;
+        	var adderid=$scope.begQuests[i].adderid;
+        	var reviewerid=$scope.begQuests[i].reviewerid;
+        	var status=$scope.begQuests[i].status;
+        	var comment=$scope.begQuests[i].comment;
+        	var date = $scope.begQuests[i].date;
+        	var type=$scope.begQuests[i].type;
+
+        	if(!deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+        	timeoutCounter+=1;
+        	if(timeoutCounter==10)
+        		await sleep(1000);
+    	}
+    	
+    	timeoutCounter = 0;
+    	for(var i=0; i<$scope.intQuests.length; i++) {
+    		var rep=$scope.intQuests[i].rep+1;
+    		if(rep==100)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.intQuests[i]._id;
+        	var rev=$scope.intQuests[i]._rev;
+        	var name =$scope.intQuests[i].name;
+        	var op1= $scope.intQuests[i].op1;
+        	var op2= $scope.intQuests[i].op2;
+        	var op3= $scope.intQuests[i].op3;
+        	var op4= $scope.intQuests[i].op4;
+        	var modelanswer=$scope.intQuests[i].modelanswer;
+        	var category= $scope.intQuests[i].category;
+        	var subcategory=$scope.intQuests[i].subcategory;
+        	var qlevel= $scope.intQuests[i].qlevel;
+        	var estime= $scope.intQuests[i].estime;
+        	var adderid=$scope.intQuests[i].adderid;
+        	var reviewerid=$scope.intQuests[i].reviewerid;
+        	var status=$scope.intQuests[i].status;
+        	var comment=$scope.intQuests[i].comment;
+        	var date = $scope.intQuests[i].date;
+        	var type=$scope.intQuests[i].type;
+        	if(!deleteFlag)
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+        	timeoutCounter+=1;
+        	if(timeoutCounter==10)
+        		await sleep(1000);
+    	}
+    	
+    	timeoutCounter = 0;
+    	for(var i=0; i<$scope.advQuests.length; i++) {
+    		var rep=$scope.advQuests[i].rep+1;
+    		console.log("repetition = " + rep);
+    		if(rep==100)
+    			deleteFlag = true;
+    		else
+    			deleteFlag = false;
+    		var id=$scope.advQuests[i]._id;
+    		console.log("id = " + id);
+    		var rev=$scope.advQuests[i]._rev;
+    		console.log("rev = " + rev);
+        	var name =$scope.advQuests[i].name;
+        	console.log("name = " + name);
+        	var op1= $scope.advQuests[i].op1;
+        	var op2= $scope.advQuests[i].op2;
+        	var op3= $scope.advQuests[i].op3;
+        	var op4= $scope.advQuests[i].op4;
+        	var modelanswer=$scope.advQuests[i].modelanswer;
+        	var category= $scope.advQuests[i].category;
+        	var subcategory=$scope.advQuests[i].subcategory;
+        	var qlevel= $scope.advQuests[i].qlevel;
+        	var estime= $scope.advQuests[i].estime;
+        	var adderid=$scope.advQuests[i].adderid;
+        	var reviewerid=$scope.advQuests[i].reviewerid;
+        	var status=$scope.advQuests[i].status;
+        	var comment=$scope.advQuests[i].comment;
+        	var date = $scope.advQuests[i].date;
+        	var type=$scope.advQuests[i].type;
+        	if(!deleteFlag)
+
+        		$http({ url: "/api/incrementQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name , "op1" : op1 , "op2" : op2 , "op3" : op3 , "op4" : op4 , "modelanswer" : modelanswer , "category" : category , "subcategory":subcategory , "qlevel" : qlevel , "estime" : estime , "adderid" : adderid , "reviewerid" : reviewerid , "status" : status , "comment":comment , "rep" : rep , "type" : type , "date" : date } });
+        	else
+        		$http({ url: "/api/expireQuestion",  method: "POST" , params: { "id" : id , "rev" : rev , "name" : name } });
+        	timeoutCounter+=1;
+        	if(timeoutCounter==10)
+        		await sleep(1000);
+    	}
+    };
+    
+    $scope.populate=function() {
+    	$scope.Begin = [];
+    	$scope.Inter = [];
+    	$scope.Advan = [];
+    	for(var i=0;i<$scope.find.length;i++) {
+    		if($scope.find[i].qlevel == "Easy")
+    			$scope.Begin.push($scope.find[i]);
+    		else if ($scope.find[i].qlevel == "Medium")
+    			$scope.Inter.push($scope.find[i]);
+    		else
+    			$scope.Advan.push($scope.find[i]);
+    	}
+    	
+    	var amount = Math.floor($scope.noQuestions/3);
+    	console.log("Amount = "+amount);
+    	var extra = Math.floor($scope.noQuestions%3);
+    	console.log("Extra = "+extra);
+    	var begCount = $scope.Begin.length;
+    	var intCount = $scope.Inter.length;
+    	var advCount = $scope.Advan.length;
+    	console.log("begCount = "+begCount);
+    	console.log("intCount = "+intCount);
+    	console.log("advCount = "+advCount);
+    	var begActual = amount;
+    	var intActual = amount;
+    	var advActual = amount+extra;
+    	
+    	
+    	//Cases for amount of questions in each level
+    	if(begCount < amount) { //0##
+    		if(intCount < amount) {	//00#
+    			if(advCount < amount+extra) { //000
+    				begActual = begCount;
+    				intActual = intCount;
+    				advActual = advCount;
+    			}
+    			else {	//001
+    				begActual = begCount;
+    				intActual = intCount;
+    				var leftover = 2*amount - begCount - intCount;
+    				advActual = amount+extra+leftover;
+    			}
+    		}
+    		else {	//01#
+    			if(advCount < amount+extra) { //010
+    				begActual = begCount;
+    				advActual = advCount;
+    				var leftover = 2*amount + extra - begCount - advCount;
+    				intActual = amount+leftover;
+    			}
+    			else {	//011
+    				begActual = begCount;
+    				var leftover = amount - begCount;
+    				if(advCount < Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2)) {
+    					advActual = advCount;
+        				intActual = (3*amount)+extra-advCount-begCount;
+    				}
+    				else if(intCount < Math.floor((leftover+(2*amount)+extra)/2)) {
+    					intActual = intCount;
+    					advActual = (3*amount)+extra-intCount-begCount;
+    				}
+    				else {
+    					intActual = Math.floor((leftover+(2*amount)+extra)/2);
+        				advActual = Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2);
+    				}
+    			}
+    		}
+    	}
+    	else {	//1##
+    		if(intCount < amount) {	//10#
+    			if(advCount < amount+extra) { //100
+    				advActual = advCount;
+    				intActual = intCount;
+    				var leftover = (2*amount) + extra - advCount - intCount;
+    				begActual = amount+leftover;
+    			}
+    			else {	//101
+    				intActual = intCount;
+    				var leftover = amount - intCount;
+    				if(advCount < Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2)) {
+    					advActual = advCount;
+        				begActual = (3*amount)+extra-advCount-intCount;
+    				}
+    				else if(begCount < Math.floor((leftover+(2*amount)+extra)/2)) {
+    					begActual = begCount;
+    					advActual = (3*amount)+extra-begCount-intCount;
+    				}
+    				else {
+    					begActual = Math.floor((leftover+(2*amount)+extra)/2);
+        				advActual = Math.floor(((leftover+(2*amount)+extra)/2)) + ((leftover+(2*amount)+extra)%2);
+    				}
+    			}
+    		}
+    		else {	//11#
+    			if(advCount < amount+extra) { //110
+    				advActual = advCount;
+    				var leftover = amount + extra - advCount;
+    				if(intCount < Math.floor((leftover+(2*amount))/2) + ((leftover+(2*amount))%2)) {
+    					intActual = intCount;
+    					begActual = (3*amount)+extra-intCount-advCount;
+    				}
+    				else if(begCount < Math.floor(((leftover+(2*amount))/2))) {
+    					begActual = begCount;
+    					intActual = (3*amount)+extra-begCount-advCount;
+    				}
+    				else {
+    					intActual = Math.floor((leftover+(2*amount))/2) + ((leftover+(2*amount))%2);
+        				begActual = Math.floor(((leftover+(2*amount))/2));
+    				}
+    			}
+    			
+    		}
+    	}
+    	//End of cases
+    	
+    	console.log("begActual = "+begActual);
+    	console.log("intActual = "+intActual);
+    	console.log("advActual = "+advActual);
+    	
+    	var begIndexes = generateRandomNumber(begActual,begCount);
+    	var intIndexes = generateRandomNumber(intActual,intCount);
+    	var advIndexes = generateRandomNumber(advActual,advCount);
+    	if(begActual==0)
+    		document.getElementById('begTitle').innerText="";
+    	if(intActual==0)
+    		document.getElementById('intTitle').innerText="";
+    	if(advActual==0)
+    		document.getElementById('advTitle').innerText="";
+    	
+    	
+    	$scope.begQuests = [];
+    	$scope.intQuests = [];
+    	$scope.advQuests = [];
+    	$scope.estimateTime = 0;
+    	for(var i=0;i<begActual;i++) {
+    		$scope.begQuests.push($scope.Begin[begIndexes[i]]);
+    		$scope.estimateTime += $scope.Begin[begIndexes[i]].estime;
+    	}
+    	
+    	for(var i=0;i<intActual;i++) {
+    		$scope.intQuests.push($scope.Inter[intIndexes[i]]);
+    		$scope.estimateTime += $scope.Inter[intIndexes[i]].estime;
+    	}
+    	
+    	for(var i=0;i<advActual;i++) {
+    		$scope.advQuests.push($scope.Advan[advIndexes[i]]);
+    		$scope.estimateTime += $scope.Advan[advIndexes[i]].estime;
+    	}
+    };
+    
+    $scope.check=function()
+    {
+    	console.log("Checking..");
+    	var testCount1 = document.getElementsByTagName("span").length;
+    	//var testCount2 = document.getElementsByTagName("span");
+    	for(var i=0;i<document.getElementsByClassName("op3").length;i++) {
+	    	if(document.getElementsByClassName("op3")[i].innerText == "C." || document.getElementsByClassName("op3")[i].innerText == "C. " || document.getElementsByClassName("op3")[i].innerText == "C.  ") {
+	    		document.getElementsByClassName("op3")[i].style.display="none";
+	    		//testCount1++;
+	    	}
+    	}
+    	console.log("Found "+testCount1);
+    	for(var i=0;i<document.getElementsByClassName("op4").length;i++) {
+	    	if(document.getElementsByClassName("op4")[i].innerText == "D." || document.getElementsByClassName("op4")[i].innerText == "D. " || document.getElementsByClassName("op4")[i].innerText == "D.  ") {
+	    		document.getElementsByClassName("op4")[i].style.display="none";
+	    		//testCount2++;
+	    	}
+    	}
+    	window.print();
+    	//console.log("Found "+testCount2);
+    };
+    
+    
+    });
+    
+    
+    
+</script>
+
+
+</html>

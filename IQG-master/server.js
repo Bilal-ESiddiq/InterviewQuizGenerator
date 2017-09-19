@@ -631,7 +631,7 @@ app.get("/api/generate", function (request, response) {
 	    return;
 	  }
 
-		  mydb.find({selector:{ status:"accepted" , rep: { $lt: 3} } },function(err, body) {
+		  mydb.find({selector:{ status:"accepted"  /*rep: { $lt: 3}*/ } },function(err, body) {
 			  
 		    if (err) {
 			        return console.log('[mydb.generate] ', err.message);
@@ -830,15 +830,46 @@ function RenderAddPage(req, res, firstLogin) {
 }
 
 var id;
+var questsAmount;
 
 app.get("/api/findviewid", function (request, response) {
-	
-	
-	id=request.query.id;
-	
-	
-	
+	id=request.query.questAmount;
 });
+
+
+
+app.get("/api/sendQuestNum", function (request, response) {
+	questsAmount=request.query.questAmount;
+});
+
+app.get("/exam", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
+    
+	var accessToken = req.session[WebAppStrategy.AUTH_CONTEXT].accessToken;
+
+    // get the attributes for the current user:
+    userAttributeManager.getAllAttributes(accessToken).then(function (attributes) {
+        var firstLogin = !attributes.known;
+        RenderExamPage(req, res, firstLogin);
+	});
+});
+
+function RenderExamPage(req, res, firstLogin) {
+    //return the protected page with user info
+    var renderOptions = {
+        amount: questsAmount
+    };
+
+    if (firstLogin) {
+        userAttributeManager.setAttribute(req.session[WebAppStrategy.AUTH_CONTEXT].accessToken, "known", "t").then(function (attributes) {
+            res.render('exam', renderOptions);
+         });
+    } else {
+        res.render('exam', renderOptions);
+    }
+}
+
+
+
 
 
 
