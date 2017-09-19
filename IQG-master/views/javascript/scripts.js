@@ -106,7 +106,6 @@ function choiceGenerator(){
 }
 
 /*function myQuestions()
-
 {
 	var id=$('#id').val();
 	var rev=$('#revid').val();
