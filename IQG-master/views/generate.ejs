@@ -40,7 +40,7 @@
 <div style="background-color:rgb(118,50,63);" class="w3-bar">
   <label style="font-family:Courier; font-size:18px; color:rgb(233,231,218);" class="w3-left w3-bar-item ">Signed in as <span id="userNameSpan"></span></label>
   <a href="/" id="logoutButton" class="w3-right w3-btn w3-bar-item"><img src='images/logout-icon.png'></a>
-  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item"><b>My Questions</b></button>   
+  <button id="myQuestButton" style="font-family:Courier; font-size:18px; color:rgb(233,231,218); text-align:center;" class="w3-right w3-btn w3-bar-item" onclick= "myQuestions()"><b>My Questions</b></button>   
 </div> 
 <!-- End Nav Bar -->
 
@@ -61,17 +61,32 @@
   	<input type="number" max="{{docCount}}" min="0" step="1" pattern="\d*" onkeydown="return FilterInput(event)" onpaste="handlePaste(event)" id=noQuestions ng-model=noQuestions class="w3-input w3-border w3-round " style="width:50%" name="questionNo"></input>
   	<br>
   	<br>
+  	
+  		  <select id=subcategory  ng-model="subcategory"  ng-change="changesubcategory()" class="w3-select w3-border w3-round " style="width:50%" name="option">
+					    <option value="" disabled selected>Choose a subcategory..</option>
+					    <option ng-repeat="x in findsubcategory" value={{x.name}}>{{x.name}}</option>
+	   </select>
+	   <br>
+	   <br>
+  	
   	<p style="color:rgb(205,216,199);"><button style="background-color:rgb(118,50,63);" class=" w3-btn w3-round" onClick="validate()" id="generateButton"  ng-click="generateExam()" >Generate</button>   <button style="background-color:rgb(118,50,63);" class="w3-btn w3-round" id="cancelButton" onclick="returnHomepage()">Cancel</button></p>
 </div>
 
 </body>
 
 <script>    
+
+
+
+console.log(document.getElementById("subcategory").value);
     function validate() {
     	var inp = document.getElementById("noQuestions").value;
     	var count = parseInt(document.getElementById("docCount").innerText);
-    	if(count < inp) {
-    		document.getElementById("demo").innerHTML = "Amount not existing in question bank";
+  		var subcategory=document.getElementById("subcategory").value;
+    	
+    		
+    	 if(count < inp || inp=="" || subcategory=="") {
+    		document.getElementById("demo").innerHTML = "Enter all fields";
     		document.getElementById("incorrectInput").value="true"; 
     	}
     	else {
@@ -82,8 +97,7 @@
     var app = angular.module('myApp', []);
 
     app.controller('myCtrl', function($scope, $http) {
-    	$http.get("/api/getCount").then(function (response) { $scope.counter = response.data; $scope.getCount();  });
-    	
+  	
     	
     $scope.getCount=function()
     {
@@ -95,9 +109,20 @@
     {
     	if(document.getElementById("incorrectInput").value=="true")
     		return;
-    	$http({ url: "./api/sendQuestNum",  method: "GET", params:{"questAmount":$scope.noQuestions}});
+     	
+    	$http({ url: "./api/sendQuestNum",  method: "GET", params:{"questAmount":$scope.noQuestions , "subcategory":$scope.subcategory}});
+    	
 		document.location="exam";
     };
+    
+    $http({ url: "/api/findallsubcategory",  method: "GET"}).then(function (response) { $scope.findsubcategory = response.data; });
+    
+    
+    $scope.changesubcategory = function()
+	  {
+    	$http({ url: "/api/getCount",  method: "GET", params:{ "subcategory":$scope.subcategory} })	.then(function (response) { $scope.counter = response.data; $scope.getCount();  });
+    	console.log($scope.subcategory);
+	  }
     
     });
     

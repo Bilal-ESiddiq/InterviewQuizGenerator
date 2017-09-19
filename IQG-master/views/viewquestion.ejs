@@ -273,19 +273,22 @@ app.controller('myCtrl', function($scope, $http) {
 	$scope.EditID = true;	
 	$scope.EditadderID = true;
 	
+	$scope.find=[];
 	
-	
-	$http({ url: "/api/findquestions",  method: "GET", params: {"userEmail":$scope.userEmail}}).then(function (response) { $scope.find = response.data;  $scope.view(); });
-	
+	$http({ url: "/api/findquestions",  method: "GET", params: {"userEmail":$scope.userEmail}}).then(function (response) { $scope.find = response.data; $scope.view();  });
+
    
 	
 
 	
 	
 	
-	$scope.view=function()
+	$scope.view= function()
 	{
-		var flagNotFound=0;
+		$scope.NotFound=0;
+		
+		
+		
 		 for(var i=0;i<$scope.find.length;i++)
 		    {
 		    	
@@ -305,7 +308,7 @@ app.controller('myCtrl', function($scope, $http) {
 			    	    $scope.id=$scope.find[i]._id;
 			    	    $scope.revid=$scope.find[i]._rev;
 			    	    $scope.adderid=$scope.find[i].adderid;
-			    	    flagNotFound=1;
+			    	    $scope.NotFound=1;
 			    	    
 		    		}
 		    }	
@@ -318,13 +321,12 @@ app.controller('myCtrl', function($scope, $http) {
 		if($scope.op4 =="")
 				   $scope.op4hide=true;
 		
-		  if(flagNotFound==0) 
-			 {  
-			   
-			  $scope.NotFoundFlag=false;
-			   $scope.NotFoundError="You are not elligible to see this page";
-			   $scope.Viewhideform=true;
-			 }
+		 if($scope.NotFound==0) 
+		 {  
+		   $scope.NotFoundFlag=false;
+		   $scope.NotFoundError="You are not elligible to see this page";
+		   $scope.Viewhideform=true;
+		 }
 		 
 		
 		

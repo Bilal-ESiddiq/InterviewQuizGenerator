@@ -582,8 +582,8 @@ app.controller('myCtrl', function($scope, $http) {
 	 
 	  $scope.incomplete = false;
 	  
-	
-	  if ( !$scope.editname.length ||!$scope.editop1.length ||  !$scope.editop2.length|| $scope.editmodelanswer==null || !$scope.editcategory.length || !$scope.editsubcategory.length ||!$scope.editqlevel.length || isNaN($scope.editestime) )
+		console.log($scope.editestime);
+	  if ( !$scope.editname.length ||!$scope.editop1.length ||  !$scope.editop2.length|| $scope.editmodelanswer==null || !$scope.editcategory.length || !$scope.editsubcategory.length ||!$scope.editqlevel.length || $scope.editestime==null )
 	  {$scope.incomplete = true;}
 	  
 	  

@@ -114,6 +114,32 @@ app.get("/api/findsubcategory", function (request, response) {
 	  
 	});
 
+app.get("/api/findallsubcategory", function (request, response) {
+	
+	
+	
+
+	  if(!mydb) {
+	    
+	    return;
+	  }
+
+	  mydb.find({selector:{ type:"subcategory" }},function(err, body) {
+		  
+		  
+	    if (err) {
+		        return console.log('[mydb.find] ', err.message);
+	              }
+	   
+	   
+	    if(!err)
+	    	response.send(body.docs);
+	   
+	  });
+	  
+	});
+
+
 
 app.post("/api/insertQuestion", function (request, response) {
 	 
@@ -599,12 +625,13 @@ app.get("/api/findmyquestions", function (request, response) {
 
 app.get("/api/getCount", function (request, response) {
 
+	subcategory=request.query.subcategory;
 	  if(!mydb) {
 	    
 	    return;
 	  }
 
-		  mydb.find({selector:{ status:"accepted" }},function(err, body) {
+		  mydb.find({selector:{ status:"accepted",subcategory:subcategory}},function(err, body) {
 			  
 			  
 		    if (err) {
@@ -625,13 +652,14 @@ app.get("/api/getCount", function (request, response) {
 
 app.get("/api/generate", function (request, response) {
 
-
+subcategory=request.query.subcategory;
+	
 	  if(!mydb) {
 	    
 	    return;
 	  }
 
-		  mydb.find({selector:{ status:"accepted"  /*rep: { $lt: 3}*/ } },function(err, body) {
+		  mydb.find({selector:{ status:"accepted"  ,subcategory:subcategory } },function(err, body) {
 			  
 		    if (err) {
 			        return console.log('[mydb.generate] ', err.message);
@@ -831,7 +859,7 @@ function RenderAddPage(req, res, firstLogin) {
 
 var id;
 var questsAmount;
-
+var subcategorygenerate;
 app.get("/api/findviewid", function (request, response) {
 	id=request.query.questAmount;
 });
@@ -840,6 +868,7 @@ app.get("/api/findviewid", function (request, response) {
 
 app.get("/api/sendQuestNum", function (request, response) {
 	questsAmount=request.query.questAmount;
+	subcategorygenerate=request.query.subcategory;
 });
 
 app.get("/exam", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(req, res){
@@ -856,7 +885,8 @@ app.get("/exam", passport.authenticate(WebAppStrategy.STRATEGY_NAME), function(r
 function RenderExamPage(req, res, firstLogin) {
     //return the protected page with user info
     var renderOptions = {
-        amount: questsAmount
+        amount: questsAmount,
+        subcategory :subcategorygenerate
     };
 
     if (firstLogin) {

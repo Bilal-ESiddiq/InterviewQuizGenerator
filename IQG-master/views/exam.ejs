@@ -101,10 +101,17 @@
 </body>
 
 <script>
+
+	
+
+
+
+
 	var app = angular.module('myApp', []);
     app.controller('myCtrl', function($scope, $http) {
-    $scope.noQuestions = <%= amount %>;
-   	$http({ url: "/api/generate",  method: "GET"}).then(function (response) { $scope.find = response.data; $scope.populate();  $scope.saveChanges();});
+    $scope.noQuestions = <%= amount %>; 
+    $scope.subcategory= "<%= subcategory %>"; 
+   	$http({ url: "/api/generate",  method: "GET", params:{ "subcategory":$scope.subcategory}}).then(function (response) { $scope.find = response.data; $scope.populate();    $scope.saveChanges();   });
     $scope.saveChanges = async function ()
     {
     	var deleteFlag;
@@ -352,11 +359,13 @@
     	$scope.advQuests = [];
     	$scope.estimateTime = 0;
     	for(var i=0;i<begActual;i++) {
+    	
     		$scope.begQuests.push($scope.Begin[begIndexes[i]]);
     		$scope.estimateTime += $scope.Begin[begIndexes[i]].estime;
     	}
     	
     	for(var i=0;i<intActual;i++) {
+    		
     		$scope.intQuests.push($scope.Inter[intIndexes[i]]);
     		$scope.estimateTime += $scope.Inter[intIndexes[i]].estime;
     	}
@@ -365,7 +374,16 @@
     		$scope.advQuests.push($scope.Advan[advIndexes[i]]);
     		$scope.estimateTime += $scope.Advan[advIndexes[i]].estime;
     	}
+    	
+    	
+    	
+    	
+    	
     };
+    
+
+    
+    
     
     $scope.check=function()
     {
@@ -385,10 +403,38 @@
 	    		//testCount2++;
 	    	}
     	}
-    	window.print();
+   window.print();
     	//console.log("Found "+testCount2);
     };
     
+    
+    
+    
+       $scope.printcheck=function()
+    {
+    	console.log("Checking..");
+    	var testCount1 = document.getElementsByTagName("span").length;
+    	//var testCount2 = document.getElementsByTagName("span");
+    	for(var i=0;i<document.getElementsByClassName("op3").length;i++) {
+	    	if(document.getElementsByClassName("op3")[i].innerText == "C." || document.getElementsByClassName("op3")[i].innerText == "C. " || document.getElementsByClassName("op3")[i].innerText == "C.  ") {
+	    		document.getElementsByClassName("op3")[i].style.display="none";
+	    		
+	    	}
+    	}
+    	console.log("Found "+testCount1);
+    	for(var i=0;i<document.getElementsByClassName("op4").length;i++) {
+	    	if(document.getElementsByClassName("op4")[i].innerText == "D." || document.getElementsByClassName("op4")[i].innerText == "D. " || document.getElementsByClassName("op4")[i].innerText == "D.  ") {
+	    		document.getElementsByClassName("op4")[i].style.display="none";
+	    	
+	    	}
+    	}
+   
+    };
+    
+    
+    
+    
+    $(document).bind("keyup keydown", function (e) { if (e.ctrlKey && e.keyCode === 80) {$scope.printcheck();}});
     
     });
     

@@ -135,7 +135,7 @@ app.controller('myCtrl', function($scope, $http) {
 
 	 $scope.editQuestionpage=function(id)
 	   {
-		   $http({ url: "./api/findviewid",  method: "GET", params:{"id":id}});
+		  
 		   document.location="editquestion/"+id;
 			
 	   }
@@ -145,7 +145,7 @@ app.controller('myCtrl', function($scope, $http) {
 	
    $scope.viewQuestionpage=function(id)
    {
-	   $http({ url: "./api/findviewid",  method: "GET", params:{"id":id}});
+	 
 	   document.location="viewquestion/"+id;
 		
    }
